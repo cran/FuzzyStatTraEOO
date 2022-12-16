@@ -28,10 +28,7 @@ test_that("Simulation simulCase1 method", {
   expect_equal(class(list)[[2]], "StatList")
   expect_equal(class(list)[[3]], "R6")
 
-  expect_equal(length(list$numbers), 6)
-  for (i in 1:length(list$numbers)) {
-    expect_equal(list$numbers[[i]]$is_valid(), TRUE)
-  }
+  expect_equal(list$getLength(), 6)
 
 })
 
@@ -56,10 +53,7 @@ test_that("Simulation simulCase2 method", {
   expect_equal(class(list)[[2]], "StatList")
   expect_equal(class(list)[[3]], "R6")
 
-  expect_equal(length(list$numbers), 10)
-  for (i in 1:length(list$numbers)) {
-    expect_equal(list$numbers[[i]]$is_valid(), TRUE)
-  }
+  expect_equal(list$getLength(), 10)
 })
 
 test_that("Simulation simulCase3 method", {
@@ -83,10 +77,7 @@ test_that("Simulation simulCase3 method", {
   expect_equal(class(list)[[2]], "StatList")
   expect_equal(class(list)[[3]], "R6")
 
-  expect_equal(length(list$numbers), 3)
-  for (i in 1:length(list$numbers)) {
-    expect_equal(list$numbers[[i]]$is_valid(), TRUE)
-  }
+  expect_equal(list$getLength(), 3)
 })
 
 test_that("Simulation simulCase4 method", {
@@ -110,10 +101,7 @@ test_that("Simulation simulCase4 method", {
   expect_equal(class(list)[[2]], "StatList")
   expect_equal(class(list)[[3]], "R6")
 
-  expect_equal(length(list$numbers), 4)
-  for (i in 1:length(list$numbers)) {
-    expect_equal(list$numbers[[i]]$is_valid(), TRUE)
-  }
+  expect_equal(list$getLength(), 4)
 })
 
 test_that("Simulation simulFRSTra method", {
@@ -180,19 +168,54 @@ test_that("Simulation simulFRSTra method", {
   expect_equal(class(list)[[2]], "StatList")
   expect_equal(class(list)[[3]], "R6")
 
-  expect_equal(length(list$numbers), 4)
-  for (i in 1:length(list$numbers)) {
-    expect_equal(list$numbers[[i]]$is_valid(), TRUE)
-  }
+  expect_equal(list$getLength(), 4)
 
-  ## valid parameters and condition fulfilled
+  list <- simul$simulFRSTra(9L, 0.5, 0, 0.5, 2, 1)
+  expect_equal(class(list)[[1]], "TrapezoidalFuzzyNumberList")
+  expect_equal(class(list)[[2]], "StatList")
+  expect_equal(class(list)[[3]], "R6")
+
+  expect_equal(list$getLength(), 9)
+
+  list <- simul$simulFRSTra(9L, 0.4, 0.6, 0, 2, 1)
+  expect_equal(class(list)[[1]], "TrapezoidalFuzzyNumberList")
+  expect_equal(class(list)[[2]], "StatList")
+  expect_equal(class(list)[[3]], "R6")
+
+  expect_equal(list$getLength(), 9)
+
+  list <- simul$simulFRSTra(9L, 1, 0, 0, 2, 1)
+  expect_equal(class(list)[[1]], "TrapezoidalFuzzyNumberList")
+  expect_equal(class(list)[[2]], "StatList")
+  expect_equal(class(list)[[3]], "R6")
+
+  expect_equal(list$getLength(), 9)
+
+  list <- simul$simulFRSTra(9L, 0, 1, 0, 2, 1)
+  expect_equal(class(list)[[1]], "TrapezoidalFuzzyNumberList")
+  expect_equal(class(list)[[2]], "StatList")
+  expect_equal(class(list)[[3]], "R6")
+
+  expect_equal(list$getLength(), 9)
+
+  list <- simul$simulFRSTra(9L, 0, 0, 1, 2, 1)
+  expect_equal(class(list)[[1]], "TrapezoidalFuzzyNumberList")
+  expect_equal(class(list)[[2]], "StatList")
+  expect_equal(class(list)[[3]], "R6")
+
+  expect_equal(list$getLength(), 9)
+
   list <- simul$simulFRSTra(10L, 0.15, 0.4, 0.45, 2, 1)
   expect_equal(class(list)[[1]], "TrapezoidalFuzzyNumberList")
   expect_equal(class(list)[[2]], "StatList")
   expect_equal(class(list)[[3]], "R6")
 
-  expect_equal(length(list$numbers), 10)
-  for (i in 1:length(list$numbers)) {
-    expect_equal(list$numbers[[i]]$is_valid(), TRUE)
-  }
+  expect_equal(list$getLength(), 10)
+
+  list <- simul$simulFRSTra(100L, 0.05, 0.35, 0.6, 1, 100)
+  expect_equal(class(list)[[1]], "TrapezoidalFuzzyNumberList")
+  expect_equal(class(list)[[2]], "StatList")
+  expect_equal(class(list)[[3]], "R6")
+
+  expect_equal(list$getLength(), 100)
 })

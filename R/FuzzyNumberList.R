@@ -1,7 +1,7 @@
-#' @title 'FuzzyNumberList' is a child class of 'StatList'. It contains 'FuzzyNumbers'.
+#' @title 'FuzzyNumberList' is a child class of 'StatList'.
 #'
 #' @description
-#' 'FuzzyNumberList' can contain valid and not valid 'FuzzyNumbers'.
+#' 'FuzzyNumberList' must contain valid 'FuzzyNumbers'.
 #' This class implements a version of the empty 'StatList' methods.
 #'
 #' @note In case you find (almost surely existing) bugs or have recommendations
@@ -33,6 +33,9 @@ FuzzyNumberList <- R6::R6Class(
   classname = "FuzzyNumberList",
   inherit = StatList,
   private = list (
+    # numbers is a collection of fuzzy numbers.
+    numbers = NULL,
+
     # auxiliary method used in the dthetaphi public method
     # it calculates integrals by hand as sums
     # x is a vector (first column of fuzzy set)
@@ -60,11 +63,11 @@ FuzzyNumberList <- R6::R6Class(
     # auxiliary method used in the dthetaphi, dwablphi and rho1 public methods
     # list is the second FuzzyNumberList that is going to be compared
     checkAlphaLevels = function(list = NA, verbose = TRUE) {
-      aux <- self$numbers[[1]]$getFNAlphaLevels()[, 1]
+      aux <- private$numbers[[1]]$getAlphaLevels()
       result <- TRUE
-      for (val in 1:length(list$numbers)) {
+      for (val in 1:list$getLength()) {
         if (!identical(aux,
-                       list$numbers[[val]]$getFNAlphaLevels()[, 1])) {
+                       list$getDimension(as.integer(val))$getAlphaLevels())) {
           if (verbose) {
             print("the fuzzy numbers of the two FuzzyNumberLists must have the same alpha-levels")
           }
@@ -75,15 +78,32 @@ FuzzyNumberList <- R6::R6Class(
         }
       }
       return (result)
+    },
+
+    # This method checks that the numbers that contain this class are given in the correct format.
+    # It checks that all the 'FuzzyNumbers' have the same column of \eqn{\alpha}-levels.
+    # It also set all attributes.
+    checking = function(numbers = NA) {
+      aux <- numbers[[1]]$getAlphaLevels()
+      if (length(numbers) > 1) {
+        for (val in 2:length(numbers)) {
+          if (!identical(aux,
+                         numbers[[val]]$getAlphaLevels())) {
+            stop("all fuzzy numbers must have the same alpha-levels")
+          }
+        }
+      }
+
+      private$rows <- length(aux)
+      private$columns <- 3
+      private$dimensions <- length(numbers)
+      private$numbers <- numbers
     }
   ),
   public = list(
-    #' @field numbers is a collection of fuzzy numbers.
-    numbers = NULL,
-
     #' @description
     #' This method creates a 'FuzzyNumberList' object with the columns and dimensions
-    #' attributes set.
+    #' attributes set where the 'FuzzyNumbers' must be valid.
     #'
     #' @param numbers is a list of dimension nl x 3 x n which contains n
     #' fuzzy numbers. nl is the number of considered \eqn{\alpha}-levels and 3 is the number of
@@ -94,7 +114,7 @@ FuzzyNumberList <- R6::R6Class(
     #' @details See examples.
     #'
     #' @return The FuzzyNumberList object created with the columns and dimensions
-    #' attributes set.
+    #' attributes set where the 'FuzzyNumbers' must be valid.
     #'
     #' @examples
     #' # Example 1:
@@ -106,91 +126,25 @@ FuzzyNumberList <- R6::R6Class(
     #' # Example 2:
     #' FuzzyNumberList$new(c(
     #' FuzzyNumber$new(array(c(0.0, 1.0, -1.5, -1.0, 2, 1), dim = c(2, 3))),
-    #' FuzzyNumber$new(array(c(0.0, 0.5, 1.0, -1.5, -1.0, -1.0, 2.0, 1.5, 1.0),
-    #' dim = c(3, 3)))))
+    #' FuzzyNumber$new(array(c(0.0, 1.0, -1.5, -1.0, 2.0, 1.5), dim = c(2, 3)))))
     initialize = function(numbers = NA) {
       stopifnot(is.list(numbers))
       for (val in 1:length(numbers)) {
         stopifnot(class(numbers[[val]])[1] == "FuzzyNumber")
       }
 
-      private$dimensions <- length(numbers)
-      private$columns <- ncol(numbers[[val]]$getFNAlphaLevels())
-      self$numbers <- numbers
-    },
-
-    #' @description
-    #' This method checks that the numbers that contain this class are given in the correct format.
-    #' First, it checks that all individual 'FuzzyNumber' are valid according its conditions.
-    #' Second and last, it checks that all the 'FuzzyNumbers' have the same column of \eqn{\alpha}-levels.
-    #' It also set the rows attribute.
-    #'
-    #' @param verbose if TRUE the messages are written to the console unless the
-    #' user actively decides to set verbose=FALSE.
-    #'
-    #' @details See examples.
-    #'
-    #' @return TRUE if all FuzzyNumbers are valid and have the same column of \eqn{\alpha}-levels.
-    #' Otherwise, FALSE.
-    #'
-    #' @examples
-    #' # Example 1:
-    #' FuzzyNumberList$new(c(
-    #' FuzzyNumber$new(array(c(0.0, 1.0, -1.5, -1.0, 2, 1), dim = c(2, 3))),
-    #' FuzzyNumber$new(array(c(0.0, 0.5, 1.0, -1.5, -1.0, -1.0, 2.0, 1.5, 1.0),
-    #' dim = c(3, 3)))))$checking()
-    #'
-    #' # Example 2:
-    #' FuzzyNumberList$new(c(
-    #' FuzzyNumber$new(array(c(1, 2, 3, 4), dim = c(2, 1))),
-    #' FuzzyNumber$new(array(c(0, 0.1, 0.5, 1, 2, 3), dim = c(3, 2)))))$checking()
-    #'
-    #' # Example 3:
-    #' FuzzyNumberList$new(c(
-    #' FuzzyNumber$new(array(c(0.0, 0.5, 1.0,-1.5,-1.0,-1.0, 2.0, 1.5, 1.0), dim =
-    #' c(3, 3))),FuzzyNumber$new(array(c(0.0, 0.5, 1.0,-1.5,-1.25,-1.0, 3.0, 2.0,
-    #' 1.0), dim = c(3, 3)))))$checking()
-    checking = function(verbose = TRUE) {
-      for (val in 1:length(self$numbers)) {
-        if (!self$numbers[[val]]$is_valid()) {
-          if (verbose) {
-            print("Not all fuzzy numbers are valid")
-          }
-          return (FALSE)
-        }
-      }
-
-      aux <- self$numbers[[1]]$getFNAlphaLevels()[, 1]
-      if (length(self$numbers) > 1) {
-        for (val in 2:length(self$numbers)) {
-          if (!identical(aux,
-                         self$numbers[[val]]$getFNAlphaLevels()[, 1])) {
-            if (verbose) {
-              print("all fuzzy numbers must have the same alpha-levels")
-            }
-            return (FALSE)
-          }
-        }
-      }
-
-      private$rows <- length(aux)
-
-      return (TRUE)
+      private$checking(numbers)
     },
 
     #' @description
     #' This method calculates the mid/spr distance between the FuzzyNumbers contained
-    #' in the current object and the one passed as parameter, which should be given
-    #' in the desired format. For this, the method first checks if the input 'FuzzyNumberList'
-    #' s is in the correct form (tested by the checking method) and if the \eqn{\alpha}-levels
-    #' of all 'FuzzyNumbers' coincide.
+    #' in the current object and the one passed as parameter.
     #' See Blanco-Fernandez et al. (2013) [1].
     #'
     #' @param s FuzzyNumberList containing FuzzyNumbers characterized by means of
-    #' nl \eqn{\alpha}-levels each. The method first calls checking to check if the
-    #' FuzzyNumberList s has the correct format. Moreover, the \eqn{\alpha}-levels
-    #' of the FuzzyNumberList s should coincide with the ones of the current
-    #' FuzzyNumberList (the method checks this condition).
+    #' nl \eqn{\alpha}-levels each. The \eqn{\alpha}-levels of the FuzzyNumberList
+    #' s should coincide with the ones of the current FuzzyNumberList (the method
+    #' checks this condition).
     #' @param a real number > 0, by default a=1. It is the first parameter of a
     #' beta distribution which corresponds to a weighting measure on [0,1].
     #' @param b real number > 0, by default b=1. It is the second parameter of a
@@ -227,28 +181,18 @@ FuzzyNumberList <- R6::R6Class(
     #' ), 1, 1, 1/3)
     #'
     #' # Example 3:
-    #' FuzzyNumberList$new(c(
-    #' FuzzyNumber$new(array(c(0.0, 1.0, -1.5, -1.0, 2, 1), dim = c(2, 3))),
-    #' FuzzyNumber$new(array(c(0.0, 1.0, -1.0, -1.0, 1.5, 1.0), dim = c(2, 3)))
-    #' ))$dthetaphi(
-    #' FuzzyNumberList$new(c(
-    #' FuzzyNumber$new(array(c(0.0, 1.0, -0.5, 0, 1.5, 1), dim = c(2, 3))),
-    #' FuzzyNumber$new(array(c(0.0, 1.0, 1, 1.5, 1.5, 1.0), dim = c(2, 3))))),
-    #' 2,1,1)
-    #'
-    #' # Example 4:
     #' F=Simulation$new()$simulCase1(10L)
     #' S=Simulation$new()$simulCase1(20L)
     #' F=F$transfTra()
     #' S=S$transfTra()
     #' F$dthetaphi(S,1,5,1)
     #'
-    #' # Example 5:
+    #' # Example 4:
     #' F=Simulation$new()$simulCase1(10L)
     #' S=Simulation$new()$simulCase1(10L)
     #' F$dthetaphi(S,2,1,1/3)
     #'
-    #' # Example 6:
+    #' # Example 5:
     #' F=Simulation$new()$simulCase1(10L)
     #' S=Simulation$new()$simulCase1(10L)
     #' F=F$transfTra()
@@ -261,32 +205,31 @@ FuzzyNumberList <- R6::R6Class(
       stopifnot(class(s)[1] == "FuzzyNumberList")
       super$dthetaphi(s, a, b, theta)
 
-      if (self$checking() &&
-          s$checking() && private$checkAlphaLevels(s)) {
-        r <- length(self$numbers)
-        p <- length(s$numbers)
-        alpha <- self$numbers[[1]]$getFNAlphaLevels()[, 1]
+      if (private$checkAlphaLevels(s)) {
+        r <- private$dimensions
+        p <- s$getLength()
+        alpha <- private$numbers[[1]]$getAlphaLevels()
         dthetaphicua <- matrix(nrow = r, ncol = p)
 
         for (i in 1:r) {
           for (j in 1:p) {
             mid <- (((
-              self$numbers[[i]]$getFNAlphaLevels()[, 2] +
-                self$numbers[[i]]$getFNAlphaLevels()[, 3]
+              private$numbers[[i]]$getInfimums() +
+                private$numbers[[i]]$getSupremums()
             ) -
               (
-                s$numbers[[j]]$getFNAlphaLevels()[, 2] +
-                  s$numbers[[j]]$getFNAlphaLevels()[, 3]
+                s$getDimension(j)$getInfimums() +
+                  s$getDimension(j)$getSupremums()
               )
             ) / 2) ^ 2 * dbeta(alpha, a, b)
 
             spr <- (((
-              self$numbers[[i]]$getFNAlphaLevels()[, 3] -
-                self$numbers[[i]]$getFNAlphaLevels()[, 2]
+              private$numbers[[i]]$getSupremums() -
+                private$numbers[[i]]$getInfimums()
             ) -
               (
-                s$numbers[[j]]$getFNAlphaLevels()[, 3] -
-                  s$numbers[[j]]$getFNAlphaLevels()[, 2]
+                s$getDimension(j)$getSupremums() -
+                  s$getDimension(j)$getInfimums()
               )
             ) / 2) ^ 2 * dbeta(alpha, a, b)
 
@@ -305,15 +248,12 @@ FuzzyNumberList <- R6::R6Class(
 
     #' @description
     #' This method calculates the (\eqn{\phi},\eqn{\theta})-wabl/ldev/rdev distance between
-    #' the 'FuzzyNumbers' contained in two 'FuzzyNumberLists', which should be given
-    #' in the desired format. For this, the method first checks if the two 'FuzzyNumberLists'
-    #' are in the correct form (tested by the checking method) and if the \eqn{\alpha}-levels
-    #' of all 'FuzzyNumbers' coincide.
+    #' the 'FuzzyNumbers' contained in two 'FuzzyNumberLists'. The method checks
+    #' if the \eqn{\alpha}-levels of all 'FuzzyNumbers' coincide.
     #' See Sinova et al. (2013) [3] and Sinova et al. (2016) [4].
     #'
     #' @param s FuzzyNumberList containing FuzzyNumbers characterized by means of nl
-    #' \eqn{\alpha}-levels each. The method first calls checking to check if it is
-    #' in the correct format. Moreover, the \eqn{\alpha}-levels should coincide with
+    #' \eqn{\alpha}-levels each. The \eqn{\alpha}-levels should coincide with
     #' ones of the other FuzzyNumberList (the method checks this condition).
     #' @param a real number > 0, by default a=1. It is the first parameter of a
     #' beta distribution which corresponds to a weighting measure on [0,1].
@@ -351,28 +291,18 @@ FuzzyNumberList <- R6::R6Class(
     #' ), 1, 1, 1/3)
     #'
     #' # Example 3:
-    #' FuzzyNumberList$new(c(
-    #' FuzzyNumber$new(array(c(0.0, 1.0, -1.5, -1.0, 2, 1), dim = c(2, 3))),
-    #' FuzzyNumber$new(array(c(0.0, 1.0, -1.0, -1.0, 1.5, 1.0), dim = c(2, 3)))
-    #' ))$dwablphi(
-    #' FuzzyNumberList$new(c(
-    #' FuzzyNumber$new(array(c(0.0, 1.0, -0.5, 0, 1.5, 1), dim = c(2, 3))),
-    #' FuzzyNumber$new(array(c(0.0, 1.0, 1, 1.5, 1.5, 1.0), dim = c(2, 3))))),
-    #' 2,1,1)
-    #'
-    #' # Example 4:
     #' F=Simulation$new()$simulCase1(3L)
     #' S=Simulation$new()$simulCase1(4L)
     #' F=F$transfTra()
     #' S=S$transfTra()
     #' F$dwablphi(S,2,1,1)
     #'
-    #' # Example 5:
+    #' # Example 4:
     #' F=Simulation$new()$simulCase1(10L)
     #' S=Simulation$new()$simulCase1(10L)
     #' F$dwablphi(S)
     #'
-    #' # Example 6:
+    #' # Example 5:
     #' F=Simulation$new()$simulCase1(10L)
     #' S=Simulation$new()$simulCase1(10L)
     #' F=F$transfTra()
@@ -385,18 +315,17 @@ FuzzyNumberList <- R6::R6Class(
       stopifnot(class(s)[1] == "FuzzyNumberList")
       super$dwablphi(s, a, b, theta)
 
-      if (self$checking() &&
-          s$checking() && private$checkAlphaLevels(s)) {
-        r <- length(self$numbers)
-        p <- length(s$numbers)
-        alpha <- self$numbers[[1]]$getFNAlphaLevels()[, 1]
+      if (private$checkAlphaLevels(s)) {
+        r <- private$dimensions
+        p <- s$getLength()
+        alpha <- private$numbers[[1]]$getAlphaLevels()
         wablR <- vector()
         wablS <- vector()
         dwablphi <- matrix(nrow = r, ncol = p)
 
         for (i in 1:r) {
           midR <-
-            (self$numbers[[i]]$getFNAlphaLevels()[, 2] + self$numbers[[i]]$getFNAlphaLevels()[, 3]) /
+            (private$numbers[[i]]$getInfimums() + private$numbers[[i]]$getSupremums()) /
             2
           integrandWablR <- midR * dbeta(alpha, a, b)
           wablR[i] <- private$l2dist(integrandWablR)
@@ -404,20 +333,20 @@ FuzzyNumberList <- R6::R6Class(
 
         for (j in 1:p) {
           midS <-
-            (s$numbers[[j]]$getFNAlphaLevels()[, 2] + s$numbers[[j]]$getFNAlphaLevels()[, 3]) /
+            (s$getDimension(j)$getInfimums() + s$getDimension(j)$getSupremums()) /
             2
           integrandWablS <- midS * dbeta(alpha, a, b)
           wablS[j] <- private$l2dist(integrandWablS)
         }
 
         for (i in 1:r) {
-          ldevR <- wablR[i] - self$numbers[[i]]$getFNAlphaLevels()[, 2]
+          ldevR <- wablR[i] - private$numbers[[i]]$getInfimums()
           rdevR <-
-            self$numbers[[i]]$getFNAlphaLevels()[, 3] - wablR[i]
+            private$numbers[[i]]$getSupremums() - wablR[i]
           for (j in 1:p) {
-            ldevS <- wablS[j] - s$numbers[[j]]$getFNAlphaLevels()[, 2]
+            ldevS <- wablS[j] - s$getDimension(j)$getInfimums()
             rdevS <-
-              s$numbers[[j]]$getFNAlphaLevels()[, 3] - wablS[j]
+              s$getDimension(j)$getSupremums() - wablS[j]
             integrandldev <- abs(ldevR - ldevS) * dbeta(alpha, a, b)
             integrandrdev <- abs(rdevR - rdevS) * dbeta(alpha, a, b)
             dwablphi[i, j] <-
@@ -435,16 +364,13 @@ FuzzyNumberList <- R6::R6Class(
 
     #' @description
     #' This method calculates the 1-norm distance between the 'FuzzyNumbers' contained
-    #' in two 'FuzzyNumberLists', which should be given in the desired format. For
-    #' this, the method first checks if the two 'FuzzyNumberLists' are in the correct
-    #' form (tested by the checking method) and if the \eqn{\alpha}-levels of all
-    #' 'FuzzyNumbers' coincide.
+    #' in two 'FuzzyNumberLists'. The method checks if the \eqn{\alpha}-levels of
+    #' all 'FuzzyNumbers' coincide.
     #' See Diamond and Kloeden. (1990) [2].
     #'
     #' @param s FuzzyNumberList containing FuzzyNumbers characterized by means of nl
-    #' \eqn{\alpha}-levels each. The method first calls checking to check if it is
-    #' in the correct format. Moreover, the \eqn{\alpha}-levels should coincide with
-    #' ones of the other FuzzyNumberList (the method checks this condition).
+    #' \eqn{\alpha}-levels each. The method checks that the \eqn{\alpha}-levels
+    #' should coincide with ones of the other FuzzyNumberList.
     #'
     #' @details See examples.
     #'
@@ -473,15 +399,6 @@ FuzzyNumberList <- R6::R6Class(
     #' FuzzyNumber$new(array(c(0.0, 0.5, 1.0,-1,-0.5,0, 1.5, 1.25, 1), dim = c(3, 3))))))
     #'
     #' # Example 3:
-    #' FuzzyNumberList$new(c(
-    #' FuzzyNumber$new(array(c(0.0, 1.0, -1.5, -1.0, 2, 1), dim = c(2, 3))),
-    #' FuzzyNumber$new(array(c(0.0, 1.0, -1.0, -1.0, 1.5, 1.0), dim = c(2, 3)))
-    #' ))$rho1(
-    #' FuzzyNumberList$new(c(
-    #' FuzzyNumber$new(array(c(0.0, 1.0, -0.5, 0, 1.5, 1), dim = c(2, 3))),
-    #' FuzzyNumber$new(array(c(0.0, 1.0, 1, 1.5, 1.5, 1.0), dim = c(2, 3))))))
-    #'
-    #' # Example 4:
     #' F=Simulation$new()$simulCase1(4L)
     #' S=Simulation$new()$simulCase1(5L)
     #' F=F$transfTra()
@@ -489,7 +406,7 @@ FuzzyNumberList <- R6::R6Class(
     #' F$rho1(S)
     #' S$rho1(F)
     #'
-    #' # Example 6:
+    #' # Example 4:
     #' F=Simulation$new()$simulCase1(4L)
     #' S=Simulation$new()$simulCase1(5L)
     #' F=F$transfTra()
@@ -500,19 +417,18 @@ FuzzyNumberList <- R6::R6Class(
       stopifnot(class(s)[2] == "StatList")
       stopifnot(class(s)[1] == "FuzzyNumberList")
 
-      if (self$checking() &&
-          s$checking() && private$checkAlphaLevels(s)) {
-        r <- length(self$numbers)
-        p <- length(s$numbers)
+      if (private$checkAlphaLevels(s)) {
+        r <- private$dimensions
+        p <- s$getLength()
         rho <- matrix(nrow = r, ncol = p)
 
         for (i in 1:r) {
           for (j in 1:p) {
-            inf <- self$numbers[[i]]$getFNAlphaLevels()[, 2] -
-              s$numbers[[j]]$getFNAlphaLevels()[, 2]
+            inf <- private$numbers[[i]]$getInfimums() -
+              s$getDimension(j)$getInfimums()
 
-            sup <- self$numbers[[i]]$getFNAlphaLevels()[, 3] -
-              s$numbers[[j]]$getFNAlphaLevels()[, 3]
+            sup <- private$numbers[[i]]$getSupremums() -
+              s$getDimension(j)$getSupremums()
             rho[i, j] <-
               (private$rho1dist(inf) + private$rho1dist(sup)) * 0.5
           }
@@ -552,7 +468,7 @@ FuzzyNumberList <- R6::R6Class(
     addFuzzyNumber = function(n = NA, verbose = TRUE) {
       stopifnot(class(n)[1] == "FuzzyNumber")
       private$dimensions <- private$dimensions + 1
-      self$numbers <- append(self$numbers, n)
+      private$numbers <- append(private$numbers, n)
       if (verbose) {
         cat("numbers updated, current dimension is", private$dimensions)
       }
@@ -575,7 +491,7 @@ FuzzyNumberList <- R6::R6Class(
     #' # Example 1:
     #' FuzzyNumberList$new(c(
     #' FuzzyNumber$new(array(c(0.0, 1.0, -1.5, -1.0, 2, 1), dim = c(2, 3))),
-    #' FuzzyNumber$new(array(c(0.0, 0.5, 1.0, -1, -0.5, 0, 1.5, 1.25, 1), dim = c(3, 3)))
+    #' FuzzyNumber$new(array(c(0.0, 1.0, -1, -0.5, 1.5, 1.25), dim = c(2, 3)))
     #' ))$removeFuzzyNumber(1L)
     #'
     #' # Example 2:
@@ -587,7 +503,7 @@ FuzzyNumberList <- R6::R6Class(
       stopifnot(typeof(i) == "integer" &&
                   i > 0 && i <= private$dimensions)
       private$dimensions <- private$dimensions - 1
-      self$numbers <- self$numbers[-i]
+      private$numbers <- private$numbers[-i]
       if (verbose) {
         cat("numbers updated, current dimension is", private$dimensions)
       }
@@ -620,7 +536,133 @@ FuzzyNumberList <- R6::R6Class(
     getDimension = function(i = NA) {
       stopifnot(typeof(i) == "integer" &&
                   i > 0 && i <= private$dimensions)
-      self$numbers[[i]]
+      return(private$numbers[[i]])
+    },
+
+    #' @description
+    #' This method shows in a graph the values of the attribute numbers of the
+    #' corresponding 'FuzzyNumberList'.
+    #'
+    #' @param color is the color of the lines representing the numbers to be shown
+    #' in the graph. The default value is grey, other colors can be specified, the
+    #' option palette() too.
+    #'
+    #' @details See examples.
+    #'
+    #' @return a graph with the values of the attribute numbers of the corresponding
+    #' 'FuzzyNumberList'.
+    #'
+    #' @examples
+    #' # Example 1:
+    #' FuzzyNumberList$new(c(
+    #' FuzzyNumber$new(array(c(0.0, 0.5, 1.0, -1, -0.5, 0, 1.5, 1.25, 1), dim = c(3, 3))),
+    #' FuzzyNumber$new(array(c(0.0, 0.5, 1.0, 1, 1.25, 1.5, 2, 1.75, 1.5), dim = c(3, 3)))
+    #' ))$plot()
+    #'
+    #' # Example 2:
+    #' FuzzyNumberList$new(c(
+    #' FuzzyNumber$new(array(c(0.0, 1.0, -1.5, -1.0, 2, 1), dim = c(2, 3))),
+    #' FuzzyNumber$new(array(c(0.0, 1.0, -1.0, -1.0, 1.5, 1.0), dim = c(2, 3))),
+    #' FuzzyNumber$new(array(c(0.0, 1.0, -0.5, 0, 1.5, 1), dim = c(2, 3))),
+    #' FuzzyNumber$new(array(c(0.0, 1.0, 1, 1.5, 1.85, 1.7), dim = c(2, 3))))
+    #' )$plot("blue")
+    #'
+    #' # Example 3:
+    #' Simulation$new()$simulCase1(8L)$transfTra()$plot(palette())
+    #'
+    #' # Example 4:
+    #' Simulation$new()$simulCase1(5L)$transfTra()$plot(palette()[2:6])
+    plot = function(color = "grey") {
+      dims <- private$dimensions
+      p <- (length(color) > 1 && dims > 1)
+      minimo <- c()
+      maximo <- c()
+      for (i in 1:dims) {
+        number <- private$numbers[[i]]
+        minimo <- append(minimo, number$getInfimums()[[1]])
+        maximo <- append(maximo, number$getSupremums()[[1]])
+      }
+      plot(
+        c(),
+        c(),
+        type = "l",
+        col = color,
+        lty = 1,
+        lwd = 3,
+        xlim = c(min(minimo) - 0.25, max(maximo) + 0.25),
+        ylim = c(0, 1),
+        xlab = "",
+        ylab = "",
+        main = "FuzzyNumberList"
+      )
+
+      if (p) {
+        for (i in 1:dims) {
+          number <- private$numbers[[i]]
+          y <- number$getAlphaLevels()
+          n <- length(y)
+          x1 <- c()
+          x2 <- c()
+          for (j in seq(1, n, by = 2)) {
+            x1 <- append(x1, number$getInfimums()[[j]])
+            x2 <- append(x2, number$getSupremums()[[j]])
+            if (j < n) {
+              x1 <- append(x1, number$getInfimums()[[j + 1]])
+              x2 <- append(x2, number$getSupremums()[[j + 1]])
+            }
+          }
+          points(c(x1, rev(x2)),
+                 c(y, rev(y)),
+                 type = "l",
+                 col = color[runif(1, min =
+                                     1, max = length(color))])
+
+        }
+      } else {
+        for (i in 1:dims) {
+          number <- private$numbers[[i]]
+          y <- number$getAlphaLevels()
+          n <- length(y)
+          x1 <- c()
+          x2 <- c()
+          for (j in seq(1, n, by = 2)) {
+            x1 <- append(x1, number$getInfimums()[[j]])
+            x2 <- append(x2, number$getSupremums()[[j]])
+            if (j < n) {
+              x1 <- append(x1, number$getInfimums()[[j + 1]])
+              x2 <- append(x2, number$getSupremums()[[j + 1]])
+            }
+          }
+          points(c(x1, rev(x2)), c(y, rev(y)), type = "l", col = color)
+        }
+      }
+    },
+
+    #' @description
+    #' This method returns the number of dimensions that are equivalent to the number
+    #' of 'FuzzyNumbers' in the corresponding 'FuzzyNumberList'.
+    #'
+    #' @details See examples.
+    #'
+    #' @return the number of dimensions that are equivalent to the number of 'FuzzyNumbers'
+    #' in the corresponding 'FuzzyNumberList'.
+    #'
+    #' @examples
+    #' # Example 1:
+    #' FuzzyNumberList$new(c(
+    #' FuzzyNumber$new(array(c(0.0, 0.5, 1.0, -1, -0.5, 0, 1.5, 1.25, 1), dim = c(3, 3))),
+    #' FuzzyNumber$new(array(c(0.0, 0.5, 1.0, 1, 1.25, 1.5, 2, 1.75, 1.5), dim = c(3, 3)))
+    #' ))$getLength()
+    #'
+    #' # Example 2:
+    #' FuzzyNumberList$new(c(
+    #' FuzzyNumber$new(array(c(0.0, 1.0, -1.5, -1.0, 2, 1), dim = c(2, 3))),
+    #' FuzzyNumber$new(array(c(0.0, 1.0, -1.0, -1.0, 1.5, 1.0), dim = c(2, 3))),
+    #' FuzzyNumber$new(array(c(0.0, 1.0, -0.5, 0, 1.5, 1), dim = c(2, 3))),
+    #' FuzzyNumber$new(array(c(0.0, 1.0, 1, 1.5, 1.5, 1.5), dim = c(2, 3))))
+    #' )$getLength()
+    getLength = function() {
+      return(private$dimensions)
     }
   )
 )

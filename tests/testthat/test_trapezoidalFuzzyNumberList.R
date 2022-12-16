@@ -6,8 +6,8 @@ test_that("TrapezoidalTrapezoidalFuzzyNumberList instance works (initialize)",
             expect_error(TrapezoidalTrapezoidalFuzzyNumberList$new(
               c(
                 TrapezoidalFuzzyNumber$new(1, 2, 3, 4),
-                TrapezoidalFuzzyNumber$new(-8,-6,-4,-2),
-                TrapezoidalFuzzyNumber$new(-1,-1, 2, 3),
+                TrapezoidalFuzzyNumber$new(-8, -6, -4, -2),
+                TrapezoidalFuzzyNumber$new(-1, -1, 2, 3),
                 TrapezoidalFuzzyNumber$new(1, 2, 3, 3)
               ),
               "a"
@@ -20,16 +20,16 @@ test_that("TrapezoidalTrapezoidalFuzzyNumberList instance works (initialize)",
             ## invalid parameter: list that does not contain TrapezoidalFuzzyNumbers
             c <-
               c(FuzzyNumber$new(array(c(
-                0.0, 1.0,-1.5,-1.0, 2, 1
+                0.0, 1.0, -1.5, -1.0, 2, 1
               ), dim = c(2, 3))), FuzzyNumber$new(array(
-                c(0.0, 0.5, 1.0,-1.5,-1.0,-1.0, 2.0, 1.5, 1.0), dim = c(3, 3)
+                c(0.0, 0.5, 1.0, -1.5, -1.0, -1.0, 2.0, 1.5, 1.0), dim = c(3, 3)
               )))
             expect_error(TrapezoidalFuzzyNumberList$new(c))
             ## invalid parameter: list does not only contain TrapezoidalFuzzyNumbers
             c <-
               c(TrapezoidalFuzzyNumber$new(1, 2, 3, 4),
                 FuzzyNumber$new(array(
-                  c(0.0, 0.5, 1.0,-1.5,-1.0,-1.0, 2.0, 1.5, 1.0), dim = c(3, 3)
+                  c(0.0, 0.5, 1.0, -1.5, -1.0, -1.0, 2.0, 1.5, 1.0), dim = c(3, 3)
                 )))
             expect_error(TrapezoidalFuzzyNumberList$new(c))
 
@@ -39,68 +39,22 @@ test_that("TrapezoidalTrapezoidalFuzzyNumberList instance works (initialize)",
             c <-
               c(
                 TrapezoidalFuzzyNumber$new(1, 2, 3, 4),
-                TrapezoidalFuzzyNumber$new(-8,-6,-4,-2),
-                TrapezoidalFuzzyNumber$new(-1,-1, 2, 3),
+                TrapezoidalFuzzyNumber$new(-8, -6, -4, -2),
+                TrapezoidalFuzzyNumber$new(-1, -1, 2, 3),
                 TrapezoidalFuzzyNumber$new(1, 2, 3, 3)
               )
             array <- TrapezoidalFuzzyNumberList$new(c)
 
-            expect_equal(class(array$numbers), "list")
-            expect_equal(length(array$numbers), length(c))
-            expect_equal(c, array$numbers)
+            expect_equal(class(array$getDimension(1L))[[1]], "TrapezoidalFuzzyNumber")
+            expect_equal(array$getLength(), length(c))
 
           })
-
-test_that("TrapezoidalFuzzyNumberList checking function", {
-  ## invalid numbers: list that does not contain any valid TrapezoidalFuzzyNumbers
-  c <-
-    c(
-      TrapezoidalFuzzyNumber$new(1, 0, 2, 3),
-      TrapezoidalFuzzyNumber$new(-1, 0,-0.5, 0),
-      TrapezoidalFuzzyNumber$new(-2,-4,-6,-8)
-    )
-
-  array <- TrapezoidalFuzzyNumberList$new(c)
-
-  ## more parameters than needed
-  expect_error(array$checking("a"))
-
-  expect_output(array$checking(), "Not all trapezoidal fuzzy numbers are valid")
-  expect_equal(array$checking(), FALSE)
-
-  ## invalid numbers: list that does not only contain valid TrapezoidalFuzzyNumbers
-  c <-
-    c(
-      TrapezoidalFuzzyNumber$new(1, 2, 3, 4),
-      TrapezoidalFuzzyNumber$new(-8,-6,-4,-2),
-      TrapezoidalFuzzyNumber$new(1, 0, 2, 3),
-      TrapezoidalFuzzyNumber$new(-1, 0,-0.5, 0),
-      TrapezoidalFuzzyNumber$new(-2,-4,-6,-8)
-    )
-
-  array <- TrapezoidalFuzzyNumberList$new(c)
-  expect_output(array$checking(), "Not all trapezoidal fuzzy numbers are valid")
-  expect_equal(array$checking(), FALSE)
-
-  ## valid numbers
-  c <-
-    c(
-      TrapezoidalFuzzyNumber$new(1, 2, 3, 4),
-      TrapezoidalFuzzyNumber$new(-8,-6,-4,-2),
-      TrapezoidalFuzzyNumber$new(-1,-1, 2, 3),
-      TrapezoidalFuzzyNumber$new(1, 2, 3, 3)
-    )
-
-  array <- TrapezoidalFuzzyNumberList$new(c)
-  expect_equal(array$checking(), TRUE)
-
-})
 
 test_that("TrapezoidalFuzzyNumberList dthetaphi function", {
   array <-
     TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774)
+      TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
+      TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774)
     ))
 
   ## not all mandatory parameters
@@ -121,55 +75,24 @@ test_that("TrapezoidalFuzzyNumberList dthetaphi function", {
   s <-
     TrapezoidalFuzzyNumberList$new(c(
       TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-      TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, 3.6759589)
+      TrapezoidalFuzzyNumber$new(-5.4843364, -4.5494522, 3.4790804, 3.6759589)
     ))
 
   ## invalid a, b or theta
   expect_error(array$dthetaphi(s, 0, 0, 0))
   expect_error(array$dthetaphi(s, "a", 1, 1))
   expect_error(array$dthetaphi(s, 1, 0L, 1))
-  expect_error(array$dthetaphi(s, 1,-1.5, 1))
+  expect_error(array$dthetaphi(s, 1, -1.5, 1))
   expect_error(array$dthetaphi(s, 1 / 8, 1.9876, c(1, 2, 3, 4)))
   expect_error(array$dthetaphi(s, 1 / 8, 1.9876, list()))
   expect_error(array$dthetaphi(s, Inf, 1.9876, 1))
-  expect_error(array$dthetaphi(s, 1 / 8, 1.9876, -Inf))
-
-  ## INVALID TRAPEZOIDALFuzzyNumberLists
-  ## array$checking() == FALSE
-  array <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(2.015641, -1.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, 0.4205031, -0.3803774)
-    ))
-
-  expect_output(array$dthetaphi(s),
-                "Not all trapezoidal fuzzy numbers are valid")
-
-  ## also s$checking() == FALSE
-  s <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-      TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, -3.6759589)
-    ))
-
-  expect_output(array$dthetaphi(s),
-                "Not all trapezoidal fuzzy numbers are valid")
-
-  ## only s$checking() == FALSE
-  array <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774)
-    ))
-
-  expect_output(array$dthetaphi(s),
-                "Not all trapezoidal fuzzy numbers are valid")
+  expect_error(array$dthetaphi(s, 1 / 8, 1.9876,-Inf))
 
   ## all conditions fulfilled
   s <-
     TrapezoidalFuzzyNumberList$new(c(
       TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-      TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, 3.6759589)
+      TrapezoidalFuzzyNumber$new(-5.4843364, -4.5494522, 3.4790804, 3.6759589)
     ))
 
   expect_equal(array$dthetaphi(s), matrix(
@@ -237,8 +160,8 @@ test_that("TrapezoidalFuzzyNumberList dthetaphi function", {
 test_that("TrapezoidalFuzzyNumberList dwablphi function", {
   array <-
     TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774)
+      TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
+      TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774)
     ))
 
   ## not all mandatory parameters
@@ -256,58 +179,27 @@ test_that("TrapezoidalFuzzyNumberList dwablphi function", {
   expect_error(array$dwablphi(c(1, 2, 3, 4), 1, 1, 1))
   expect_error(array$dwablphi(list(), 1, 1, 1))
   expect_error(array$dwablphi(1L, Inf, 1, 1))
-  expect_error(array$dwablphi(1L, 1, 1, -Inf))
+  expect_error(array$dwablphi(1L, 1, 1,-Inf))
 
   s <-
     TrapezoidalFuzzyNumberList$new(c(
       TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-      TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, 3.6759589)
+      TrapezoidalFuzzyNumber$new(-5.4843364, -4.5494522, 3.4790804, 3.6759589)
     ))
 
   ## invalid a, b or theta
   expect_error(array$dwablphi(s, 0, 0, 0))
   expect_error(array$dwablphi(s, "a", 1, 1))
   expect_error(array$dwablphi(s, 1, 0L, 1))
-  expect_error(array$dwablphi(s, 1,-1.5, 1))
+  expect_error(array$dwablphi(s, 1, -1.5, 1))
   expect_error(array$dwablphi(s, 1 / 8, 1.9876, c(1, 2, 3, 4)))
   expect_error(array$dwablphi(s, 1 / 8, 1.9876, list()))
-
-  ## INVALID TRAPEZOIDALFuzzyNumberLists
-  ## array$checking() == FALSE
-  array <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(2.015641, -1.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, 0.4205031, -0.3803774)
-    ))
-
-  expect_output(array$dwablphi(s),
-                "Not all trapezoidal fuzzy numbers are valid")
-
-  ## also s$checking() == FALSE
-  s <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-      TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, -3.6759589)
-    ))
-
-  expect_output(array$dwablphi(s),
-                "Not all trapezoidal fuzzy numbers are valid")
-
-  ## only s$checking() == FALSE
-  array <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774)
-    ))
-
-  expect_output(array$dwablphi(s),
-                "Not all trapezoidal fuzzy numbers are valid")
 
   ## all conditions fulfilled
   s <-
     TrapezoidalFuzzyNumberList$new(c(
       TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-      TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, 3.6759589)
+      TrapezoidalFuzzyNumber$new(-5.4843364, -4.5494522, 3.4790804, 3.6759589)
     ))
 
   expect_equal(array$dwablphi(s), matrix(
@@ -364,39 +256,27 @@ test_that("TrapezoidalFuzzyNumberList dwablphi function", {
 })
 
 test_that("TrapezoidalFuzzyNumberList hyperI function", {
-  ## invalid trapezoidal fuzzy numbers
   arrayR <-
     TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-2.015641,-3.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774)
+      TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
+      TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774)
     ))
-  expect_output(arrayR$hyperI(), "Not all trapezoidal fuzzy numbers are valid")
 
   ## more parameters than needed
   expect_error(arrayR$hyperI("a"))
 
-  arrayR <-
-    TrapezoidalFuzzyNumberList$new(
-      c(
-        TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
-        TrapezoidalFuzzyNumber$new(-4.829141,-5.605457,-0.4205031,-0.3803774),
-        TrapezoidalFuzzyNumber$new(-4.829141,-5.605457,-0.4205031,-0.3803774)
-      )
-    )
-  expect_output(arrayR$hyperI(), "Not all trapezoidal fuzzy numbers are valid")
-
   ## not all trapezoidal fuzzy numbers are positive
   arrayR <-
     TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774)
+      TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
+      TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774)
     ))
   expect_output(arrayR$hyperI(), "all the fuzzy numbers should be positive")
 
   arrayS <-
     TrapezoidalFuzzyNumberList$new(c(
       TrapezoidalFuzzyNumber$new(0.1311532,  0.3400337, 0.3976215, 0.7372827),
-      TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, 3.6759589)
+      TrapezoidalFuzzyNumber$new(-5.4843364, -4.5494522, 3.4790804, 3.6759589)
     ))
   expect_output(arrayS$hyperI(), "all the fuzzy numbers should be positive")
 
@@ -417,43 +297,38 @@ test_that("TrapezoidalFuzzyNumberList hyperI function", {
   expect_equal(arrayS$hyperI(), 2.2572456011203132)
   expect_equal(arrayS$hyperI(0.5), 2.2572456011203132)
 
+  array <-
+    TrapezoidalFuzzyNumberList$new(
+      c(
+        TrapezoidalFuzzyNumber$new(1, 1, 2, 2),
+        TrapezoidalFuzzyNumber$new(1, 1, 2, 3),
+        TrapezoidalFuzzyNumber$new(1, 2, 3, 3),
+        TrapezoidalFuzzyNumber$new(1, 2, 2, 3)
+      )
+    )
+  expect_equal(array$hyperI(), 0.32180611)
+
   #fijar semilla de aleatorización
   set.seed(1234)
   dataTra1 <- Simulation$new()$simulCase4(5L)
 
   expect_equal(dataTra1$hyperI(), 0.33760923351909189)
-
 })
 
 test_that("TrapezoidalFuzzyNumberList mean function", {
-  ## invalid trapezoidal fuzzy numbers
+  ## all trapezoidal fuzzy numbers are valid
   arrayR <-
     TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-2.015641,-3.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774)
+      TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
+      TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774)
     ))
-  expect_output(arrayR$mean(), "Not all trapezoidal fuzzy numbers are valid")
 
   ## more parameters than needed
   expect_error(arrayR$mean("a"))
 
-  arrayR <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141,-5.605457,-0.4205031,-0.3803774)
-    ))
-  expect_output(arrayR$mean(), "Not all trapezoidal fuzzy numbers are valid")
-
-  ## all trapezoidal fuzzy numbers are valid
-  arrayR <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774)
-    ))
   expect_equal(arrayR$mean(), TrapezoidalFuzzyNumberList$new(c(
     TrapezoidalFuzzyNumber$new(
-      -3.4223910000000002,
-      -1.3497355,
+      -3.4223910000000002,-1.3497355,
       0.43045839999999996,
       0.75812115000000002
     )
@@ -462,10 +337,10 @@ test_that("TrapezoidalFuzzyNumberList mean function", {
   arrayS <-
     TrapezoidalFuzzyNumberList$new(c(
       TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-      TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, 3.6759589)
+      TrapezoidalFuzzyNumber$new(-5.4843364, -4.5494522, 3.4790804, 3.6759589)
     ))
   expect_equal(arrayS$mean(), TrapezoidalFuzzyNumberList$new(c(
-    TrapezoidalFuzzyNumber$new(-2.8077448, -2.10470925, 1.93835095, 2.2066208)
+    TrapezoidalFuzzyNumber$new(-2.8077448,-2.10470925, 1.93835095, 2.2066208)
   )))
 
   #fijar semilla de aleatorización
@@ -474,49 +349,35 @@ test_that("TrapezoidalFuzzyNumberList mean function", {
 
   expect_equal(dataTra1$mean(), TrapezoidalFuzzyNumberList$new(c(
     TrapezoidalFuzzyNumber$new(
-      -0.20069420379579875,-0.099738824121607825,
+      -0.20069420379579875,
+      -0.099738824121607825,
       0.20294193706047123,
       0.46582489545668493
     )
   )))
-
 })
 
 test_that("TrapezoidalFuzzyNumberList gsi function", {
-  ## invalid trapezoidal fuzzy numbers
   arrayR <-
     TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-2.015641,-3.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774)
+      TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
+      TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197)
     ))
-  expect_output(arrayR$gsi(), "Not all trapezoidal fuzzy numbers are valid")
 
   ## more parameters than needed
   expect_error(arrayR$gsi("a"))
 
-  arrayR <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141,-5.605457,-0.4205031,-0.3803774)
-    ))
-  expect_output(arrayR$gsi(), "Not all trapezoidal fuzzy numbers are valid")
-
   ## ALL TRAPEZOIDAL FUZZY NUMBERS ARE VALID
   ## same trapezoidal fuzzy numbers
-  arrayR <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197)
-    ))
   expect_equal(arrayR$gsi(), 0)
 
   arrayR <-
     TrapezoidalFuzzyNumberList$new(
       c(
-        TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
-        TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774),
-        TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
-        TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774)
+        TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
+        TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774),
+        TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
+        TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774)
       )
     )
   expect_equal(arrayR$gsi(), 0.5)
@@ -524,9 +385,9 @@ test_that("TrapezoidalFuzzyNumberList gsi function", {
   arrayR <-
     TrapezoidalFuzzyNumberList$new(
       c(
-        TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
-        TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774),
-        TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774)
+        TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
+        TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774),
+        TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774)
       )
     )
   expect_equal(arrayR$gsi(), 0.44444444444444442)
@@ -534,10 +395,10 @@ test_that("TrapezoidalFuzzyNumberList gsi function", {
   arrayR <-
     TrapezoidalFuzzyNumberList$new(
       c(
-        TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
+        TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
         TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-        TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, 3.6759589),
-        TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197)
+        TrapezoidalFuzzyNumber$new(-5.4843364, -4.5494522, 3.4790804, 3.6759589),
+        TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197)
       )
     )
   expect_equal(arrayR$gsi(), 0.625)
@@ -545,11 +406,11 @@ test_that("TrapezoidalFuzzyNumberList gsi function", {
   arrayR <-
     TrapezoidalFuzzyNumberList$new(
       c(
-        TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
-        TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774),
+        TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
+        TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774),
         TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-        TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, 3.6759589),
-        TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197)
+        TrapezoidalFuzzyNumber$new(-5.4843364, -4.5494522, 3.4790804, 3.6759589),
+        TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197)
       )
     )
   expect_equal(arrayR$gsi(), 0.72)
@@ -557,31 +418,31 @@ test_that("TrapezoidalFuzzyNumberList gsi function", {
   ## different trapezoidal fuzzy numbers
   arrayR <-
     TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197)
+      TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197)
     ))
   expect_equal(arrayR$gsi(), 0)
 
   arrayR <-
     TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774)
+      TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
+      TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774)
     ))
   expect_equal(arrayR$gsi(), 0.5)
 
   arrayS <-
     TrapezoidalFuzzyNumberList$new(c(
       TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-      TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, 3.6759589)
+      TrapezoidalFuzzyNumber$new(-5.4843364, -4.5494522, 3.4790804, 3.6759589)
     ))
   expect_equal(arrayS$gsi(), 0.5)
 
   array <-
     TrapezoidalFuzzyNumberList$new(
       c(
-        TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
-        TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774),
+        TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
+        TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774),
         TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-        TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, 3.6759589)
+        TrapezoidalFuzzyNumber$new(-5.4843364, -4.5494522, 3.4790804, 3.6759589)
       )
     )
   expect_equal(array$gsi(), 0.75)
@@ -589,12 +450,12 @@ test_that("TrapezoidalFuzzyNumberList gsi function", {
   array <-
     TrapezoidalFuzzyNumberList$new(
       c(
-        TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
-        TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774),
+        TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
+        TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774),
         TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-        TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, 3.6759589),
-        TrapezoidalFuzzyNumber$new(-1.0737003, -0.05878986,  0.6253104, 1.77892339),
-        TrapezoidalFuzzyNumber$new(-13.3980115, -5.75576494,  2.4305524, 3.43680774),
+        TrapezoidalFuzzyNumber$new(-5.4843364, -4.5494522, 3.4790804, 3.6759589),
+        TrapezoidalFuzzyNumber$new(-1.0737003,-0.05878986,  0.6253104, 1.77892339),
+        TrapezoidalFuzzyNumber$new(-13.3980115,-5.75576494,  2.4305524, 3.43680774),
         TrapezoidalFuzzyNumber$new(0.1299523,  0.13269168,  2.0643605, 4.43796608),
         TrapezoidalFuzzyNumber$new(1.7508453,  1.75805494,  2.0415862, 2.18392221)
       )
@@ -604,16 +465,16 @@ test_that("TrapezoidalFuzzyNumberList gsi function", {
   array <-
     TrapezoidalFuzzyNumberList$new(
       c(
-        TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
-        TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774),
+        TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
+        TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774),
         TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-        TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, 3.6759589),
-        TrapezoidalFuzzyNumber$new(-1.0737003, -0.05878986,  0.6253104, 1.77892339),
-        TrapezoidalFuzzyNumber$new(-13.3980115, -5.75576494,  2.4305524, 3.43680774),
+        TrapezoidalFuzzyNumber$new(-5.4843364, -4.5494522, 3.4790804, 3.6759589),
+        TrapezoidalFuzzyNumber$new(-1.0737003,-0.05878986,  0.6253104, 1.77892339),
+        TrapezoidalFuzzyNumber$new(-13.3980115,-5.75576494,  2.4305524, 3.43680774),
         TrapezoidalFuzzyNumber$new(0.1299523,  0.13269168,  2.0643605, 4.43796608),
         TrapezoidalFuzzyNumber$new(1.7508453,  1.75805494,  2.0415862, 2.18392221),
-        TrapezoidalFuzzyNumber$new(-7.0842980, -4.41079508,  2.9970012, 3.03942180),
-        TrapezoidalFuzzyNumber$new(-2.1544108, -1.05061570,  1.7329192, 2.13557275)
+        TrapezoidalFuzzyNumber$new(-7.0842980,-4.41079508,  2.9970012, 3.03942180),
+        TrapezoidalFuzzyNumber$new(-2.1544108,-1.05061570,  1.7329192, 2.13557275)
       )
     )
   expect_equal(array$gsi(), 0.90000000000000002)
@@ -629,8 +490,8 @@ test_that("TrapezoidalFuzzyNumberList gsi function", {
 test_that("TrapezoidalFuzzyNumberList rho1 function", {
   array <-
     TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774)
+      TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
+      TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774)
     ))
 
   ## not all mandatory parameters
@@ -648,48 +509,11 @@ test_that("TrapezoidalFuzzyNumberList rho1 function", {
   expect_error(array$rho1(c(1, 2, 3, 4)))
   expect_error(array$rho1(list()))
 
-  s <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-      TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, 3.6759589)
-    ))
-
-  ## INVALID TRAPEZOIDALFuzzyNumberLists
-  ## array$checking() == FALSE
-  array <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(2.015641, -1.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, 0.4205031, -0.3803774)
-    ))
-
-  expect_output(array$rho1(s),
-                "Not all trapezoidal fuzzy numbers are valid")
-
-  ## also s$checking() == FALSE
-  s <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-      TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, -3.6759589)
-    ))
-
-  expect_output(array$rho1(s),
-                "Not all trapezoidal fuzzy numbers are valid")
-
-  ## only s$checking() == FALSE
-  array <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774)
-    ))
-
-  expect_output(array$rho1(s),
-                "Not all trapezoidal fuzzy numbers are valid")
-
   ## all conditions fulfilled
   s <-
     TrapezoidalFuzzyNumberList$new(c(
       TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-      TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, 3.6759589)
+      TrapezoidalFuzzyNumber$new(-5.4843364, -4.5494522, 3.4790804, 3.6759589)
     ))
 
   expect_equal(array$rho1(s), matrix(
@@ -737,7 +561,7 @@ test_that("TrapezoidalFuzzyNumberList rho1 function", {
 test_that("TrapezoidalFuzzyNumberList medianWabl function", {
   array <-
     TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-3.3293414,-2.51760323,  1.32707594,  6.2201171)
+      TrapezoidalFuzzyNumber$new(-3.3293414, -2.51760323,  1.32707594,  6.2201171)
     ))
 
   ## more parameters than needed
@@ -749,357 +573,583 @@ test_that("TrapezoidalFuzzyNumberList medianWabl function", {
   expect_error(array$medianWabl(0, 0, 0))
   expect_error(array$medianWabl("a", 1, 1))
   expect_error(array$medianWabl(0L, 0, 0))
+  expect_error(array$medianWabl(1L, 0, 0))
 
   ## invalid a and/or b
-  expect_error(array$medianWabl(1L, 0L, 1))
-  expect_error(array$medianWabl(1L,-1.5, 1))
-  expect_error(array$medianWabl(1L, 1.9876, c(1, 2, 3, 4)))
-  expect_error(array$medianWabl(1L, 1.9876, list()))
-  expect_error(array$medianWabl(1L, Inf, 1))
-  expect_error(array$medianWabl(1L, 1, -Inf))
-
-  ## invalid TrapezoidalFuzzyNumbers
-  array <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(2.015641, -1.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, 0.4205031, -0.3803774)
-    ))
-
-  expect_output(array$medianWabl(),
-                "Not all trapezoidal fuzzy numbers are valid")
-
-  array <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-      TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, -3.6759589)
-    ))
-
-  expect_output(array$medianWabl(),
-                "Not all trapezoidal fuzzy numbers are valid")
+  expect_error(array$medianWabl(2L, 0L, 1))
+  expect_error(array$medianWabl(2L, -1.5, 1))
+  expect_error(array$medianWabl(2L, 1.9876, c(1, 2, 3, 4)))
+  expect_error(array$medianWabl(2L, 1.9876, list()))
+  expect_error(array$medianWabl(2L, Inf, 1))
+  expect_error(array$medianWabl(2L, 1,-Inf))
 
   ## valid parameters and valid TrapezoidalFuzzyNumbers
   array <-
     TrapezoidalFuzzyNumberList$new(
       c(
-        TrapezoidalFuzzyNumber$new(-3.3293414,-2.51760323,  1.32707594,  6.2201171),
+        TrapezoidalFuzzyNumber$new(-3.3293414, -2.51760323,  1.32707594,  6.2201171),
         TrapezoidalFuzzyNumber$new(-0.9261896,  0.05988146,  0.47780304,  1.7574181),
-        TrapezoidalFuzzyNumber$new(-2.6192779,-1.32427456,-1.12769469,  1.2941994),
-        TrapezoidalFuzzyNumber$new(-4.4067658,-0.89778268,  0.08638159,  0.5807197),
-        TrapezoidalFuzzyNumber$new(-0.2516410,-0.25020798,  1.40040190,  1.6762925),
+        TrapezoidalFuzzyNumber$new(-2.6192779, -1.32427456, -1.12769469,  1.2941994),
+        TrapezoidalFuzzyNumber$new(-4.4067658, -0.89778268,  0.08638159,  0.5807197),
+        TrapezoidalFuzzyNumber$new(-0.2516410, -0.25020798,  1.40040190,  1.6762925),
         TrapezoidalFuzzyNumber$new(1.7360987,  1.74229238,  2.03007900,  2.0557024),
-        TrapezoidalFuzzyNumber$new(-2.3597156,-0.85490726,  1.25757245,  3.4584208),
-        TrapezoidalFuzzyNumber$new(-1.6963781,-0.92574816,-0.71187987,  4.7376725),
-        TrapezoidalFuzzyNumber$new(-1.4707440,-0.85529186,-0.41129714,-0.3987298),
-        TrapezoidalFuzzyNumber$new(-0.8977640,-0.59381095,-0.57915858,-0.2247244)
+        TrapezoidalFuzzyNumber$new(-2.3597156, -0.85490726,  1.25757245,  3.4584208),
+        TrapezoidalFuzzyNumber$new(-1.6963781, -0.92574816, -0.71187987,  4.7376725),
+        TrapezoidalFuzzyNumber$new(-1.4707440, -0.85529186, -0.41129714, -0.3987298),
+        TrapezoidalFuzzyNumber$new(-0.8977640, -0.59381095, -0.57915858, -0.2247244)
       )
     )
 
-  expect_equal(array$medianWabl()$numbers[[1]]$getFNAlphaLevels(),
+  expect_equal(array$medianWabl()$getDimension(1L)$getAlphaLevels(),
+               matrix(c(seq(0, 1, len = 101)),
+                      ncol = 1))
+  expect_equal(array$medianWabl()$getDimension(1L)$getInfimums(),
                matrix(
                  c(
-                   seq(0, 1, len = 101),-1.125144453,-1.113739082,-1.10233371,-1.090928338,-1.079522967,-1.068117595,-1.056712223,-1.045306852,-1.03390148,-1.022496109,-1.011090737,-0.999685365,-0.988279994,-0.976874622,-0.96546925,-0.954063879,-0.942658507,-0.931253136,-0.919847764,-0.908442392,-0.897037021,-0.885631649,-0.874226277,-0.862820906,-0.851415534,-0.840010162,-0.828604791,-0.817199419,-0.805794048,-0.794388676,-0.782983304,-0.771577933,-0.760172561,-0.748767189,-0.737361818,-0.725956446,-0.714551075,-0.703145703,-0.692288814,-0.685806632,-0.679324451,-0.672842269,-0.666360087,-0.659877906,-0.653395724,-0.646913543,-0.640431361,-0.633949179,-0.627466998,-0.620984816,-0.614502635,-0.608020453,-0.601538271,-0.59505609,-0.588573908,-0.582091726,-0.575609545,-0.569127363,-0.562645182,-0.556163,-0.549680818,-0.543198637,-0.536716455,-0.530234274,-0.523752092,-0.51726991,-0.510787729,-0.504305547,-0.48128216,-0.457262228,-0.433242296,-0.409222363,-0.385202431,-0.361182499,-0.337162566,-0.313142634,-0.289122702,-0.26510277,-0.241082837,-0.224120094,-0.212714723,-0.201309351,-0.189903979,-0.178498608,-0.167093236,-0.155687865,-0.144282493,-0.132877121,-0.12147175,-0.110066378,-0.098661006,-0.087255635,-0.075850263,-0.064444892,-0.05303952,-0.041634148,-0.030228777,-0.018823405,-0.007418033,
-                   0.003987338,
-                   0.01539271,
-                   1.924208103,
-                   1.915338338,
-                   1.906468572,
-                   1.897598806,
-                   1.88872904,
-                   1.879859274,
-                   1.870989508,
-                   1.862119742,
-                   1.853249976,
-                   1.84438021,
-                   1.835510444,
-                   1.826640678,
-                   1.817770912,
-                   1.808901146,
-                   1.80003138,
-                   1.791161614,
-                   1.782291848,
-                   1.773422083,
-                   1.764552317,
-                   1.755682551,
-                   1.746812785,
-                   1.737943019,
-                   1.729073253,
-                   1.720203487,
-                   1.711333721,
-                   1.702463955,
-                   1.692201814,
-                   1.673694268,
-                   1.655186722,
-                   1.636679177,
-                   1.618171631,
-                   1.599664086,
-                   1.58115654,
-                   1.562648994,
-                   1.544141449,
-                   1.525633903,
-                   1.507126357,
-                   1.488618812,
-                   1.470111266,
-                   1.456025635,
-                   1.442536712,
-                   1.429047789,
-                   1.415558866,
-                   1.402069943,
-                   1.38858102,
-                   1.375092097,
-                   1.361603174,
-                   1.348114251,
-                   1.334625328,
-                   1.321136404,
-                   1.307647481,
-                   1.294158558,
-                   1.280669635,
-                   1.267180712,
-                   1.253691789,
-                   1.240202866,
-                   1.226713943,
-                   1.21322502,
-                   1.199736097,
-                   1.186247174,
-                   1.172758251,
-                   1.159269327,
-                   1.145780404,
-                   1.132291481,
-                   1.118802558,
+                   -1.125144485,-1.113739113,-1.102333741,-1.090928369,-1.079522997,-1.068117625,-1.056712253,-1.045306881,-1.033901509,-1.022496137,-1.011090765,-0.999685393,-0.988280021,-0.976874649,-0.965469277,-0.954063905,-0.942658533,-0.931253161,-0.919847789,-0.908442417,-0.897037045,-0.885631673,-0.874226301,-0.862820929,-0.851415557,-0.840010185,-0.828604813,-0.817199441,-0.805794069,-0.794388697,-0.782983325,-0.771577953,-0.760172581,-0.748767209,-0.737361837,-0.725956465,-0.714551093,-0.703145721,-0.692288829,-0.685806647,-0.679324465,-0.672842284,-0.666360102,-0.65987792,-0.653395738,-0.646913557,-0.640431375,-0.633949193,-0.627467011,-0.620984829,-0.614502648,-0.608020466,-0.601538284,-0.595056102,-0.58857392,-0.582091738,-0.575609557,-0.569127375,-0.562645193,-0.556163011,-0.549680829,-0.543198648,-0.536716466,-0.530234284,-0.523752102,-0.51726992,-0.510787739,-0.504305557,-0.481282165,-0.457262233,-0.4332423,-0.409222368,-0.385202436,-0.361182503,-0.337162571,-0.313142639,-0.289122706,-0.265102774,-0.241082842,-0.224120097,-0.212714725,-0.201309353,-0.189903981,-0.178498609,-0.167093237,-0.155687865,-0.144282493,-0.132877121,-0.121471749,-0.110066377,-0.098661005,-0.087255633,-0.075850261,-0.064444889,-0.053039517,-0.041634145,-0.030228773,-0.018823401,-0.007418029,
+                   0.003987343,
+                   0.015392715
+                 ),
+                 ncol = 1
+               ))
+  expect_equal(array$medianWabl()$getDimension(1L)$getSupremums(),
+               matrix(
+                 c(
+                   1.924208095,
+                   1.915338329,
+                   1.906468563,
+                   1.897598797,
+                   1.888729032,
+                   1.879859266,
+                   1.870989500,
+                   1.862119734,
+                   1.853249968,
+                   1.844380202,
+                   1.835510437,
+                   1.826640671,
+                   1.817770905,
+                   1.808901139,
+                   1.800031373,
+                   1.791161607,
+                   1.782291841,
+                   1.773422076,
+                   1.764552310,
+                   1.755682544,
+                   1.746812778,
+                   1.737943012,
+                   1.729073246,
+                   1.720203480,
+                   1.711333715,
+                   1.702463949,
+                   1.692201825,
+                   1.673694280,
+                   1.655186734,
+                   1.636679188,
+                   1.618171642,
+                   1.599664097,
+                   1.581156551,
+                   1.562649005,
+                   1.544141460,
+                   1.525633914,
+                   1.507126368,
+                   1.488618822,
+                   1.470111277,
+                   1.456025648,
+                   1.442536725,
+                   1.429047801,
+                   1.415558878,
+                   1.402069954,
+                   1.388581031,
+                   1.375092107,
+                   1.361603184,
+                   1.348114260,
+                   1.334625337,
+                   1.321136413,
+                   1.307647490,
+                   1.294158567,
+                   1.280669643,
+                   1.267180720,
+                   1.253691796,
+                   1.240202873,
+                   1.226713949,
+                   1.213225026,
+                   1.199736102,
+                   1.186247179,
+                   1.172758256,
+                   1.159269332,
+                   1.145780409,
+                   1.132291485,
+                   1.118802562,
                    1.100960944,
                    1.061603712,
-                   1.02224648,
-                   0.982889248,
-                   0.943532016,
-                   0.904174784,
-                   0.864817552,
-                   0.840854715,
-                   0.822347169,
-                   0.803839623,
-                   0.785332078,
-                   0.766824532,
-                   0.749320068,
-                   0.742859156,
-                   0.736398244,
-                   0.729937331,
-                   0.723476419,
-                   0.717015507,
-                   0.710554595,
-                   0.704093683,
-                   0.697632771,
-                   0.691171859,
-                   0.684710947,
-                   0.678250034,
-                   0.671789122,
-                   0.66532821,
-                   0.658867298,
-                   0.652406386,
-                   0.645945474,
-                   0.639484562,
-                   0.633023649,
-                   0.626562737,
-                   0.620101825,
-                   0.613640913,
-                   0.607180001,
-                   0.602449632
+                   1.022246480,
+                   0.982889247,
+                   0.943532015,
+                   0.904174783,
+                   0.864817550,
+                   0.840854721,
+                   0.822347175,
+                   0.803839629,
+                   0.785332084,
+                   0.766824538,
+                   0.749320072,
+                   0.742859160,
+                   0.736398248,
+                   0.729937336,
+                   0.723476424,
+                   0.717015512,
+                   0.710554600,
+                   0.704093688,
+                   0.697632776,
+                   0.691171864,
+                   0.684710952,
+                   0.678250040,
+                   0.671789128,
+                   0.665328216,
+                   0.658867304,
+                   0.652406392,
+                   0.645945480,
+                   0.639484568,
+                   0.633023656,
+                   0.626562744,
+                   0.620101832,
+                   0.613640920,
+                   0.607180008,
+                   0.602449641
                  ),
-                 ncol = 3
+                 ncol = 1
                ))
-  expect_equal(array$medianWabl(101L)$numbers[[1]]$getFNAlphaLevels(),
+
+  expect_equal(array$medianWabl(101L)$getDimension(1L)$getAlphaLevels(),
+               matrix(c(seq(0, 1, len = 101)),
+                      ncol = 1))
+  expect_equal(array$medianWabl(101L)$getDimension(1L)$getInfimums(),
                matrix(
                  c(
-                   seq(0, 1, len = 101),-1.125144453,-1.113739082,-1.10233371,-1.090928338,-1.079522967,-1.068117595,-1.056712223,-1.045306852,-1.03390148,-1.022496109,-1.011090737,-0.999685365,-0.988279994,-0.976874622,-0.96546925,-0.954063879,-0.942658507,-0.931253136,-0.919847764,-0.908442392,-0.897037021,-0.885631649,-0.874226277,-0.862820906,-0.851415534,-0.840010162,-0.828604791,-0.817199419,-0.805794048,-0.794388676,-0.782983304,-0.771577933,-0.760172561,-0.748767189,-0.737361818,-0.725956446,-0.714551075,-0.703145703,-0.692288814,-0.685806632,-0.679324451,-0.672842269,-0.666360087,-0.659877906,-0.653395724,-0.646913543,-0.640431361,-0.633949179,-0.627466998,-0.620984816,-0.614502635,-0.608020453,-0.601538271,-0.59505609,-0.588573908,-0.582091726,-0.575609545,-0.569127363,-0.562645182,-0.556163,-0.549680818,-0.543198637,-0.536716455,-0.530234274,-0.523752092,-0.51726991,-0.510787729,-0.504305547,-0.48128216,-0.457262228,-0.433242296,-0.409222363,-0.385202431,-0.361182499,-0.337162566,-0.313142634,-0.289122702,-0.26510277,-0.241082837,-0.224120094,-0.212714723,-0.201309351,-0.189903979,-0.178498608,-0.167093236,-0.155687865,-0.144282493,-0.132877121,-0.12147175,-0.110066378,-0.098661006,-0.087255635,-0.075850263,-0.064444892,-0.05303952,-0.041634148,-0.030228777,-0.018823405,-0.007418033,
-                   0.003987338,
-                   0.01539271,
-                   1.924208103,
-                   1.915338338,
-                   1.906468572,
-                   1.897598806,
-                   1.88872904,
-                   1.879859274,
-                   1.870989508,
-                   1.862119742,
-                   1.853249976,
-                   1.84438021,
-                   1.835510444,
-                   1.826640678,
-                   1.817770912,
-                   1.808901146,
-                   1.80003138,
-                   1.791161614,
-                   1.782291848,
-                   1.773422083,
-                   1.764552317,
-                   1.755682551,
-                   1.746812785,
-                   1.737943019,
-                   1.729073253,
-                   1.720203487,
-                   1.711333721,
-                   1.702463955,
-                   1.692201814,
-                   1.673694268,
-                   1.655186722,
-                   1.636679177,
-                   1.618171631,
-                   1.599664086,
-                   1.58115654,
-                   1.562648994,
-                   1.544141449,
-                   1.525633903,
-                   1.507126357,
-                   1.488618812,
-                   1.470111266,
-                   1.456025635,
-                   1.442536712,
-                   1.429047789,
-                   1.415558866,
-                   1.402069943,
-                   1.38858102,
-                   1.375092097,
-                   1.361603174,
-                   1.348114251,
-                   1.334625328,
-                   1.321136404,
-                   1.307647481,
-                   1.294158558,
-                   1.280669635,
-                   1.267180712,
-                   1.253691789,
-                   1.240202866,
-                   1.226713943,
-                   1.21322502,
-                   1.199736097,
-                   1.186247174,
-                   1.172758251,
-                   1.159269327,
-                   1.145780404,
-                   1.132291481,
-                   1.118802558,
+                   -1.125144485,-1.113739113,-1.102333741,-1.090928369,-1.079522997,-1.068117625,-1.056712253,-1.045306881,-1.033901509,-1.022496137,-1.011090765,-0.999685393,-0.988280021,-0.976874649,-0.965469277,-0.954063905,-0.942658533,-0.931253161,-0.919847789,-0.908442417,-0.897037045,-0.885631673,-0.874226301,-0.862820929,-0.851415557,-0.840010185,-0.828604813,-0.817199441,-0.805794069,-0.794388697,-0.782983325,-0.771577953,-0.760172581,-0.748767209,-0.737361837,-0.725956465,-0.714551093,-0.703145721,-0.692288829,-0.685806647,-0.679324465,-0.672842284,-0.666360102,-0.65987792,-0.653395738,-0.646913557,-0.640431375,-0.633949193,-0.627467011,-0.620984829,-0.614502648,-0.608020466,-0.601538284,-0.595056102,-0.58857392,-0.582091738,-0.575609557,-0.569127375,-0.562645193,-0.556163011,-0.549680829,-0.543198648,-0.536716466,-0.530234284,-0.523752102,-0.51726992,-0.510787739,-0.504305557,-0.481282165,-0.457262233,-0.4332423,-0.409222368,-0.385202436,-0.361182503,-0.337162571,-0.313142639,-0.289122706,-0.265102774,-0.241082842,-0.224120097,-0.212714725,-0.201309353,-0.189903981,-0.178498609,-0.167093237,-0.155687865,-0.144282493,-0.132877121,-0.121471749,-0.110066377,-0.098661005,-0.087255633,-0.075850261,-0.064444889,-0.053039517,-0.041634145,-0.030228773,-0.018823401,-0.007418029,
+                   0.003987343,
+                   0.015392715
+                 ),
+                 ncol = 1
+               ))
+  expect_equal(array$medianWabl(101L)$getDimension(1L)$getSupremums(),
+               matrix(
+                 c(
+                   1.924208095,
+                   1.915338329,
+                   1.906468563,
+                   1.897598797,
+                   1.888729032,
+                   1.879859266,
+                   1.870989500,
+                   1.862119734,
+                   1.853249968,
+                   1.844380202,
+                   1.835510437,
+                   1.826640671,
+                   1.817770905,
+                   1.808901139,
+                   1.800031373,
+                   1.791161607,
+                   1.782291841,
+                   1.773422076,
+                   1.764552310,
+                   1.755682544,
+                   1.746812778,
+                   1.737943012,
+                   1.729073246,
+                   1.720203480,
+                   1.711333715,
+                   1.702463949,
+                   1.692201825,
+                   1.673694280,
+                   1.655186734,
+                   1.636679188,
+                   1.618171642,
+                   1.599664097,
+                   1.581156551,
+                   1.562649005,
+                   1.544141460,
+                   1.525633914,
+                   1.507126368,
+                   1.488618822,
+                   1.470111277,
+                   1.456025648,
+                   1.442536725,
+                   1.429047801,
+                   1.415558878,
+                   1.402069954,
+                   1.388581031,
+                   1.375092107,
+                   1.361603184,
+                   1.348114260,
+                   1.334625337,
+                   1.321136413,
+                   1.307647490,
+                   1.294158567,
+                   1.280669643,
+                   1.267180720,
+                   1.253691796,
+                   1.240202873,
+                   1.226713949,
+                   1.213225026,
+                   1.199736102,
+                   1.186247179,
+                   1.172758256,
+                   1.159269332,
+                   1.145780409,
+                   1.132291485,
+                   1.118802562,
                    1.100960944,
                    1.061603712,
-                   1.02224648,
-                   0.982889248,
-                   0.943532016,
-                   0.904174784,
-                   0.864817552,
-                   0.840854715,
-                   0.822347169,
-                   0.803839623,
-                   0.785332078,
-                   0.766824532,
-                   0.749320068,
-                   0.742859156,
-                   0.736398244,
-                   0.729937331,
-                   0.723476419,
-                   0.717015507,
-                   0.710554595,
-                   0.704093683,
-                   0.697632771,
-                   0.691171859,
-                   0.684710947,
-                   0.678250034,
-                   0.671789122,
-                   0.66532821,
-                   0.658867298,
-                   0.652406386,
-                   0.645945474,
-                   0.639484562,
-                   0.633023649,
-                   0.626562737,
-                   0.620101825,
-                   0.613640913,
-                   0.607180001,
-                   0.602449632
+                   1.022246480,
+                   0.982889247,
+                   0.943532015,
+                   0.904174783,
+                   0.864817550,
+                   0.840854721,
+                   0.822347175,
+                   0.803839629,
+                   0.785332084,
+                   0.766824538,
+                   0.749320072,
+                   0.742859160,
+                   0.736398248,
+                   0.729937336,
+                   0.723476424,
+                   0.717015512,
+                   0.710554600,
+                   0.704093688,
+                   0.697632776,
+                   0.691171864,
+                   0.684710952,
+                   0.678250040,
+                   0.671789128,
+                   0.665328216,
+                   0.658867304,
+                   0.652406392,
+                   0.645945480,
+                   0.639484568,
+                   0.633023656,
+                   0.626562744,
+                   0.620101832,
+                   0.613640920,
+                   0.607180008,
+                   0.602449641
                  ),
-                 ncol = 3
+                 ncol = 1
                ))
 
-  expect_equal(array$medianWabl(3L)$numbers[[1]]$getFNAlphaLevels(),
+  expect_equal(array$medianWabl(101L, 1)$getDimension(1L)$getAlphaLevels(),
+               matrix(c(seq(0, 1, len = 101)),
+                      ncol = 1))
+  expect_equal(array$medianWabl(101L, 1)$getDimension(1L)$getInfimums(),
                matrix(
                  c(
-                   0,
-                   0.5,
-                   1,-1.125144453252655330,-0.614502634544668025,
-                   0.015392709905926449,
-                   1.92420810344586690,
-                   1.30764748135143205,
-                   0.60244963145447394
+                   -1.125144485,-1.113739113,-1.102333741,-1.090928369,-1.079522997,-1.068117625,-1.056712253,-1.045306881,-1.033901509,-1.022496137,-1.011090765,-0.999685393,-0.988280021,-0.976874649,-0.965469277,-0.954063905,-0.942658533,-0.931253161,-0.919847789,-0.908442417,-0.897037045,-0.885631673,-0.874226301,-0.862820929,-0.851415557,-0.840010185,-0.828604813,-0.817199441,-0.805794069,-0.794388697,-0.782983325,-0.771577953,-0.760172581,-0.748767209,-0.737361837,-0.725956465,-0.714551093,-0.703145721,-0.692288829,-0.685806647,-0.679324465,-0.672842284,-0.666360102,-0.65987792,-0.653395738,-0.646913557,-0.640431375,-0.633949193,-0.627467011,-0.620984829,-0.614502648,-0.608020466,-0.601538284,-0.595056102,-0.58857392,-0.582091738,-0.575609557,-0.569127375,-0.562645193,-0.556163011,-0.549680829,-0.543198648,-0.536716466,-0.530234284,-0.523752102,-0.51726992,-0.510787739,-0.504305557,-0.481282165,-0.457262233,-0.4332423,-0.409222368,-0.385202436,-0.361182503,-0.337162571,-0.313142639,-0.289122706,-0.265102774,-0.241082842,-0.224120097,-0.212714725,-0.201309353,-0.189903981,-0.178498609,-0.167093237,-0.155687865,-0.144282493,-0.132877121,-0.121471749,-0.110066377,-0.098661005,-0.087255633,-0.075850261,-0.064444889,-0.053039517,-0.041634145,-0.030228773,-0.018823401,-0.007418029,
+                   0.003987343,
+                   0.015392715
                  ),
-                 ncol = 3
+                 ncol = 1
                ))
-  expect_equal(array$medianWabl(3L, 1)$numbers[[1]]$getFNAlphaLevels(),
+  expect_equal(array$medianWabl(101L, 1)$getDimension(1L)$getSupremums(),
                matrix(
                  c(
-                   0,
-                   0.5,
-                   1,-1.125144453252655330,-0.614502634544668025,
-                   0.015392709905926449,
-                   1.92420810344586690,
-                   1.30764748135143205,
-                   0.60244963145447394
+                   1.924208095,
+                   1.915338329,
+                   1.906468563,
+                   1.897598797,
+                   1.888729032,
+                   1.879859266,
+                   1.870989500,
+                   1.862119734,
+                   1.853249968,
+                   1.844380202,
+                   1.835510437,
+                   1.826640671,
+                   1.817770905,
+                   1.808901139,
+                   1.800031373,
+                   1.791161607,
+                   1.782291841,
+                   1.773422076,
+                   1.764552310,
+                   1.755682544,
+                   1.746812778,
+                   1.737943012,
+                   1.729073246,
+                   1.720203480,
+                   1.711333715,
+                   1.702463949,
+                   1.692201825,
+                   1.673694280,
+                   1.655186734,
+                   1.636679188,
+                   1.618171642,
+                   1.599664097,
+                   1.581156551,
+                   1.562649005,
+                   1.544141460,
+                   1.525633914,
+                   1.507126368,
+                   1.488618822,
+                   1.470111277,
+                   1.456025648,
+                   1.442536725,
+                   1.429047801,
+                   1.415558878,
+                   1.402069954,
+                   1.388581031,
+                   1.375092107,
+                   1.361603184,
+                   1.348114260,
+                   1.334625337,
+                   1.321136413,
+                   1.307647490,
+                   1.294158567,
+                   1.280669643,
+                   1.267180720,
+                   1.253691796,
+                   1.240202873,
+                   1.226713949,
+                   1.213225026,
+                   1.199736102,
+                   1.186247179,
+                   1.172758256,
+                   1.159269332,
+                   1.145780409,
+                   1.132291485,
+                   1.118802562,
+                   1.100960944,
+                   1.061603712,
+                   1.022246480,
+                   0.982889247,
+                   0.943532015,
+                   0.904174783,
+                   0.864817550,
+                   0.840854721,
+                   0.822347175,
+                   0.803839629,
+                   0.785332084,
+                   0.766824538,
+                   0.749320072,
+                   0.742859160,
+                   0.736398248,
+                   0.729937336,
+                   0.723476424,
+                   0.717015512,
+                   0.710554600,
+                   0.704093688,
+                   0.697632776,
+                   0.691171864,
+                   0.684710952,
+                   0.678250040,
+                   0.671789128,
+                   0.665328216,
+                   0.658867304,
+                   0.652406392,
+                   0.645945480,
+                   0.639484568,
+                   0.633023656,
+                   0.626562744,
+                   0.620101832,
+                   0.613640920,
+                   0.607180008,
+                   0.602449641
                  ),
-                 ncol = 3
-               ))
-  expect_equal(array$medianWabl(3L, 1, 1)$numbers[[1]]$getFNAlphaLevels(),
-               matrix(
-                 c(
-                   0,
-                   0.5,
-                   1,-1.125144453252655330,-0.614502634544668025,
-                   0.015392709905926449,
-                   1.92420810344586690,
-                   1.30764748135143205,
-                   0.60244963145447394
-                 ),
-                 ncol = 3
+                 ncol = 1
                ))
 
-  expect_equal(array$medianWabl(3L, 2.5, 5 / 9)$numbers[[1]]$getFNAlphaLevels(),
+  expect_equal(
+    array$medianWabl(101L, 1, 1)$getDimension(1L)$getAlphaLevels(),
+    matrix(c(seq(0, 1, len = 101)),
+           ncol = 1)
+  )
+  expect_equal(array$medianWabl(101L, 1, 1)$getDimension(1L)$getInfimums(),
                matrix(
                  c(
-                   0,
-                   0.5,
-                   1,-1.57116592611782613,-1.15845093580288605,-0.53568181723514563,
-                   1.052337698921941289,
-                   0.666957920128015580,-0.079306748339006167
+                   -1.125144485,-1.113739113,-1.102333741,-1.090928369,-1.079522997,-1.068117625,-1.056712253,-1.045306881,-1.033901509,-1.022496137,-1.011090765,-0.999685393,-0.988280021,-0.976874649,-0.965469277,-0.954063905,-0.942658533,-0.931253161,-0.919847789,-0.908442417,-0.897037045,-0.885631673,-0.874226301,-0.862820929,-0.851415557,-0.840010185,-0.828604813,-0.817199441,-0.805794069,-0.794388697,-0.782983325,-0.771577953,-0.760172581,-0.748767209,-0.737361837,-0.725956465,-0.714551093,-0.703145721,-0.692288829,-0.685806647,-0.679324465,-0.672842284,-0.666360102,-0.65987792,-0.653395738,-0.646913557,-0.640431375,-0.633949193,-0.627467011,-0.620984829,-0.614502648,-0.608020466,-0.601538284,-0.595056102,-0.58857392,-0.582091738,-0.575609557,-0.569127375,-0.562645193,-0.556163011,-0.549680829,-0.543198648,-0.536716466,-0.530234284,-0.523752102,-0.51726992,-0.510787739,-0.504305557,-0.481282165,-0.457262233,-0.4332423,-0.409222368,-0.385202436,-0.361182503,-0.337162571,-0.313142639,-0.289122706,-0.265102774,-0.241082842,-0.224120097,-0.212714725,-0.201309353,-0.189903981,-0.178498609,-0.167093237,-0.155687865,-0.144282493,-0.132877121,-0.121471749,-0.110066377,-0.098661005,-0.087255633,-0.075850261,-0.064444889,-0.053039517,-0.041634145,-0.030228773,-0.018823401,-0.007418029,
+                   0.003987343,
+                   0.015392715
                  ),
-                 ncol = 3
+                 ncol = 1
                ))
+  expect_equal(array$medianWabl(101L, 1, 1)$getDimension(1L)$getSupremums(),
+               matrix(
+                 c(
+                   1.924208095,
+                   1.915338329,
+                   1.906468563,
+                   1.897598797,
+                   1.888729032,
+                   1.879859266,
+                   1.870989500,
+                   1.862119734,
+                   1.853249968,
+                   1.844380202,
+                   1.835510437,
+                   1.826640671,
+                   1.817770905,
+                   1.808901139,
+                   1.800031373,
+                   1.791161607,
+                   1.782291841,
+                   1.773422076,
+                   1.764552310,
+                   1.755682544,
+                   1.746812778,
+                   1.737943012,
+                   1.729073246,
+                   1.720203480,
+                   1.711333715,
+                   1.702463949,
+                   1.692201825,
+                   1.673694280,
+                   1.655186734,
+                   1.636679188,
+                   1.618171642,
+                   1.599664097,
+                   1.581156551,
+                   1.562649005,
+                   1.544141460,
+                   1.525633914,
+                   1.507126368,
+                   1.488618822,
+                   1.470111277,
+                   1.456025648,
+                   1.442536725,
+                   1.429047801,
+                   1.415558878,
+                   1.402069954,
+                   1.388581031,
+                   1.375092107,
+                   1.361603184,
+                   1.348114260,
+                   1.334625337,
+                   1.321136413,
+                   1.307647490,
+                   1.294158567,
+                   1.280669643,
+                   1.267180720,
+                   1.253691796,
+                   1.240202873,
+                   1.226713949,
+                   1.213225026,
+                   1.199736102,
+                   1.186247179,
+                   1.172758256,
+                   1.159269332,
+                   1.145780409,
+                   1.132291485,
+                   1.118802562,
+                   1.100960944,
+                   1.061603712,
+                   1.022246480,
+                   0.982889247,
+                   0.943532015,
+                   0.904174783,
+                   0.864817550,
+                   0.840854721,
+                   0.822347175,
+                   0.803839629,
+                   0.785332084,
+                   0.766824538,
+                   0.749320072,
+                   0.742859160,
+                   0.736398248,
+                   0.729937336,
+                   0.723476424,
+                   0.717015512,
+                   0.710554600,
+                   0.704093688,
+                   0.697632776,
+                   0.691171864,
+                   0.684710952,
+                   0.678250040,
+                   0.671789128,
+                   0.665328216,
+                   0.658867304,
+                   0.652406392,
+                   0.645945480,
+                   0.639484568,
+                   0.633023656,
+                   0.626562744,
+                   0.620101832,
+                   0.613640920,
+                   0.607180008,
+                   0.602449641
+                 ),
+                 ncol = 1
+               ))
+
+  expect_equal(array$medianWabl(3L, 1)$getDimension(1L)$getAlphaLevels(),
+               matrix(c(0,
+                        0.5,
+                        1),
+                      ncol = 1))
+  expect_equal(array$medianWabl(3L, 1)$getDimension(1L)$getInfimums(),
+               matrix(c(
+                 -1.125144485, -0.614502648,
+                 0.015392715
+               ),
+               ncol = 1))
+  expect_equal(array$medianWabl(3L, 1)$getDimension(1L)$getSupremums(),
+               matrix(c(1.9242080995,
+                        1.307647490,
+                        0.602449641),
+                      ncol = 1))
+
+  expect_equal(array$medianWabl(3L, 1, 1)$getDimension(1L)$getAlphaLevels(),
+               matrix(c(0,
+                        0.5,
+                        1),
+                      ncol = 1))
+  expect_equal(array$medianWabl(3L, 1, 1)$getDimension(1L)$getInfimums(),
+               matrix(c(
+                 -1.125144485, -0.614502648,
+                 0.015392715
+               ),
+               ncol = 1))
+  expect_equal(array$medianWabl(3L, 1, 1)$getDimension(1L)$getSupremums(),
+               matrix(c(1.9242080995,
+                        1.307647490,
+                        0.602449641),
+                      ncol = 1))
+
+  expect_equal(
+    array$medianWabl(3L, 2.5, 5 / 9)$getDimension(1L)$getAlphaLevels(),
+    matrix(c(0,
+             0.5,
+             1),
+           ncol = 1)
+  )
+  expect_equal(
+    array$medianWabl(3L, 2.5, 5 / 9)$getDimension(1L)$getInfimums(),
+    matrix(c(
+      -1.571165934, -1.158450945, -0.535681819
+    ),
+    ncol = 1)
+  )
+  expect_equal(
+    array$medianWabl(3L, 2.5, 5 / 9)$getDimension(1L)$getSupremums(),
+    matrix(c(
+      1.0523376907,
+      0.6669579228, -0.0793067457
+    ),
+    ncol = 1)
+  )
 
   #fijar semilla de aleatorización
   set.seed(1234)
   dataTra1 <- Simulation$new()$simulCase1(3L)
 
-  expect_equal(dataTra1$medianWabl()$numbers[[1]]$getFNAlphaLevels(),
+  expect_equal(dataTra1$medianWabl()$getDimension(1L)$getAlphaLevels(),
+               matrix(c(seq(0, 1, len = 101)),
+                      ncol = 1))
+  expect_equal(dataTra1$medianWabl()$getDimension(1L)$getInfimums(),
                matrix(
                  c(
-                   seq(0, 1, len = 101),
-                   -0.01758629332022421110,
-                   -0.0168771488903196,
-                   -0.0161680044604151,
-                   -0.0154588600305105,
-                   -0.0147497156006060,
-                   -0.0140405711707014,
-                   -0.0133314267407969,
-                   -0.0126222823108923,
-                   -0.0119131378809878,
-                   -0.0112039934510832,
-                   -0.0104948490211786,
-                   -0.0097857045912741,
-                   -0.0090765601613696,
-                   -0.0083674157314650,
-                   -0.0076582713015605,
-                   -0.0069491268716559,
-                   -0.0062399824417514,
-                   -0.0055308380118468,
-                   -0.0048216935819423,
-                   -0.0041125491520377,
-                   -0.0034034047221332,
-                   -0.0026942602922286,
-                   -0.0019851158623241,
-                   -0.0012759714324195,
-                   -0.0005668270025150,
+                   -0.01758629332022421110,-0.0168771488903196,-0.0161680044604151,-0.0154588600305105,-0.0147497156006060,-0.0140405711707014,-0.0133314267407969,-0.0126222823108923,-0.0119131378809878,-0.0112039934510832,-0.0104948490211786,-0.0097857045912741,-0.0090765601613696,-0.0083674157314650,-0.0076582713015605,-0.0069491268716559,-0.0062399824417514,-0.0055308380118468,-0.0048216935819423,-0.0041125491520377,-0.0034034047221332,-0.0026942602922286,-0.0019851158623241,-0.0012759714324195,-0.0005668270025150,
                    0.0001423174273896,
                    0.0008514618572941,
                    0.0015606062871987,
@@ -1175,7 +1225,13 @@ test_that("TrapezoidalFuzzyNumberList medianWabl function", {
                    0.0541593136519211,
                    0.0555014047359740,
                    0.0568434958200269,
-                   0.0581855869040797,
+                   0.0581855869040797
+                 ),
+                 ncol = 1
+               ))
+  expect_equal(dataTra1$medianWabl()$getDimension(1L)$getSupremums(),
+               matrix(
+                 c(
                    0.6310610593435880,
                    0.6299256499407240,
                    0.6287902405378600,
@@ -1278,7 +1334,7 @@ test_that("TrapezoidalFuzzyNumberList medianWabl function", {
                    0.5024497417346030,
                    0.5015303345510890
                  ),
-                 ncol = 3
+                 ncol = 1
                ))
 
 })
@@ -1286,7 +1342,7 @@ test_that("TrapezoidalFuzzyNumberList medianWabl function", {
 test_that("TrapezoidalFuzzyNumberList transfTra function", {
   array <-
     TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-3.3293414,-2.51760323,  1.32707594,  6.2201171)
+      TrapezoidalFuzzyNumber$new(-3.3293414, -2.51760323,  1.32707594,  6.2201171)
     ))
 
   ## more parameters than needed
@@ -1297,104 +1353,84 @@ test_that("TrapezoidalFuzzyNumberList transfTra function", {
   expect_error(array$transfTra(0))
   expect_error(array$transfTra("a"))
   expect_error(array$transfTra(0L))
-
-  ## invalid TrapezoidalFuzzyNumbers
-  array <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(2.015641, -1.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, 0.4205031, -0.3803774)
-    ))
-
-  expect_output(array$transfTra(),
-                "Not all trapezoidal fuzzy numbers are valid")
-
-  array <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-      TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, -3.6759589)
-    ))
-
-  expect_output(array$transfTra(),
-                "Not all trapezoidal fuzzy numbers are valid")
+  expect_error(array$transfTra(1L))
 
   ## valid parameter and valid TrapezoidalFuzzyNumbers
-
   array <-
     TrapezoidalFuzzyNumberList$new(
       c(
         TrapezoidalFuzzyNumber$new(
-          -2.8725561532634476,
-          -2.7270717405921969,
+          -2.8725561532634476,-2.7270717405921969,
           3.0172070494187917,
           3.0234982317229750
         ),
         TrapezoidalFuzzyNumber$new(
-          -5.6643506202171681,
-          -1.4888469198997507,
-          -1.4865352121417219,
-          -1.3613130089675001
+          -5.6643506202171681,-1.4888469198997507,-1.4865352121417219,-1.3613130089675001
         ),
         TrapezoidalFuzzyNumber$new(
-          -6.0131525080715074,
-          -5.9150548017590321,
+          -6.0131525080715074,-5.9150548017590321,
           4.7751478325491714,
           4.9006428907665756
         )
       )
     )
 
-  expect_equal(array$transfTra(3L)$numbers[[1]]$getFNAlphaLevels(),
+  expect_equal(array$transfTra(3L)$getDimension(1L)$getAlphaLevels(),
+               matrix(c(0,
+                        0.5,
+                        1),
+                      ncol = 1))
+  expect_equal(array$transfTra(3L)$getDimension(1L)$getInfimums(),
                matrix(
                  c(
-                   0,
-                   0.5,
-                   1,
-                   -2.8725561532634476,
-                   -2.7998139469278223,
-                   -2.7270717405921969,
-                   3.0234982317229750,
+                   -2.8725561532634476,-2.7998139469278223,-2.7270717405921969
+                 ),
+                 ncol = 1
+               ))
+  expect_equal(array$transfTra(3L)$getDimension(1L)$getSupremums(),
+               matrix(
+                 c(3.0234982317229750,
                    3.0203526405708834,
-                   3.0172070494187917
-                 ),
-                 ncol = 3
+                   3.0172070494187917),
+                 ncol = 1
                ))
-  expect_equal(array$transfTra(3L)$numbers[[2]]$getFNAlphaLevels(),
-               matrix(
-                 c(
-                   0,
-                   0.5,
-                   1,
-                   -5.66435062,
-                   -3.57659877,
-                   -1.48884692,
-                   -1.361313009,
-                   -1.423924111,
-                   -1.486535212
-                 ),
-                 ncol = 3
-               ))
-  expect_equal(array$transfTra(3L)$numbers[[3]]$getFNAlphaLevels(),
-               matrix(
-                 c(
-                   0,
-                   0.5,
-                   1,
-                   -6.013152508,
-                   -5.964103655,
-                   -5.915054802,
-                   4.900642891,
-                   4.837895362,
-                   4.775147833
-                 ),
-                 ncol = 3
-               ))
+
+  expect_equal(array$transfTra(3L)$getDimension(2L)$getAlphaLevels(),
+               matrix(c(0,
+                        0.5,
+                        1),
+                      ncol = 1))
+  expect_equal(array$transfTra(3L)$getDimension(2L)$getInfimums(),
+               matrix(c(-5.66435062,-3.57659877,-1.48884692),
+                      ncol = 1))
+  expect_equal(array$transfTra(3L)$getDimension(2L)$getSupremums(),
+               matrix(c(
+                 -1.361313009,-1.423924111,-1.486535212
+               ),
+               ncol = 1))
+
+  expect_equal(array$transfTra(3L)$getDimension(3L)$getAlphaLevels(),
+               matrix(c(0,
+                        0.5,
+                        1),
+                      ncol = 1))
+  expect_equal(array$transfTra(3L)$getDimension(3L)$getInfimums(),
+               matrix(c(
+                 -6.013152508,-5.964103655,-5.915054802
+               ),
+               ncol = 1))
+  expect_equal(array$transfTra(3L)$getDimension(3L)$getSupremums(),
+               matrix(c(4.900642891,
+                        4.837895362,
+                        4.775147833),
+                      ncol = 1))
 
 })
 
 test_that("TrapezoidalFuzzyNumberList wablphi function", {
   array <-
     TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-3.3293414,-2.51760323,  1.32707594,  6.2201171)
+      TrapezoidalFuzzyNumber$new(-3.3293414, -2.51760323,  1.32707594,  6.2201171)
     ))
 
   ## more paramters than needed
@@ -1407,63 +1443,44 @@ test_that("TrapezoidalFuzzyNumberList wablphi function", {
   expect_error(array$wablphi(1.9876, c(1, 2, 3, 4)))
   expect_error(array$wablphi(1.9876, list()))
   expect_error(array$wablphi(1.9876, Inf))
-  expect_error(array$wablphi(1.9876, -Inf))
-
-  ## invalid TrapezoidalFuzzyNumbers
-  array <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(2.015641, -1.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, 0.4205031, -0.3803774)
-    ))
-
-  expect_output(array$wablphi(),
-                "Not all trapezoidal fuzzy numbers are valid")
-
-  array <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-      TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, -3.6759589)
-    ))
-
-  expect_output(array$wablphi(),
-                "Not all trapezoidal fuzzy numbers are valid")
+  expect_error(array$wablphi(1.9876,-Inf))
 
   ## valid parameters and valid TrapezoidalFuzzyNumbers
   array <-
     TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774)
+      TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
+      TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774)
     ))
 
   expect_equal(array$wablphi(),
-               c(0.017096149999999959,-1.808869625000000037))
+               c(0.017096149999999959, -1.808869625000000037))
   expect_equal(array$wablphi(1),
-               c(0.017096149999999959,-1.808869625000000037))
+               c(0.017096149999999959, -1.808869625000000037))
   expect_equal(array$wablphi(1, 1),
-               c(0.017096149999999959,-1.808869625000000037))
+               c(0.017096149999999959, -1.808869625000000037))
   expect_equal(array$wablphi(2, 1),
-               c(0.042631749999999947,-1.543573099999999698))
+               c(0.042631749999999947, -1.543573099999999698))
   expect_equal(array$wablphi(2.2, 1.1),
-               c(0.042631750520862655,-1.543573077185075082))
+               c(0.042631750520862655, -1.543573077185075082))
 
   array <-
     TrapezoidalFuzzyNumberList$new(c(
       TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-      TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, 3.6759589)
+      TrapezoidalFuzzyNumber$new(-5.4843364, -4.5494522, 3.4790804, 3.6759589)
     ))
 
   expect_equal(array$wablphi(),
-               c(0.33594617500000001,-0.71968732500000010))
+               c(0.33594617500000001, -0.71968732500000010))
   expect_equal(array$wablphi(2, 1),
-               c(0.34690664999999998, -0.65818685000000010))
+               c(0.34690664999999998,-0.65818685000000010))
   expect_equal(array$wablphi(2.2, 1.1),
-               c(0.34690664734464199,-0.65818684207965783))
+               c(0.34690664734464199, -0.65818684207965783))
 
   array <-
     TrapezoidalFuzzyNumberList$new(
       c(
-        TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
-        TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774),
+        TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
+        TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774),
         TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827)
       )
     )
@@ -1471,32 +1488,28 @@ test_that("TrapezoidalFuzzyNumberList wablphi function", {
   expect_equal(
     array$wablphi(),
     c(
-      0.017096149999999959,
-      -1.808869625000000037,
+      0.017096149999999959,-1.808869625000000037,
       0.335946175000000014
     )
   )
   expect_equal(
     array$wablphi(2, 1),
     c(
-      0.042631749999999947,
-      -1.543573099999999698,
+      0.042631749999999947,-1.543573099999999698,
       0.346906649999999983
     )
   )
   expect_equal(
     array$wablphi(2),
     c(
-      0.042631749999999947,
-      -1.543573099999999698,
+      0.042631749999999947,-1.543573099999999698,
       0.346906649999999983
     )
   )
   expect_equal(
     array$wablphi(2.2, 1.1),
     c(
-      0.042631750520862655,
-      -1.543573077185075082,
+      0.042631750520862655,-1.543573077185075082,
       0.346906647344641994
     )
   )
@@ -1504,38 +1517,32 @@ test_that("TrapezoidalFuzzyNumberList wablphi function", {
   array <-
     TrapezoidalFuzzyNumberList$new(
       c(
-        TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
-        TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774),
+        TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
+        TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774),
         TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-        TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, 3.6759589)
+        TrapezoidalFuzzyNumber$new(-5.4843364, -4.5494522, 3.4790804, 3.6759589)
       )
     )
 
   expect_equal(
     array$wablphi(),
     c(
-      0.017096149999999959,
-      -1.808869625000000037,
-      0.335946175000000014,
-      -0.719687325000000100
+      0.017096149999999959,-1.808869625000000037,
+      0.335946175000000014,-0.719687325000000100
     )
   )
   expect_equal(
     array$wablphi(2, 1),
     c(
-      0.042631749999999947,
-      -1.543573099999999698,
-      0.346906649999999983,
-      -0.658186850000000101
+      0.042631749999999947,-1.543573099999999698,
+      0.346906649999999983,-0.658186850000000101
     )
   )
   expect_equal(
     array$wablphi(2.2, 1.1),
     c(
-      0.042631750520862655,
-      -1.543573077185075082,
-      0.346906647344641994,
-      -0.658186842079657830
+      0.042631750520862655,-1.543573077185075082,
+      0.346906647344641994,-0.658186842079657830
     )
   )
 
@@ -1544,7 +1551,7 @@ test_that("TrapezoidalFuzzyNumberList wablphi function", {
 test_that("TrapezoidalFuzzyNumberList var function", {
   array <-
     TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-3.3293414,-2.51760323,  1.32707594,  6.2201171)
+      TrapezoidalFuzzyNumber$new(-3.3293414, -2.51760323,  1.32707594,  6.2201171)
     ))
 
   ## more paramters than needed
@@ -1559,36 +1566,17 @@ test_that("TrapezoidalFuzzyNumberList var function", {
   expect_error(array$var(1.9876, 2, 1L))
   expect_error(array$var(1.9876, 2, 0))
   expect_error(array$var(1.9876, 2, "blabla"))
-  expect_error(array$var(1.9876, Inf, -Inf))
+  expect_error(array$var(1.9876, Inf,-Inf))
   expect_error(array$var(1.9876, Inf, Inf))
-
-  ## invalid TrapezoidalFuzzyNumbers
-  array <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(2.015641, -1.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, 0.4205031, -0.3803774)
-    ))
-
-  expect_output(array$var(),
-                "Not all trapezoidal fuzzy numbers are valid")
-
-  array <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-      TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, -3.6759589)
-    ))
-
-  expect_output(array$var(),
-                "Not all trapezoidal fuzzy numbers are valid")
 
   ## valid parameters and valid TrapezoidalFuzzyNumbers
   array <-
     TrapezoidalFuzzyNumberList$new(
       c(
-        TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
-        TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774),
+        TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
+        TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774),
         TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-        TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, 3.6759589)
+        TrapezoidalFuzzyNumber$new(-5.4843364, -4.5494522, 3.4790804, 3.6759589)
       )
     )
 
@@ -1618,7 +1606,7 @@ test_that("TrapezoidalFuzzyNumberList var function", {
 test_that("TrapezoidalFuzzyNumberList tn function", {
   array <-
     TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-3.3293414,-2.51760323,  1.32707594,  6.2201171)
+      TrapezoidalFuzzyNumber$new(-3.3293414, -2.51760323,  1.32707594,  6.2201171)
     ))
 
   ## not all mandatory parameters
@@ -1639,43 +1627,24 @@ test_that("TrapezoidalFuzzyNumberList tn function", {
 
   ## invalid a, b and/or theta
   expect_error(array$tn(1L, 0L, 1))
-  expect_error(array$tn(1L, -1.5, 1))
+  expect_error(array$tn(1L,-1.5, 1))
   expect_error(array$tn(1L, 1, "a"))
   expect_error(array$tn(2L, 1.9876, c(1, 2, 3, 4)))
   expect_error(array$tn(2L, 1.9876, list()))
   expect_error(array$tn(2L, 1.9876, 2, 1L))
   expect_error(array$tn(3L, 1.9876, 2, 0))
   expect_error(array$tn(3L, 1.9876, 2, "blabla"))
-  expect_error(array$tn(3L, 1.9876, Inf, -Inf))
+  expect_error(array$tn(3L, 1.9876, Inf,-Inf))
   expect_error(array$tn(3L, 1.9876, Inf, Inf))
-
-  ## invalid TrapezoidalFuzzyNumbers
-  array <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(2.015641, -1.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, 0.4205031, -0.3803774)
-    ))
-
-  expect_output(array$tn(1L),
-                "Not all trapezoidal fuzzy numbers are valid")
-
-  array <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-      TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, -3.6759589)
-    ))
-
-  expect_output(array$tn(2L),
-                "Not all trapezoidal fuzzy numbers are valid")
 
   ## valid parameters and valid TrapezoidalFuzzyNumbers
   array <-
     TrapezoidalFuzzyNumberList$new(
       c(
-        TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
-        TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774),
+        TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
+        TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774),
         TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-        TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, 3.6759589)
+        TrapezoidalFuzzyNumber$new(-5.4843364, -4.5494522, 3.4790804, 3.6759589)
       )
     )
 
@@ -1704,7 +1673,7 @@ test_that("TrapezoidalFuzzyNumberList tn function", {
 test_that("TrapezoidalFuzzyNumberList sn function", {
   array <-
     TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-3.3293414,-2.51760323,  1.32707594,  6.2201171)
+      TrapezoidalFuzzyNumber$new(-3.3293414, -2.51760323,  1.32707594,  6.2201171)
     ))
 
   ## not all mandatory parameters
@@ -1725,43 +1694,24 @@ test_that("TrapezoidalFuzzyNumberList sn function", {
 
   ## invalid a, b and/or theta
   expect_error(array$sn(1L, 0L, 1))
-  expect_error(array$sn(1L, -1.5, 1))
+  expect_error(array$sn(1L,-1.5, 1))
   expect_error(array$sn(1L, 1, "a"))
   expect_error(array$sn(2L, 1.9876, c(1, 2, 3, 4)))
   expect_error(array$sn(2L, 1.9876, list()))
   expect_error(array$sn(2L, 1.9876, 2, 1L))
   expect_error(array$sn(3L, 1.9876, 2, 0))
   expect_error(array$sn(3L, 1.9876, 2, "blabla"))
-  expect_error(array$sn(3L, 1.9876, Inf, -Inf))
+  expect_error(array$sn(3L, 1.9876, Inf,-Inf))
   expect_error(array$sn(3L, 1.9876, Inf, Inf))
-
-  ## invalid TrapezoidalFuzzyNumbers
-  array <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(2.015641, -1.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, 0.4205031, -0.3803774)
-    ))
-
-  expect_output(array$sn(1L),
-                "Not all trapezoidal fuzzy numbers are valid")
-
-  array <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-      TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, -3.6759589)
-    ))
-
-  expect_output(array$sn(2L),
-                "Not all trapezoidal fuzzy numbers are valid")
 
   ## valid parameters and valid TrapezoidalFuzzyNumbers
   array <-
     TrapezoidalFuzzyNumberList$new(
       c(
-        TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
-        TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774),
+        TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
+        TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774),
         TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-        TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, 3.6759589)
+        TrapezoidalFuzzyNumber$new(-5.4843364, -4.5494522, 3.4790804, 3.6759589)
       )
     )
 
@@ -1796,7 +1746,7 @@ test_that("TrapezoidalFuzzyNumberList sn function", {
 test_that("TrapezoidalFuzzyNumberList qn function", {
   array <-
     TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-3.3293414,-2.51760323,  1.32707594,  6.2201171)
+      TrapezoidalFuzzyNumber$new(-3.3293414, -2.51760323,  1.32707594,  6.2201171)
     ))
 
   ## not all mandatory parameters
@@ -1817,43 +1767,24 @@ test_that("TrapezoidalFuzzyNumberList qn function", {
 
   ## invalid a, b and/or theta
   expect_error(array$qn(1L, 0L, 1))
-  expect_error(array$qn(1L, -1.5, 1))
+  expect_error(array$qn(1L,-1.5, 1))
   expect_error(array$qn(1L, 1, "a"))
   expect_error(array$qn(2L, 1.9876, c(1, 2, 3, 4)))
   expect_error(array$qn(2L, 1.9876, list()))
   expect_error(array$qn(2L, 1.9876, 2, 1L))
   expect_error(array$qn(3L, 1.9876, 2, 0))
   expect_error(array$qn(3L, 1.9876, 2, "blabla"))
-  expect_error(array$qn(3L, 1.9876, Inf, -Inf))
+  expect_error(array$qn(3L, 1.9876, Inf,-Inf))
   expect_error(array$qn(3L, 1.9876, Inf, Inf))
-
-  ## invalid TrapezoidalFuzzyNumbers
-  array <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(2.015641, -1.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, 0.4205031, -0.3803774)
-    ))
-
-  expect_output(array$qn(1L),
-                "Not all trapezoidal fuzzy numbers are valid")
-
-  array <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-      TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, -3.6759589)
-    ))
-
-  expect_output(array$qn(2L),
-                "Not all trapezoidal fuzzy numbers are valid")
 
   ## valid parameters and valid TrapezoidalFuzzyNumbers
   array <-
     TrapezoidalFuzzyNumberList$new(
       c(
-        TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
-        TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774),
+        TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
+        TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774),
         TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-        TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, 3.6759589)
+        TrapezoidalFuzzyNumber$new(-5.4843364, -4.5494522, 3.4790804, 3.6759589)
       )
     )
 
@@ -1888,7 +1819,7 @@ test_that("TrapezoidalFuzzyNumberList qn function", {
 test_that("TrapezoidalFuzzyNumberList median1Norm function", {
   array <-
     TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-3.3293414,-2.51760323,  1.32707594,  6.2201171)
+      TrapezoidalFuzzyNumber$new(-3.3293414, -2.51760323,  1.32707594,  6.2201171)
     ))
 
   ## more parameters than needed
@@ -1898,353 +1829,34 @@ test_that("TrapezoidalFuzzyNumberList median1Norm function", {
   expect_error(array$median1Norm(0))
   expect_error(array$median1Norm("a"))
   expect_error(array$median1Norm(0L))
+  expect_error(array$median1Norm(1L))
   expect_error(array$median1Norm(c(1, 2, 3, 4)))
   expect_error(array$median1Norm(list()))
-
-  ## invalid TrapezoidalFuzzyNumbers
-  array <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(2.015641, -1.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, 0.4205031, -0.3803774)
-    ))
-
-  expect_output(array$median1Norm(),
-                "Not all trapezoidal fuzzy numbers are valid")
-
-  array <-
-    TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-      TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, -3.6759589)
-    ))
-
-  expect_output(array$median1Norm(),
-                "Not all trapezoidal fuzzy numbers are valid")
 
   ## valid parameters and valid TrapezoidalFuzzyNumbers
   array <-
     TrapezoidalFuzzyNumberList$new(
       c(
-        TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
-        TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774),
+        TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
+        TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774),
         TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-        TrapezoidalFuzzyNumber$new(-5.4843364, -4.5494522, 3.4790804, 3.6759589)
+        TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, 3.6759589)
       )
     )
 
-  expect_equal(array$median1Norm()$numbers[[1]]$getFNAlphaLevels(),
+  expect_equal(array$median1Norm()$getDimension(1L)$getAlphaLevels(),
+               matrix(c(seq(0, 1, len = 101)), ncol = 1))
+
+  expect_equal(array$median1Norm()$getDimension(1L)$getInfimums(),
                matrix(
                  c(
-                   seq(0, 1, len = 101),
-                   -3.4223910000000002,
-                   -3.401664445,
-                   -3.38093789,
-                   -3.360211335,
-                   -3.33948478,
-                   -3.318758225,
-                   -3.29803167,
-                   -3.277305115,
-                   -3.25657856,
-                   -3.235852005,
-                   -3.21512545,
-                   -3.194398895,
-                   -3.17367234,
-                   -3.152945785,
-                   -3.13221923,
-                   -3.111492675,
-                   -3.09076612,
-                   -3.070039565,
-                   -3.04931301,
-                   -3.028586455,
-                   -3.0078599,
-                   -2.987133345,
-                   -2.96640679,
-                   -2.945680235,
-                   -2.92495368,
-                   -2.904227125,
-                   -2.88350057,
-                   -2.862774015,
-                   -2.84204746,
-                   -2.821320905,
-                   -2.80059435,
-                   -2.779867795,
-                   -2.75914124,
-                   -2.738414685,
-                   -2.71768813,
-                   -2.696961575,
-                   -2.67623502,
-                   -2.655508465,
-                   -2.63478191,
-                   -2.614055355,
-                   -2.5933288,
-                   -2.572602245,
-                   -2.55187569,
-                   -2.531149135,
-                   -2.51042258,
-                   -2.489696025,
-                   -2.46896947,
-                   -2.448242915,
-                   -2.42751636,
-                   -2.406789805,
-                   -2.38606325,
-                   -2.365336695,
-                   -2.34461014,
-                   -2.323883585,
-                   -2.30315703,
-                   -2.282430475,
-                   -2.26170392,
-                   -2.240977365,
-                   -2.22025081,
-                   -2.199524255,
-                   -2.1787977,
-                   -2.158071145,
-                   -2.13734459,
-                   -2.116618035,
-                   -2.09589148,
-                   -2.075164925,
-                   -2.05443837,
-                   -2.033711815,
-                   -2.01298526,
-                   -1.992258705,
-                   -1.97153215,
-                   -1.950805595,
-                   -1.93007904,
-                   -1.909352485,
-                   -1.88862593,
-                   -1.867899375,
-                   -1.84717282,
-                   -1.826446265,
-                   -1.80571971,
-                   -1.784993155,
-                   -1.7642666,
-                   -1.743540045,
-                   -1.72281349,
-                   -1.702086935,
-                   -1.68136038,
-                   -1.660633825,
-                   -1.63990727,
-                   -1.619180715,
-                   -1.59845416,
-                   -1.577727605,
-                   -1.55700105,
-                   -1.536274495,
-                   -1.51554794,
-                   -1.494821385,
-                   -1.47409483,
-                   -1.453368275,
-                   -1.43264172,
-                   -1.411915165,
-                   -1.39118861,
-                   -1.370462055,
-                   -1.3497355,
-                   1.3169512,
-                   1.312176895,
-                   1.30740259,
-                   1.302628285,
-                   1.29785398,
-                   1.293079675,
-                   1.28830537,
-                   1.283531065,
-                   1.27875676,
-                   1.273982455,
-                   1.26920815,
-                   1.264433845,
-                   1.25965954,
-                   1.254885235,
-                   1.25011093,
-                   1.245336625,
-                   1.24056232,
-                   1.235788015,
-                   1.23101371,
-                   1.226239405,
-                   1.2214651,
-                   1.216690795,
-                   1.21191649,
-                   1.207142185,
-                   1.20236788,
-                   1.197593575,
-                   1.19281927,
-                   1.188044965,
-                   1.18327066,
-                   1.178496355,
-                   1.17372205,
-                   1.168947745,
-                   1.16417344,
-                   1.159399135,
-                   1.15462483,
-                   1.149850525,
-                   1.14507622,
-                   1.140301915,
-                   1.13552761,
-                   1.130753305,
-                   1.125979,
-                   1.121204695,
-                   1.11643039,
-                   1.111656085,
-                   1.10688178,
-                   1.102107475,
-                   1.09733317,
-                   1.092558865,
-                   1.08778456,
-                   1.083010255,
-                   1.07823595,
-                   1.073461645,
-                   1.06868734,
-                   1.063913035,
-                   1.05913873,
-                   1.054364425,
-                   1.04959012,
-                   1.044815815,
-                   1.04004151,
-                   1.035267205,
-                   1.0304929,
-                   1.025718595,
-                   1.02094429,
-                   1.016169985,
-                   1.01139568,
-                   1.006621375,
-                   1.00184707,
-                   0.997072765,
-                   0.99229846,
-                   0.987524155,
-                   0.98274985,
-                   0.977975545,
-                   0.97320124,
-                   0.968426935,
-                   0.96365263,
-                   0.958878325,
-                   0.95410402,
-                   0.949329715,
-                   0.94455541,
-                   0.939781105,
-                   0.9350068,
-                   0.930232495,
-                   0.92545819,
-                   0.920683885,
-                   0.91590958,
-                   0.911135275,
-                   0.90636097,
-                   0.901586665,
-                   0.89681236,
-                   0.892038055,
-                   0.88726375,
-                   0.882489445,
-                   0.87771514,
-                   0.872940835,
-                   0.86816653,
-                   0.863392225,
-                   0.85861792,
-                   0.853843615,
-                   0.84906931,
-                   0.844295005,
-                   0.8395207
+                   -3.4223910000000002,-3.401664445,-3.38093789,-3.360211335,-3.33948478,-3.318758225,-3.29803167,-3.277305115,-3.25657856,-3.235852005,-3.21512545,-3.194398895,-3.17367234,-3.152945785,-3.13221923,-3.111492675,-3.09076612,-3.070039565,-3.04931301,-3.028586455,-3.0078599,-2.987133345,-2.96640679,-2.945680235,-2.92495368,-2.904227125,-2.88350057,-2.862774015,-2.84204746,-2.821320905,-2.80059435,-2.779867795,-2.75914124,-2.738414685,-2.71768813,-2.696961575,-2.67623502,-2.655508465,-2.63478191,-2.614055355,-2.5933288,-2.572602245,-2.55187569,-2.531149135,-2.51042258,-2.489696025,-2.46896947,-2.448242915,-2.42751636,-2.406789805,-2.38606325,-2.365336695,-2.34461014,-2.323883585,-2.30315703,-2.282430475,-2.26170392,-2.240977365,-2.22025081,-2.199524255,-2.1787977,-2.158071145,-2.13734459,-2.116618035,-2.09589148,-2.075164925,-2.05443837,-2.033711815,-2.01298526,-1.992258705,-1.97153215,-1.950805595,-1.93007904,-1.909352485,-1.88862593,-1.867899375,-1.84717282,-1.826446265,-1.80571971,-1.784993155,-1.7642666,-1.743540045,-1.72281349,-1.702086935,-1.68136038,-1.660633825,-1.63990727,-1.619180715,-1.59845416,-1.577727605,-1.55700105,-1.536274495,-1.51554794,-1.494821385,-1.47409483,-1.453368275,-1.43264172,-1.411915165,-1.39118861,-1.370462055,-1.3497355
                  ),
-                 ncol = 3
+                 ncol = 1
                ))
-  expect_equal(array$median1Norm(101L)$numbers[[1]]$getFNAlphaLevels(),
+  expect_equal(array$median1Norm()$getDimension(1L)$getSupremums(),
                matrix(
                  c(
-                   seq(0, 1, len = 101),
-                   -3.4223910000000002,
-                   -3.401664445,
-                   -3.38093789,
-                   -3.360211335,
-                   -3.33948478,
-                   -3.318758225,
-                   -3.29803167,
-                   -3.277305115,
-                   -3.25657856,
-                   -3.235852005,
-                   -3.21512545,
-                   -3.194398895,
-                   -3.17367234,
-                   -3.152945785,
-                   -3.13221923,
-                   -3.111492675,
-                   -3.09076612,
-                   -3.070039565,
-                   -3.04931301,
-                   -3.028586455,
-                   -3.0078599,
-                   -2.987133345,
-                   -2.96640679,
-                   -2.945680235,
-                   -2.92495368,
-                   -2.904227125,
-                   -2.88350057,
-                   -2.862774015,
-                   -2.84204746,
-                   -2.821320905,
-                   -2.80059435,
-                   -2.779867795,
-                   -2.75914124,
-                   -2.738414685,
-                   -2.71768813,
-                   -2.696961575,
-                   -2.67623502,
-                   -2.655508465,
-                   -2.63478191,
-                   -2.614055355,
-                   -2.5933288,
-                   -2.572602245,
-                   -2.55187569,
-                   -2.531149135,
-                   -2.51042258,
-                   -2.489696025,
-                   -2.46896947,
-                   -2.448242915,
-                   -2.42751636,
-                   -2.406789805,
-                   -2.38606325,
-                   -2.365336695,
-                   -2.34461014,
-                   -2.323883585,
-                   -2.30315703,
-                   -2.282430475,
-                   -2.26170392,
-                   -2.240977365,
-                   -2.22025081,
-                   -2.199524255,
-                   -2.1787977,
-                   -2.158071145,
-                   -2.13734459,
-                   -2.116618035,
-                   -2.09589148,
-                   -2.075164925,
-                   -2.05443837,
-                   -2.033711815,
-                   -2.01298526,
-                   -1.992258705,
-                   -1.97153215,
-                   -1.950805595,
-                   -1.93007904,
-                   -1.909352485,
-                   -1.88862593,
-                   -1.867899375,
-                   -1.84717282,
-                   -1.826446265,
-                   -1.80571971,
-                   -1.784993155,
-                   -1.7642666,
-                   -1.743540045,
-                   -1.72281349,
-                   -1.702086935,
-                   -1.68136038,
-                   -1.660633825,
-                   -1.63990727,
-                   -1.619180715,
-                   -1.59845416,
-                   -1.577727605,
-                   -1.55700105,
-                   -1.536274495,
-                   -1.51554794,
-                   -1.494821385,
-                   -1.47409483,
-                   -1.453368275,
-                   -1.43264172,
-                   -1.411915165,
-                   -1.39118861,
-                   -1.370462055,
-                   -1.3497355,
                    1.3169512,
                    1.312176895,
                    1.30740259,
@@ -2347,77 +1959,182 @@ test_that("TrapezoidalFuzzyNumberList median1Norm function", {
                    0.844295005,
                    0.8395207
                  ),
-                 ncol = 3
+                 ncol = 1
                ))
 
-  expect_equal(array$median1Norm(5L)$numbers[[1]]$getFNAlphaLevels(),
+  expect_equal(array$median1Norm(101L)$getDimension(1L)$getAlphaLevels(),
+               matrix(c(seq(0, 1, len = 101)), ncol = 1))
+
+  expect_equal(array$median1Norm(101L)$getDimension(1L)$getInfimums(),
                matrix(
                  c(
-                   0,
-                   0.25,
-                   0.5,
-                   0.75,
-                   1,
-                   -3.4223910000000002,
-                   -2.9042271250000002,
-                   -2.3860632499999999,
-                   -1.8678993749999999,
-                   -1.3497355000000000,
+                   -3.4223910000000002,-3.401664445,-3.38093789,-3.360211335,-3.33948478,-3.318758225,-3.29803167,-3.277305115,-3.25657856,-3.235852005,-3.21512545,-3.194398895,-3.17367234,-3.152945785,-3.13221923,-3.111492675,-3.09076612,-3.070039565,-3.04931301,-3.028586455,-3.0078599,-2.987133345,-2.96640679,-2.945680235,-2.92495368,-2.904227125,-2.88350057,-2.862774015,-2.84204746,-2.821320905,-2.80059435,-2.779867795,-2.75914124,-2.738414685,-2.71768813,-2.696961575,-2.67623502,-2.655508465,-2.63478191,-2.614055355,-2.5933288,-2.572602245,-2.55187569,-2.531149135,-2.51042258,-2.489696025,-2.46896947,-2.448242915,-2.42751636,-2.406789805,-2.38606325,-2.365336695,-2.34461014,-2.323883585,-2.30315703,-2.282430475,-2.26170392,-2.240977365,-2.22025081,-2.199524255,-2.1787977,-2.158071145,-2.13734459,-2.116618035,-2.09589148,-2.075164925,-2.05443837,-2.033711815,-2.01298526,-1.992258705,-1.97153215,-1.950805595,-1.93007904,-1.909352485,-1.88862593,-1.867899375,-1.84717282,-1.826446265,-1.80571971,-1.784993155,-1.7642666,-1.743540045,-1.72281349,-1.702086935,-1.68136038,-1.660633825,-1.63990727,-1.619180715,-1.59845416,-1.577727605,-1.55700105,-1.536274495,-1.51554794,-1.494821385,-1.47409483,-1.453368275,-1.43264172,-1.411915165,-1.39118861,-1.370462055,-1.3497355
+                 ),
+                 ncol = 1
+               ))
+  expect_equal(array$median1Norm(101L)$getDimension(1L)$getSupremums(),
+               matrix(
+                 c(
+                   1.3169512,
+                   1.312176895,
+                   1.30740259,
+                   1.302628285,
+                   1.29785398,
+                   1.293079675,
+                   1.28830537,
+                   1.283531065,
+                   1.27875676,
+                   1.273982455,
+                   1.26920815,
+                   1.264433845,
+                   1.25965954,
+                   1.254885235,
+                   1.25011093,
+                   1.245336625,
+                   1.24056232,
+                   1.235788015,
+                   1.23101371,
+                   1.226239405,
+                   1.2214651,
+                   1.216690795,
+                   1.21191649,
+                   1.207142185,
+                   1.20236788,
+                   1.197593575,
+                   1.19281927,
+                   1.188044965,
+                   1.18327066,
+                   1.178496355,
+                   1.17372205,
+                   1.168947745,
+                   1.16417344,
+                   1.159399135,
+                   1.15462483,
+                   1.149850525,
+                   1.14507622,
+                   1.140301915,
+                   1.13552761,
+                   1.130753305,
+                   1.125979,
+                   1.121204695,
+                   1.11643039,
+                   1.111656085,
+                   1.10688178,
+                   1.102107475,
+                   1.09733317,
+                   1.092558865,
+                   1.08778456,
+                   1.083010255,
+                   1.07823595,
+                   1.073461645,
+                   1.06868734,
+                   1.063913035,
+                   1.05913873,
+                   1.054364425,
+                   1.04959012,
+                   1.044815815,
+                   1.04004151,
+                   1.035267205,
+                   1.0304929,
+                   1.025718595,
+                   1.02094429,
+                   1.016169985,
+                   1.01139568,
+                   1.006621375,
+                   1.00184707,
+                   0.997072765,
+                   0.99229846,
+                   0.987524155,
+                   0.98274985,
+                   0.977975545,
+                   0.97320124,
+                   0.968426935,
+                   0.96365263,
+                   0.958878325,
+                   0.95410402,
+                   0.949329715,
+                   0.94455541,
+                   0.939781105,
+                   0.9350068,
+                   0.930232495,
+                   0.92545819,
+                   0.920683885,
+                   0.91590958,
+                   0.911135275,
+                   0.90636097,
+                   0.901586665,
+                   0.89681236,
+                   0.892038055,
+                   0.88726375,
+                   0.882489445,
+                   0.87771514,
+                   0.872940835,
+                   0.86816653,
+                   0.863392225,
+                   0.85861792,
+                   0.853843615,
+                   0.84906931,
+                   0.844295005,
+                   0.8395207
+                 ),
+                 ncol = 1
+               ))
+
+  expect_equal(array$median1Norm(5L)$getDimension(1L)$getAlphaLevels(),
+               matrix(c(0,
+                        0.25,
+                        0.5,
+                        0.75,
+                        1),
+                      ncol = 1))
+
+  expect_equal(array$median1Norm(5L)$getDimension(1L)$getInfimums(),
+               matrix(
+                 c(
+                   -3.4223910000000002,-2.9042271250000002,-2.3860632499999999,-1.8678993749999999,-1.3497355000000000
+                 ),
+                 ncol = 1
+               ))
+
+  expect_equal(array$median1Norm(5L)$getDimension(1L)$getSupremums(),
+               matrix(
+                 c(
                    1.31695120000000010,
                    1.19759357499999997,
                    1.07823595000000005,
                    0.95887832499999992,
                    0.83952070000000001
                  ),
-                 ncol = 3
+                 ncol = 1
                ))
 
-  expect_equal(array$median1Norm(2L)$numbers[[1]]$getFNAlphaLevels(),
-               matrix(
-                 c(
-                   0,
-                   1,
-                   -3.4223910000000002,
-                   -1.3497355000000000,
-                   1.31695120000000010,
-                   0.83952070000000001
-                 ),
-                 ncol = 3
-               ))
+  expect_equal(array$median1Norm(2L)$getDimension(1L)$getAlphaLevels(),
+               matrix(c(0,
+                        1),
+                      ncol = 1))
+  expect_equal(array$median1Norm(2L)$getDimension(1L)$getInfimums(),
+               matrix(c(
+                 -3.4223910000000002,-1.3497355000000000
+               ),
+               ncol = 1))
+  expect_equal(array$median1Norm(2L)$getDimension(1L)$getSupremums(),
+               matrix(c(
+                 1.31695120000000010,
+                 0.83952070000000001
+               ),
+               ncol = 1))
 
   #fijar semilla de aleatorización
   set.seed(1234)
   dataTra1 <- Simulation$new()$simulCase1(3L)
 
-  expect_equal(dataTra1$median1Norm()$numbers[[1]]$getFNAlphaLevels(),
+  expect_equal(dataTra1$median1Norm()$getDimension(1L)$getAlphaLevels(),
+               matrix(c(seq(0, 1, len = 101)),
+                      ncol = 1))
+  expect_equal(dataTra1$median1Norm()$getDimension(1L)$getInfimums(),
                matrix(
                  c(
-                   seq(0, 1, len = 101),
-                   -0.0175862933202241,
-                   -0.0168771488903196,
-                   -0.0161680044604150,
-                   -0.0154588600305105,
-                   -0.0147497156006059,
-                   -0.0140405711707014,
-                   -0.0133314267407968,
-                   -0.0126222823108923,
-                   -0.0119131378809877,
-                   -0.0112039934510832,
-                   -0.0104948490211786,
-                   -0.0097857045912741,
-                   -0.0090765601613696,
-                   -0.0083674157314650,
-                   -0.0076582713015605,
-                   -0.0069491268716559,
-                   -0.0062399824417514,
-                   -0.0055308380118468,
-                   -0.0048216935819423,
-                   -0.0041125491520377,
-                   -0.0034034047221332,
-                   -0.0026942602922286,
-                   -0.0019851158623241,
-                   -0.0012759714324195,
-                   -0.0005668270025150,
+                   -0.0175862933202241,-0.0168771488903196,-0.0161680044604150,-0.0154588600305105,-0.0147497156006059,-0.0140405711707014,-0.0133314267407968,-0.0126222823108923,-0.0119131378809877,-0.0112039934510832,-0.0104948490211786,-0.0097857045912741,-0.0090765601613696,-0.0083674157314650,-0.0076582713015605,-0.0069491268716559,-0.0062399824417514,-0.0055308380118468,-0.0048216935819423,-0.0041125491520377,-0.0034034047221332,-0.0026942602922286,-0.0019851158623241,-0.0012759714324195,-0.0005668270025150,
                    0.0001423174273896,
                    0.0008514618572941,
                    0.0015606062871987,
@@ -2493,7 +2210,13 @@ test_that("TrapezoidalFuzzyNumberList median1Norm function", {
                    0.0512007163805171,
                    0.0519098608104217,
                    0.0526190052403262,
-                   0.0533281496702308,
+                   0.0533281496702308
+                 ),
+                 ncol = 1
+               ))
+  expect_equal(dataTra1$median1Norm()$getDimension(1L)$getSupremums(),
+               matrix(
+                 c(
                    0.5934710529025530,
                    0.5925516457190380,
                    0.5916322385355230,
@@ -2596,7 +2319,7 @@ test_that("TrapezoidalFuzzyNumberList median1Norm function", {
                    0.5024497417346030,
                    0.5015303345510890
                  ),
-                 ncol = 3
+                 ncol = 1
                ))
 
 })
@@ -2604,8 +2327,8 @@ test_that("TrapezoidalFuzzyNumberList median1Norm function", {
 test_that("FuzzyNumberList add function", {
   array <-
     TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(2.015641, -1.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, 0.4205031, -0.3803774)
+      TrapezoidalFuzzyNumber$new(-2.015641, -1.094014, 1.2814199, 1.8966197),
+      TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, 0.4205031, 0.5803774)
     ))
 
   ## not all mandatory parameters
@@ -2634,44 +2357,23 @@ test_that("FuzzyNumberList add function", {
   expect_error(array$add(s, 4, 1, 1, 1))
   expect_error(array$add(s, 4.5, 1, 1, 1))
   expect_error(array$add(s, c(1, 2, 3, 4), 1, 1, 1))
-  expect_error(array$add(s, 4L, Inf,-Inf, 1))
+  expect_error(array$add(s, 4L, Inf, -Inf, 1))
 
   ## invalid parameter a, b or theta
   expect_error(array$add(s, 1L, 0, 0, 0))
-  expect_error(array$add(s, 2L, "a", 0L, -1.5))
+  expect_error(array$add(s, 2L, "a", 0L,-1.5))
   expect_error(array$add(s, 3L, 1, list(), 1))
   expect_error(array$add(s, 3L, 1, 2, c()))
-  expect_error(array$add(s, 3L, Inf, -Inf, -Inf))
+  expect_error(array$add(s, 3L, Inf,-Inf,-Inf))
   expect_error(array$add(s, 3L, Inf, Inf, Inf))
 
-  ## INVALID STATLISTS
-  ## array$checking() == FALSE
-  array <- TrapezoidalFuzzyNumberList$new(c(
-    TrapezoidalFuzzyNumber$new(4, 3, 2, 1),
-    TrapezoidalFuzzyNumber$new(-1,-5, 10, 9)
-  ))
-
-  expect_output(array$add(s, 1L), "Not all trapezoidal fuzzy numbers are valid")
-
-  ## also s$checking() == FALSE
-  s <- FuzzyNumberList$new(c(FuzzyNumber$new(array(
-    c(0, 1, 0.6623698, 0.9403180, 1.564024, 0.185641), dim = c(2, 3)
-  )),
-  FuzzyNumber$new(array(
-    c(0, 1,-0.30671609,-0.09722635, 4.49222404, 0.02745836),
-    dim = c(2, 3)
-  ))))
-
-  expect_output(array$add(s, 1L), "Not all trapezoidal fuzzy numbers are valid")
-
-  ## only length(self$numbers) != 1
   array <-
     TrapezoidalFuzzyNumberList$new(
       c(
-        TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
-        TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774),
+        TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
+        TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774),
         TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-        TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, 3.6759589)
+        TrapezoidalFuzzyNumber$new(-5.4843364, -4.5494522, 3.4790804, 3.6759589)
       )
     )
 
@@ -2689,7 +2391,8 @@ test_that("FuzzyNumberList add function", {
   array2 <-
     TrapezoidalFuzzyNumberList$new(c(
       TrapezoidalFuzzyNumber$new(
-        -0.30614214796881267,-0.17429571018685452,
+        -0.30614214796881267,
+        -0.17429571018685452,
         0.41001586290808789,
         1.4885363965873308
       )
@@ -2706,12 +2409,7 @@ test_that("FuzzyNumberList add function", {
         0.25,
         0.5,
         0.75,
-        1,
-        -5.7835504819939967,
-        -5.100726176047438,
-        -4.4179018701008808,
-        -3.7350775641543232,
-        -3.0522532582077657,
+        1,-5.7835504819939967,-5.100726176047438,-4.4179018701008808,-3.7350775641543232,-3.0522532582077657,
         2.57316107511803693,
         2.05738398915402954,
         1.54160690319002169,
@@ -2726,7 +2424,106 @@ test_that("FuzzyNumberList add function", {
   array4 <-
     FuzzyNumberList$new(c(FuzzyNumber$new(array(
       c(
-        seq(0, 1, len = 101),-1.125144453,-1.113739082,-1.10233371,-1.090928338,-1.079522967,-1.068117595,-1.056712223,-1.045306852,-1.03390148,-1.022496109,-1.011090737,-0.999685365,-0.988279994,-0.976874622,-0.96546925,-0.954063879,-0.942658507,-0.931253136,-0.919847764,-0.908442392,-0.897037021,-0.885631649,-0.874226277,-0.862820906,-0.851415534,-0.840010162,-0.828604791,-0.817199419,-0.805794048,-0.794388676,-0.782983304,-0.771577933,-0.760172561,-0.748767189,-0.737361818,-0.725956446,-0.714551075,-0.703145703,-0.692288814,-0.685806632,-0.679324451,-0.672842269,-0.666360087,-0.659877906,-0.653395724,-0.646913543,-0.640431361,-0.633949179,-0.627466998,-0.620984816,-0.614502635,-0.608020453,-0.601538271,-0.59505609,-0.588573908,-0.582091726,-0.575609545,-0.569127363,-0.562645182,-0.556163,-0.549680818,-0.543198637,-0.536716455,-0.530234274,-0.523752092,-0.51726991,-0.510787729,-0.504305547,-0.48128216,-0.457262228,-0.433242296,-0.409222363,-0.385202431,-0.361182499,-0.337162566,-0.313142634,-0.289122702,-0.26510277,-0.241082837,-0.224120094,-0.212714723,-0.201309351,-0.189903979,-0.178498608,-0.167093236,-0.155687865,-0.144282493,-0.132877121,-0.12147175,-0.110066378,-0.098661006,-0.087255635,-0.075850263,-0.064444892,-0.05303952,-0.041634148,-0.030228777,-0.018823405,-0.007418033,
+        seq(0, 1, len = 101),
+        -1.125144453,
+        -1.113739082,
+        -1.10233371,
+        -1.090928338,
+        -1.079522967,
+        -1.068117595,
+        -1.056712223,
+        -1.045306852,
+        -1.03390148,
+        -1.022496109,
+        -1.011090737,
+        -0.999685365,
+        -0.988279994,
+        -0.976874622,
+        -0.96546925,
+        -0.954063879,
+        -0.942658507,
+        -0.931253136,
+        -0.919847764,
+        -0.908442392,
+        -0.897037021,
+        -0.885631649,
+        -0.874226277,
+        -0.862820906,
+        -0.851415534,
+        -0.840010162,
+        -0.828604791,
+        -0.817199419,
+        -0.805794048,
+        -0.794388676,
+        -0.782983304,
+        -0.771577933,
+        -0.760172561,
+        -0.748767189,
+        -0.737361818,
+        -0.725956446,
+        -0.714551075,
+        -0.703145703,
+        -0.692288814,
+        -0.685806632,
+        -0.679324451,
+        -0.672842269,
+        -0.666360087,
+        -0.659877906,
+        -0.653395724,
+        -0.646913543,
+        -0.640431361,
+        -0.633949179,
+        -0.627466998,
+        -0.620984816,
+        -0.614502635,
+        -0.608020453,
+        -0.601538271,
+        -0.59505609,
+        -0.588573908,
+        -0.582091726,
+        -0.575609545,
+        -0.569127363,
+        -0.562645182,
+        -0.556163,
+        -0.549680818,
+        -0.543198637,
+        -0.536716455,
+        -0.530234274,
+        -0.523752092,
+        -0.51726991,
+        -0.510787729,
+        -0.504305547,
+        -0.48128216,
+        -0.457262228,
+        -0.433242296,
+        -0.409222363,
+        -0.385202431,
+        -0.361182499,
+        -0.337162566,
+        -0.313142634,
+        -0.289122702,
+        -0.26510277,
+        -0.241082837,
+        -0.224120094,
+        -0.212714723,
+        -0.201309351,
+        -0.189903979,
+        -0.178498608,
+        -0.167093236,
+        -0.155687865,
+        -0.144282493,
+        -0.132877121,
+        -0.12147175,
+        -0.110066378,
+        -0.098661006,
+        -0.087255635,
+        -0.075850263,
+        -0.064444892,
+        -0.05303952,
+        -0.041634148,
+        -0.030228777,
+        -0.018823405,
+        -0.007418033,
         0.003987338,
         0.01539271,
         1.924208103,
@@ -2855,8 +2652,8 @@ test_that("FuzzyNumberList add function", {
 test_that("FuzzyNumberList mdd function", {
   array <-
     TrapezoidalFuzzyNumberList$new(c(
-      TrapezoidalFuzzyNumber$new(2.015641, -1.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, 0.4205031, -0.3803774)
+      TrapezoidalFuzzyNumber$new(-2.015641, -1.094014, 1.2814199, 1.8966197),
+      TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, 0.4205031, 0.5803774)
     ))
 
   ## not all mandatory parameters
@@ -2888,39 +2685,18 @@ test_that("FuzzyNumberList mdd function", {
 
   ## invalid parameter a, b or theta
   expect_error(array$mdd(s, 1L, 0, 0, 0))
-  expect_error(array$mdd(s, 2L, "a", 0L, -1.5))
+  expect_error(array$mdd(s, 2L, "a", 0L,-1.5))
   expect_error(array$mdd(s, 3L, 1, list(), 1))
   expect_error(array$mdd(s, 3L, 1, 2, c()))
   expect_error(array$mdd(s, 3L, Inf, Inf, 1))
 
-  ## INVALID StatListS
-  ## array$checking() == FALSE
-  array <- TrapezoidalFuzzyNumberList$new(c(
-    TrapezoidalFuzzyNumber$new(4, 3, 2, 1),
-    TrapezoidalFuzzyNumber$new(-1,-5, 10, 9)
-  ))
-
-  expect_output(array$mdd(s, 1L), "Not all trapezoidal fuzzy numbers are valid")
-
-  ## also s$checking() == FALSE
-  s <- FuzzyNumberList$new(c(FuzzyNumber$new(array(
-    c(0, 1, 0.6623698, 0.9403180, 1.564024, 0.185641), dim = c(2, 3)
-  )),
-  FuzzyNumber$new(array(
-    c(0, 1,-0.30671609,-0.09722635, 4.49222404, 0.02745836),
-    dim = c(2, 3)
-  ))))
-
-  expect_output(array$mdd(s, 1L), "Not all trapezoidal fuzzy numbers are valid")
-
-  ## only length(self$numbers) != 1
   array <-
     TrapezoidalFuzzyNumberList$new(
       c(
-        TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
-        TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774),
+        TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
+        TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774),
         TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-        TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, 3.6759589)
+        TrapezoidalFuzzyNumber$new(-5.4843364, -4.5494522, 3.4790804, 3.6759589)
       )
     )
 
@@ -2938,7 +2714,8 @@ test_that("FuzzyNumberList mdd function", {
   array2 <-
     TrapezoidalFuzzyNumberList$new(c(
       TrapezoidalFuzzyNumber$new(
-        -0.30614214796881267,-0.17429571018685452,
+        -0.30614214796881267,
+        -0.17429571018685452,
         0.41001586290808789,
         1.4885363965873308
       )
@@ -2953,12 +2730,7 @@ test_that("FuzzyNumberList mdd function", {
         0.25,
         0.5,
         0.75,
-        1,
-        -5.7835504819939967,
-        -5.100726176047438,
-        -4.4179018701008808,
-        -3.7350775641543232,
-        -3.0522532582077657,
+        1,-5.7835504819939967,-5.100726176047438,-4.4179018701008808,-3.7350775641543232,-3.0522532582077657,
         2.57316107511803693,
         2.05738398915402954,
         1.54160690319002169,
@@ -2975,7 +2747,106 @@ test_that("FuzzyNumberList mdd function", {
   array4 <-
     FuzzyNumberList$new(c(FuzzyNumber$new(array(
       c(
-        seq(0, 1, len = 101),-1.125144453,-1.113739082,-1.10233371,-1.090928338,-1.079522967,-1.068117595,-1.056712223,-1.045306852,-1.03390148,-1.022496109,-1.011090737,-0.999685365,-0.988279994,-0.976874622,-0.96546925,-0.954063879,-0.942658507,-0.931253136,-0.919847764,-0.908442392,-0.897037021,-0.885631649,-0.874226277,-0.862820906,-0.851415534,-0.840010162,-0.828604791,-0.817199419,-0.805794048,-0.794388676,-0.782983304,-0.771577933,-0.760172561,-0.748767189,-0.737361818,-0.725956446,-0.714551075,-0.703145703,-0.692288814,-0.685806632,-0.679324451,-0.672842269,-0.666360087,-0.659877906,-0.653395724,-0.646913543,-0.640431361,-0.633949179,-0.627466998,-0.620984816,-0.614502635,-0.608020453,-0.601538271,-0.59505609,-0.588573908,-0.582091726,-0.575609545,-0.569127363,-0.562645182,-0.556163,-0.549680818,-0.543198637,-0.536716455,-0.530234274,-0.523752092,-0.51726991,-0.510787729,-0.504305547,-0.48128216,-0.457262228,-0.433242296,-0.409222363,-0.385202431,-0.361182499,-0.337162566,-0.313142634,-0.289122702,-0.26510277,-0.241082837,-0.224120094,-0.212714723,-0.201309351,-0.189903979,-0.178498608,-0.167093236,-0.155687865,-0.144282493,-0.132877121,-0.12147175,-0.110066378,-0.098661006,-0.087255635,-0.075850263,-0.064444892,-0.05303952,-0.041634148,-0.030228777,-0.018823405,-0.007418033,
+        seq(0, 1, len = 101),
+        -1.125144453,
+        -1.113739082,
+        -1.10233371,
+        -1.090928338,
+        -1.079522967,
+        -1.068117595,
+        -1.056712223,
+        -1.045306852,
+        -1.03390148,
+        -1.022496109,
+        -1.011090737,
+        -0.999685365,
+        -0.988279994,
+        -0.976874622,
+        -0.96546925,
+        -0.954063879,
+        -0.942658507,
+        -0.931253136,
+        -0.919847764,
+        -0.908442392,
+        -0.897037021,
+        -0.885631649,
+        -0.874226277,
+        -0.862820906,
+        -0.851415534,
+        -0.840010162,
+        -0.828604791,
+        -0.817199419,
+        -0.805794048,
+        -0.794388676,
+        -0.782983304,
+        -0.771577933,
+        -0.760172561,
+        -0.748767189,
+        -0.737361818,
+        -0.725956446,
+        -0.714551075,
+        -0.703145703,
+        -0.692288814,
+        -0.685806632,
+        -0.679324451,
+        -0.672842269,
+        -0.666360087,
+        -0.659877906,
+        -0.653395724,
+        -0.646913543,
+        -0.640431361,
+        -0.633949179,
+        -0.627466998,
+        -0.620984816,
+        -0.614502635,
+        -0.608020453,
+        -0.601538271,
+        -0.59505609,
+        -0.588573908,
+        -0.582091726,
+        -0.575609545,
+        -0.569127363,
+        -0.562645182,
+        -0.556163,
+        -0.549680818,
+        -0.543198637,
+        -0.536716455,
+        -0.530234274,
+        -0.523752092,
+        -0.51726991,
+        -0.510787729,
+        -0.504305547,
+        -0.48128216,
+        -0.457262228,
+        -0.433242296,
+        -0.409222363,
+        -0.385202431,
+        -0.361182499,
+        -0.337162566,
+        -0.313142634,
+        -0.289122702,
+        -0.26510277,
+        -0.241082837,
+        -0.224120094,
+        -0.212714723,
+        -0.201309351,
+        -0.189903979,
+        -0.178498608,
+        -0.167093236,
+        -0.155687865,
+        -0.144282493,
+        -0.132877121,
+        -0.12147175,
+        -0.110066378,
+        -0.098661006,
+        -0.087255635,
+        -0.075850263,
+        -0.064444892,
+        -0.05303952,
+        -0.041634148,
+        -0.030228777,
+        -0.018823405,
+        -0.007418033,
         0.003987338,
         0.01539271,
         1.924208103,
@@ -3105,7 +2976,7 @@ test_that("FuzzyNumberList mEstimator function", {
   array <-
     TrapezoidalFuzzyNumberList$new(c(
       TrapezoidalFuzzyNumber$new(1.015641, 1.094014,  1.2814199,  1.8966197),
-      TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, 0.4205031, 1.3803774)
+      TrapezoidalFuzzyNumber$new(-4.829141,-1.605457, 0.4205031, 1.3803774)
     ))
 
   ## not all mandatory parameters
@@ -3127,24 +2998,24 @@ test_that("FuzzyNumberList mEstimator function", {
   expect_error(array$mEstimator("Huber", "a", 1, 1, 1, 1))
   expect_error(array$mEstimator("Tukey", 4L, 1, 1, 1, 1))
   expect_error(array$mEstimator("Cauchy", 0, 1, 1, 1, 1))
-  expect_error(array$mEstimator("Huber",-1.56, 1, 1, 1, 1))
+  expect_error(array$mEstimator("Huber", -1.56, 1, 1, 1, 1))
   expect_error(array$mEstimator("Tukey", c(1, 2, 3, 4), 1, 1, 1, 1))
   expect_error(array$mEstimator("Tukey", Inf, 1, 1, 1, 1))
-  expect_error(array$mEstimator("Tukey", -Inf, 1, 1, 1, 1))
+  expect_error(array$mEstimator("Tukey",-Inf, 1, 1, 1, 1))
 
   ## invalid delta
   expect_error(array$mEstimator("Huber", 0.5, 0, 1, 1, 1))
   expect_error(array$mEstimator("Tukey", 4, 1, 1, 1, 1))
   expect_error(array$mEstimator("Cauchy", 1, 1L, 1, 1, 1))
   expect_error(array$mEstimator("Huber", 1.56, 1.01, 1, 1, 1))
-  expect_error(array$mEstimator("Tukey", 10, -0.1, 1, 1, 1))
+  expect_error(array$mEstimator("Tukey", 10,-0.1, 1, 1, 1))
 
   ## invalid epsilon
   expect_error(array$mEstimator("Huber", 0.5, 0.1, 0, 1, 1, 1))
   expect_error(array$mEstimator("Tukey", 4, 0.1, 0L, 1, 1, 1))
   expect_error(array$mEstimator("Cauchy", 1, 0.1,  1L, 1, 1, 1))
   expect_error(array$mEstimator("Huber", 1.56, 0.1, "a", 1, 1, 1, 1))
-  expect_error(array$mEstimator("Tukey", 10, 0.1,-0.1, 1, 1, 1))
+  expect_error(array$mEstimator("Tukey", 10, 0.1, -0.1, 1, 1, 1))
 
   ## invalid parameter type
   expect_error(array$mEstimator("Huber", 0.5, 0.5, "a", 1, 1, 1))
@@ -3155,32 +3026,21 @@ test_that("FuzzyNumberList mEstimator function", {
 
   ## invalid parameter a, b or theta
   expect_error(array$mEstimator("Huber", 0.5, 0.5, 1L, 0, 0, 0, 0))
-  expect_error(array$mEstimator("Tukey", 4, 0.9, 2L, "a", 0L, -1.5, Inf))
+  expect_error(array$mEstimator("Tukey", 4, 0.9, 2L, "a", 0L,-1.5, Inf))
   expect_error(array$mEstimator("Cauchy", 1, 0.5555, 3L, 1, list(), 1, 1))
   expect_error(array$mEstimator("Tukey", 10, 0.1, 3L, 1, 2, c()))
-  expect_error(array$mEstimator("Tukey", 10, 0.1, 1, 3L, -Inf, -Inf, Inf))
-  expect_error(array$mEstimator("Tukey", 10, 0.1, 1, 3L, -Inf, -Inf, Inf))
+  expect_error(array$mEstimator("Tukey", 10, 0.1, 1, 3L,-Inf,-Inf, Inf))
+  expect_error(array$mEstimator("Tukey", 10, 0.1, 1, 3L,-Inf,-Inf, Inf))
   expect_error(array$mEstimator("Tukey", 10, 0.1, 1, 3L, Inf, Inf, Inf))
-
-  ## invalid TrapezoidalFuzzyNumberList
-  array <- TrapezoidalFuzzyNumberList$new(c(
-    TrapezoidalFuzzyNumber$new(4, 3, 2, 1),
-    TrapezoidalFuzzyNumber$new(-1,-5, 10, 9)
-  ))
-
-  expect_output(
-    array$mEstimator("Huber", 0.123, 0.5, (10) ^ (-5), 1L),
-    "Not all trapezoidal fuzzy numbers are valid"
-  )
 
   ## all conditions fulfilled
   array <-
     TrapezoidalFuzzyNumberList$new(
       c(
-        TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197),
-        TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774),
+        TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197),
+        TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774),
         TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827),
-        TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, 3.6759589)
+        TrapezoidalFuzzyNumber$new(-5.4843364, -4.5494522, 3.4790804, 3.6759589)
       )
     )
 
@@ -3217,6 +3077,12 @@ test_that("FuzzyNumberList mEstimator function", {
   expect_equal(array$mEstimator("Cauchy", 0.123, 0.5, (10) ^ (-5), 3L),
                2.0753281732635096)
 
+  # x antes de llegar a la función privada weight es 0
+  t <-
+    TrapezoidalFuzzyNumberList$new(c(TrapezoidalFuzzyNumber$new(0, 0, 0, 0)))
+
+  expect_equal(t$mEstimator("Cauchy", 0.123, 0.5, (10) ^ (-5), 3L), 0)
+
   #fijar semilla de aleatorización
   set.seed(1234)
   dataTra1 <- Simulation$new()$simulCase1(3L)
@@ -3244,13 +3110,13 @@ test_that("FuzzyNumberList mEstimator function", {
 
 test_that("TrapezoidalFuzzyNumberList getDimension method", {
   tra1 <-
-    TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197)
+    TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197)
   tra2 <-
-    TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774)
+    TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774)
   tra3 <-
     TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827)
   tra4 <-
-    TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, 3.6759589)
+    TrapezoidalFuzzyNumber$new(-5.4843364, -4.5494522, 3.4790804, 3.6759589)
 
   array <-
     TrapezoidalFuzzyNumberList$new(c(tra1, tra2, tra3, tra4))
@@ -3277,13 +3143,13 @@ test_that(
   "TrapezoidalFuzzyNumberList addTrapezoidalFuzzyNumber and removeTrapezoidalFuzzyNumber methods",
   {
     tra1 <-
-      TrapezoidalFuzzyNumber$new(-2.015641,-1.094014,  1.2814199,  1.8966197)
+      TrapezoidalFuzzyNumber$new(-2.015641, -1.094014,  1.2814199,  1.8966197)
     tra2 <-
-      TrapezoidalFuzzyNumber$new(-4.829141,-1.605457,-0.4205031,-0.3803774)
+      TrapezoidalFuzzyNumber$new(-4.829141, -1.605457, -0.4205031, -0.3803774)
     tra3 <-
       TrapezoidalFuzzyNumber$new(-0.1311532,  0.3400337, 0.3976215, 0.7372827)
     tra4 <-
-      TrapezoidalFuzzyNumber$new(-5.4843364,-4.5494522, 3.4790804, 3.6759589)
+      TrapezoidalFuzzyNumber$new(-5.4843364, -4.5494522, 3.4790804, 3.6759589)
 
     array <-
       TrapezoidalFuzzyNumberList$new(c(tra1, tra2, tra3, tra4))
@@ -3308,7 +3174,7 @@ test_that(
     ## valid parameter
     tra <- TrapezoidalFuzzyNumber$new(1, 2, 3, 4)
     array$addTrapezoidalFuzzyNumber(tra)
-    expect_equal(length(array$numbers), 5)
+    expect_equal(array$getLength(), 5)
     expect_equal(array$getDimension(5L), tra)
 
     ## REMOVETRAPEZOIDALFUZZYNUMBER
@@ -3322,20 +3188,46 @@ test_that(
 
     ## valid parameter
     array$removeTrapezoidalFuzzyNumber(2L)
-    expect_equal(length(array$numbers), 4)
+    expect_equal(array$getLength(), 4)
     expect_equal(array$getDimension(2L), tra3)
 
     array$removeTrapezoidalFuzzyNumber(1L)
-    expect_equal(length(array$numbers), 3)
+    expect_equal(array$getLength(), 3)
     expect_equal(array$getDimension(1L), tra3)
 
     array$removeTrapezoidalFuzzyNumber(3L)
-    expect_equal(length(array$numbers), 2)
+    expect_equal(array$getLength(), 2)
     expect_equal(array$getDimension(2L), tra4)
 
     array$removeTrapezoidalFuzzyNumber(1L)
-    expect_equal(length(array$numbers), 1)
+    expect_equal(array$getLength(), 1)
     expect_equal(array$getDimension(1L), tra4)
+
+  }
+)
+
+test_that(
+  "TrapezoidalFuzzyNumberList plot method with a list of fuzzy numbers and blue color specifief",
+  {
+    p1 <-
+      TrapezoidalFuzzyNumberList$new(c(
+        TrapezoidalFuzzyNumber$new(-4,-3,-2,-1),
+        TrapezoidalFuzzyNumber$new(-6, 0, 1, 4)
+      ))$plot("blue")
+    vdiffr::expect_doppelganger("TrapezoidalFuzzyNumber", p1)
+
+  }
+)
+
+test_that(
+  "TrapezoidalFuzzyNumberList plot method with a list of fuzzy numbers and several color specified",
+  {
+    p1 <-
+      TrapezoidalFuzzyNumberList$new(c(
+        TrapezoidalFuzzyNumber$new(-4,-3,-2,-1),
+        TrapezoidalFuzzyNumber$new(-6, 0, 1, 4)
+      ))$plot(palette()[2:8])
+    vdiffr::expect_doppelganger("TrapezoidalFuzzyNumber", p1)
 
   }
 )

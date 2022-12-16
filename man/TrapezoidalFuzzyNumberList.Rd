@@ -2,10 +2,9 @@
 % Please edit documentation in R/TrapezoidalFuzzyNumberList.R
 \name{TrapezoidalFuzzyNumberList}
 \alias{TrapezoidalFuzzyNumberList}
-\title{'TrapezoidalFuzzyNumberList' is a child class of 'StatList'. It contains
-'TrapezoidalFuzzyNumbers'.}
+\title{'TrapezoidalFuzzyNumberList' is a child class of 'StatList'.}
 \description{
-'TrapezoidalFuzzyNumberList' can contain valid and not valid 'TrapezoidalFuzzyNumbers'.
+'TrapezoidalFuzzyNumberList' must contain valid 'TrapezoidalFuzzyNumbers'.
 This class implements a version of the empty 'StatList' methods.
 }
 \note{
@@ -68,25 +67,6 @@ F$add(U,2L)
 F=Simulation$new()$simulCase2(10L)
 U=Simulation$new()$simulCase2(2L)
 F$add(U,2L)
-
-## ------------------------------------------------
-## Method `TrapezoidalFuzzyNumberList$checking`
-## ------------------------------------------------
-
-# Example 1:
-TrapezoidalFuzzyNumberList$new(c(
-TrapezoidalFuzzyNumber$new(1, 2, 3, 4),
-TrapezoidalFuzzyNumber$new(-8, -6, -4, -2),
-TrapezoidalFuzzyNumber$new(-1, -1, 2, 3),
-TrapezoidalFuzzyNumber$new(1, 2, 3, 3)))$checking()
-
-# Example 2:
-TrapezoidalFuzzyNumberList$new(c(
-TrapezoidalFuzzyNumber$new(1, 2, 3, 4),
-TrapezoidalFuzzyNumber$new(-8, -6, -4, -2),
-TrapezoidalFuzzyNumber$new(1, 0, 2, 3),
-TrapezoidalFuzzyNumber$new(-1, 0, -0.5, 0),
-TrapezoidalFuzzyNumber$new(-2, -4, -6, -8)))$checking()
 
 ## ------------------------------------------------
 ## Method `TrapezoidalFuzzyNumberList$dthetaphi`
@@ -481,6 +461,41 @@ TrapezoidalFuzzyNumber$new(2,3,4,4)))$getDimension(1L)
 # Example 2:
 TrapezoidalFuzzyNumberList$new(c(TrapezoidalFuzzyNumber$new(1,2,3,4),
 TrapezoidalFuzzyNumber$new(2,3,4,4)))$getDimension(2L)
+
+## ------------------------------------------------
+## Method `TrapezoidalFuzzyNumberList$plot`
+## ------------------------------------------------
+
+# Example 1:
+TrapezoidalFuzzyNumberList$new(c(TrapezoidalFuzzyNumber$new(1,2,3,4),
+TrapezoidalFuzzyNumber$new(2,3,4,5)))$plot()
+
+# Example 2:
+TrapezoidalFuzzyNumberList$new(c(TrapezoidalFuzzyNumber$new(-4,-3,-2,-1),
+TrapezoidalFuzzyNumber$new(-6,0,1,4)))$plot()
+
+# Example 3:
+Simulation$new()$simulCase1(8L)$plot(palette())
+
+# Example 4:
+Simulation$new()$simulCase1(5L)$plot(palette()[2:6])
+
+## ------------------------------------------------
+## Method `TrapezoidalFuzzyNumberList$getLength`
+## ------------------------------------------------
+
+# Example 1:
+TrapezoidalFuzzyNumberList$new(c(TrapezoidalFuzzyNumber$new(1,2,3,4))
+)$getLength()
+
+# Example 2:
+TrapezoidalFuzzyNumberList$new(c(TrapezoidalFuzzyNumber$new(-4,-3,-2,-1),
+TrapezoidalFuzzyNumber$new(-6,0,1,4)))$getLength()
+
+# Example 3:
+TrapezoidalFuzzyNumberList$new(c(TrapezoidalFuzzyNumber$new(-4,-3,-2,-1),
+TrapezoidalFuzzyNumber$new(-6,0,1,4),TrapezoidalFuzzyNumber$new(1,2,3,4))
+)$getLength()
 }
 \references{
 [1] De la Rosa de Saa, S.; Gil, M.A.; Gonzalez-Rodriguez, G.; Lopez, M.T.; Lubiano M.A.: Fuzzy
@@ -525,19 +540,11 @@ Sara de la Rosa de Saa
 \section{Super class}{
 \code{\link[FuzzyStatTraEOO:StatList]{FuzzyStatTraEOO::StatList}} -> \code{TrapezoidalFuzzyNumberList}
 }
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{numbers}}{is a collection of trapezoidal fuzzy numbers.}
-}
-\if{html}{\out{</div>}}
-}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-TrapezoidalFuzzyNumberList-new}{\code{TrapezoidalFuzzyNumberList$new()}}
 \item \href{#method-TrapezoidalFuzzyNumberList-add}{\code{TrapezoidalFuzzyNumberList$add()}}
-\item \href{#method-TrapezoidalFuzzyNumberList-checking}{\code{TrapezoidalFuzzyNumberList$checking()}}
 \item \href{#method-TrapezoidalFuzzyNumberList-dthetaphi}{\code{TrapezoidalFuzzyNumberList$dthetaphi()}}
 \item \href{#method-TrapezoidalFuzzyNumberList-dwablphi}{\code{TrapezoidalFuzzyNumberList$dwablphi()}}
 \item \href{#method-TrapezoidalFuzzyNumberList-gsi}{\code{TrapezoidalFuzzyNumberList$gsi()}}
@@ -557,6 +564,8 @@ Sara de la Rosa de Saa
 \item \href{#method-TrapezoidalFuzzyNumberList-addTrapezoidalFuzzyNumber}{\code{TrapezoidalFuzzyNumberList$addTrapezoidalFuzzyNumber()}}
 \item \href{#method-TrapezoidalFuzzyNumberList-removeTrapezoidalFuzzyNumber}{\code{TrapezoidalFuzzyNumberList$removeTrapezoidalFuzzyNumber()}}
 \item \href{#method-TrapezoidalFuzzyNumberList-getDimension}{\code{TrapezoidalFuzzyNumberList$getDimension()}}
+\item \href{#method-TrapezoidalFuzzyNumberList-plot}{\code{TrapezoidalFuzzyNumberList$plot()}}
+\item \href{#method-TrapezoidalFuzzyNumberList-getLength}{\code{TrapezoidalFuzzyNumberList$getLength()}}
 \item \href{#method-TrapezoidalFuzzyNumberList-clone}{\code{TrapezoidalFuzzyNumberList$clone()}}
 }
 }
@@ -571,7 +580,7 @@ Sara de la Rosa de Saa
 \if{latex}{\out{\hypertarget{method-TrapezoidalFuzzyNumberList-new}{}}}
 \subsection{Method \code{new()}}{
 This method creates a 'TrapezoidalFuzzyNumberList' object with all the attributes
-set.
+set if the 'TrapezoidalFuzzyNumbers' are valid.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TrapezoidalFuzzyNumberList$new(numbers = NA)}\if{html}{\out{</div>}}
 }
@@ -588,7 +597,8 @@ See examples.
 }
 
 \subsection{Returns}{
-The TrapezoidalFuzzyNumberList object created with all attributes set.
+The TrapezoidalFuzzyNumberList object created with all attributes
+set if the 'TrapezoidalFuzzyNumbers' are valid.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -608,10 +618,9 @@ TrapezoidalFuzzyNumber$new(1, 2, 3, 3)))
 \subsection{Method \code{add()}}{
 This method calculates the scale measure Average Distance Deviation (ADD)
 of a 'TrapezoidalFuzzyNumberList' with respect to a 'TrapezoidalFuzzyNumberList'
-or with respect to a 'FuzzyNumberList' containing a unique fuzzy number.
+or with respect to a 'FuzzyNumberList' containing a unique valid fuzzy number.
 The employed metric in the calculation can be the 1-norm distance, the mid/spr
-distance or the (\eqn{\phi},\eqn{\theta})-wabl/ldev/rdev distance. The method first checks
-if both 'StatLists' are in the correct form (tested by the checking method).
+distance or the (\eqn{\phi},\eqn{\theta})-wabl/ldev/rdev distance.
 See De la Rosa de Saa et al. (2017) [2].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TrapezoidalFuzzyNumberList$add(s = NA, type = NA, a = 1, b = 1, theta = 1)}\if{html}{\out{</div>}}
@@ -620,8 +629,8 @@ See De la Rosa de Saa et al. (2017) [2].
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{s}}{is a TrapezoidalFuzzyNumberList containing a unique TrapezoidalFuzzyNumber
-or it is a FuzzyNumberList containing a unique FuzzyNumber.}
+\item{\code{s}}{is a TrapezoidalFuzzyNumberList containing a unique valid TrapezoidalFuzzyNumber
+or it is a FuzzyNumberList containing a unique valid FuzzyNumber.}
 
 \item{\code{type}}{positive integer 1, 2 or 3: if type==1, the 1-norm distance will
 be considered in the calculation of the measure ADD. If type==2, the mid/spr
@@ -700,62 +709,11 @@ F$add(U,2L)
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TrapezoidalFuzzyNumberList-checking"></a>}}
-\if{latex}{\out{\hypertarget{method-TrapezoidalFuzzyNumberList-checking}{}}}
-\subsection{Method \code{checking()}}{
-This method checks that the numbers that contain this class are given in the
-correct format, checks that all individual 'TrapezoidalFuzzyNumber' is valid
-according its conditions.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TrapezoidalFuzzyNumberList$checking(verbose = TRUE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{verbose}}{if TRUE the messages are written to the console unless the
-user actively decides to set verbose=FALSE.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Details}{
-See examples.
-}
-
-\subsection{Returns}{
-TRUE if all TrapezoidalFuzzyNumbers are valid. Otherwise, FALSE.
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{# Example 1:
-TrapezoidalFuzzyNumberList$new(c(
-TrapezoidalFuzzyNumber$new(1, 2, 3, 4),
-TrapezoidalFuzzyNumber$new(-8, -6, -4, -2),
-TrapezoidalFuzzyNumber$new(-1, -1, 2, 3),
-TrapezoidalFuzzyNumber$new(1, 2, 3, 3)))$checking()
-
-# Example 2:
-TrapezoidalFuzzyNumberList$new(c(
-TrapezoidalFuzzyNumber$new(1, 2, 3, 4),
-TrapezoidalFuzzyNumber$new(-8, -6, -4, -2),
-TrapezoidalFuzzyNumber$new(1, 0, 2, 3),
-TrapezoidalFuzzyNumber$new(-1, 0, -0.5, 0),
-TrapezoidalFuzzyNumber$new(-2, -4, -6, -8)))$checking()
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TrapezoidalFuzzyNumberList-dthetaphi"></a>}}
 \if{latex}{\out{\hypertarget{method-TrapezoidalFuzzyNumberList-dthetaphi}{}}}
 \subsection{Method \code{dthetaphi()}}{
 This method calculates the mid/spr distance between the 'TrapezoidalFuzzyNumbers'
-contained in the current object and the one passed as parameter, which should
-be given in the desired format. For this, the method first checks if the
-input 'TrapezoidalFuzzyNumberList' s is in the correct form (tested by the
-checking method).
+contained in the current object and the one passed as parameter.
 See Lubiano et al. (2016) [5].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TrapezoidalFuzzyNumberList$dthetaphi(s = NA, a = 1, b = 1, theta = 1)}\if{html}{\out{</div>}}
@@ -764,9 +722,8 @@ See Lubiano et al. (2016) [5].
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{s}}{TrapezoidalFuzzyNumberList containing TrapezoidalFuzzyNumbers characterized
-by their four values inf0, inf1, sup1, sup0. The method first calls checking
-to check if the TrapezoidalFuzzyNumberList has the correct format.}
+\item{\code{s}}{TrapezoidalFuzzyNumberList containing valid TrapezoidalFuzzyNumbers
+characterized by their four values inf0, inf1, sup1, sup0.}
 
 \item{\code{a}}{real number > 0, by default a=1. It is the first parameter of a
 beta distribution which corresponds to a weighting measure on [0,1].}
@@ -785,8 +742,7 @@ See examples.
 
 \subsection{Returns}{
 a matrix containing the mid/spr distances between the two previous
-mentioned TrapezoidalFuzzyNumberLists. If the body's method inner conditions
-are not met, NA will be returned.
+mentioned TrapezoidalFuzzyNumberLists.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -817,10 +773,7 @@ F$dthetaphi(S,1,5,1)
 \if{latex}{\out{\hypertarget{method-TrapezoidalFuzzyNumberList-dwablphi}{}}}
 \subsection{Method \code{dwablphi()}}{
 This method calculates the (\eqn{\phi},\eqn{\theta})-wabl/ldev/rdev distance
-between the 'TrapezoidalFuzzyNumbers' contained in two 'TrapezoidalFuzzyNumberLists',
-which should be given in the desired format. For this, the method first
-checks if the two 'TrapezoidalFuzzyNumberLists' are in the correct form (tested
-by the checking method).
+between the 'TrapezoidalFuzzyNumbers' contained in two 'TrapezoidalFuzzyNumberLists'.
 See Sinova et al. (2013) [6] and Sinova et al. (2016) [10].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TrapezoidalFuzzyNumberList$dwablphi(s = NA, a = 1, b = 1, theta = 1)}\if{html}{\out{</div>}}
@@ -829,9 +782,8 @@ See Sinova et al. (2013) [6] and Sinova et al. (2016) [10].
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{s}}{TrapezoidalFuzzyNumberList containing TrapezoidalFuzzyNumbers characterized
-by their four values inf0, inf1, sup1, sup0. The method first calls checking
-to check if the TrapezoidalFuzzyNumberList has the correct format..}
+\item{\code{s}}{TrapezoidalFuzzyNumberList containing valid TrapezoidalFuzzyNumbers
+characterized by their four values inf0, inf1, sup1, sup0.}
 
 \item{\code{a}}{real number > 0, by default a=1. It is the first parameter of a
 beta distribution which corresponds to a weighting measure on [0,1].}
@@ -850,8 +802,7 @@ See examples.
 
 \subsection{Returns}{
 a matrix containing the (\eqn{\phi},\eqn{\theta})-wabl/ldev/rdev distances
-between the two previous mentioned TrapezoidalFuzzyNumberLists. If the body's
-method inner conditions are not met, NA will be returned.
+between the two previous mentioned TrapezoidalFuzzyNumberLists.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -883,8 +834,6 @@ F$dwablphi(S)
 \subsection{Method \code{gsi()}}{
 This method calculates the Gini-Simpson diversity index for a sample of
 'TrapezoidalFuzzyNumbers' contained in a 'TrapezoidalFuzzyNumberList'.
-The method first checks if the 'TrapezoidalFuzzyNumberList' is given in
-the correct form (tested by the checking method).
 See De la Rosa de Saa et al. (2015) [1].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TrapezoidalFuzzyNumberList$gsi()}\if{html}{\out{</div>}}
@@ -895,8 +844,7 @@ See examples.
 }
 
 \subsection{Returns}{
-the Gini-Simpson diversity index, which is a real number. If the body's
-method inner conditions are not met, NA will be returned.
+the Gini-Simpson diversity index, which is a real number.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -919,9 +867,7 @@ F$gsi()
 \subsection{Method \code{hyperI()}}{
 This method calculates the hyperbolic inequality index for a sample of
 'TrapezoidalFuzzyNumbers' contained in a 'TrapezoidalFuzzyNumberList'.
-The method first checks if the 'TrapezoidalFuzzyNumberList' is given in
-the correct form (tested by the checking method) and if all 'TrapezoidalFuzzyNumbers'
-are positive.
+The method checks if all 'TrapezoidalFuzzyNumbers' are positive.
 See De la Rosa de Saa et al. (2015) [1] and Lubiano and Gil (2002) [4].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TrapezoidalFuzzyNumberList$hyperI(c = 0, verbose = TRUE)}\if{html}{\out{</div>}}
@@ -982,8 +928,6 @@ in a 'TrapezoidalFuzzyNumberList' containing 'TrapezoidalFuzzyNumbers'.
 For computing the M-estimator, a method called “iterative reweighting” is
 used. The employed metric in the M-equation can be the 1-norm distance, the
 mid/spr distance or the (\eqn{\phi},\eqn{\theta})-wabl/ldev/rdev distance.
-The method first checks if the 'TrapezoidalFuzzyNumberList' is given in the
-correct form (tested by the checking method).
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TrapezoidalFuzzyNumberList$mEstimator(
   f = NA,
@@ -1032,8 +976,7 @@ See examples.
 }
 
 \subsection{Returns}{
-the value of the M-estimator of scale, which is a real number. If the
-body's method inner conditions are not met, NA will be returned.
+the value of the M-estimator of scale, which is a real number.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1071,10 +1014,9 @@ F$mEstimator("Huber",estInitial,delta,epsilon,1L)
 \subsection{Method \code{mdd()}}{
 This method calculates the scale measure Median Distance Deviation (MDD)
 of a 'TrapezoidalFuzzyNumberList' with respect to a 'TrapezoidalFuzzyNumberList'
-or with respect to a 'FuzzyNumberList' with a unique fuzzy number.
+or with respect to a 'FuzzyNumberList' with a unique valid fuzzy number.
 The employed metric in the calculation can be the 1-norm distance, the mid/spr
-distance or the (\eqn{\phi},\eqn{\theta})-wabl/ldev/rdev distance. The method first checks
-if both 'StatLists' are in the correct form (tested by the checking method).
+distance or the (\eqn{\phi},\eqn{\theta})-wabl/ldev/rdev distance.
 See De la Rosa de Saa et al. (2015) [2] and De la Rosa de Saa et al. (2021) [3].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TrapezoidalFuzzyNumberList$mdd(s = NA, type = NA, a = 1, b = 1, theta = 1)}\if{html}{\out{</div>}}
@@ -1167,9 +1109,8 @@ F$mdd(U,2L)
 \if{latex}{\out{\hypertarget{method-TrapezoidalFuzzyNumberList-mean}{}}}
 \subsection{Method \code{mean()}}{
 Given a sample of 'TrapezoidalFuzzyNumbers' contained in a 'TrapezoidalFuzzyNumberList',
-the method calculates the Aumann-type mean of these numbers (which is a 'TrapezoidalFuzzyNumber'
-too). The method first checks if the 'TrapezoidalFuzzyNumberList' is given
-in the correct form (tested by the checking method).
+the method calculates the Aumann-type mean of these numbers (which is a
+'TrapezoidalFuzzyNumber' too).
 See Sinova et al. (2015) [7].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TrapezoidalFuzzyNumberList$mean()}\if{html}{\out{</div>}}
@@ -1181,8 +1122,7 @@ See examples.
 
 \subsection{Returns}{
 the Aumann-type mean, given as a TrapezoidalFuzzyNumber contained in
-a TrapezoidalFuzzyNumberList. If the body'smethod inner conditions are not met,
-NA will be returned.
+a TrapezoidalFuzzyNumberList.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1211,9 +1151,7 @@ F$mean()
 Given a sample of 'TrapezoidalFuzzyNumbers' contained in a 'TrapezoidalFuzzyNumberList',
 the method calculates the 1-norm median of these numbers, characterized
 by means of nl equidistant \eqn{\alpha}-levels (by default nl=101), including
-always the 0 and 1 levels, with their infimum and supremum values. The function
-first checks if the 'TrapezoidalFuzzyNumberList' is given in the correct form
-(tested by the checking method).
+always the 0 and 1 levels, with their infimum and supremum values.
 See Sinova et al. (2012) [8].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TrapezoidalFuzzyNumberList$median1Norm(nl = 101L)}\if{html}{\out{</div>}}
@@ -1222,8 +1160,8 @@ See Sinova et al. (2012) [8].
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{nl}}{positive integer, by default nl=101. It indicates the number of desired
-\eqn{\alpha}-levels for characterizing the 1-norm median.}
+\item{\code{nl}}{integer greater or equal to 2, by default nl=101. It indicates the
+number of desired \eqn{\alpha}-levels for characterizing the 1-norm median.}
 }
 \if{html}{\out{</div>}}
 }
@@ -1233,8 +1171,7 @@ See examples.
 
 \subsection{Returns}{
 the 1-norm median, given in form of a FuzzyNumber contained in a
-FuzzyNumberList. If the body's  method inner conditions are not met, NA will
-be returned.
+FuzzyNumberList.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1265,8 +1202,6 @@ Given a sample of 'TrapezoidalFuzzyNumbers' contained in a 'TrapezoidalFuzzyNumb
 the method calculates the \eqn{\phi}-wabl/ldev/rdev median of these numbers,
 characterized by means of nl equidistant \eqn{\alpha}-levels (by default nl=101),
 including always the 0 and 1 levels, with their infimum and supremum values.
-The method first checks if the 'TrapezoidalFuzzyNumberList' is given in the
-correct form (tested by the checking method).
 See Sinova et al. (2013) [6] and Sinova et al. (2016) [10].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TrapezoidalFuzzyNumberList$medianWabl(nl = 101L, a = 1, b = 1)}\if{html}{\out{</div>}}
@@ -1275,8 +1210,9 @@ See Sinova et al. (2013) [6] and Sinova et al. (2016) [10].
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{nl}}{positive integer, by default nl=101. It indicates the number of desired
-\eqn{\alpha}-levels for characterizing the \eqn{\phi}-wabl/ldev/rdev median.}
+\item{\code{nl}}{integer greater or equal to 2, by default nl=101. It indicates the
+number of desired \eqn{\alpha}-levels for characterizing the \eqn{\phi}-wabl/ldev/rdev
+median.}
 
 \item{\code{a}}{real number > 0, by default a=1. It is the first parameter of a
 beta distribution which corresponds to a weighting measure on [0,1].}
@@ -1292,8 +1228,7 @@ See examples.
 
 \subsection{Returns}{
 the \eqn{\phi}-wabl/ldev/rdev median in form of a FuzzyNUmber given
-in a FuzzyNumberList. If the body's method inner conditions are not met, NA
-will be returned.
+in a FuzzyNumberList.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1328,9 +1263,7 @@ F$medianWabl(3L)
 This method calculates scale measure Qn for a matrix of 'TrapezoidalFuzzyNumbers'
 contained in the current 'TrapezoidalFuzzyNumber'. The  employed metric
 in the calculation can be the 1-norm distance, the mid/spr distance or the
-(\eqn{\phi},\eqn{\theta})-wabl/ldev/rdev distance. The method first checks
-if the 'TrapezoidalFuzzyNumberList' is given in the correct form (tested
-by the checking method).
+(\eqn{\phi},\eqn{\theta})-wabl/ldev/rdev distance.
 See De la Rosa de Saa et al. (2021) [3].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TrapezoidalFuzzyNumberList$qn(type = NA, a = 1, b = 1, theta = 1)}\if{html}{\out{</div>}}
@@ -1363,8 +1296,7 @@ See examples.
 }
 
 \subsection{Returns}{
-the scale measure Qn, which is a real number. If the body's
-method inner conditions are not met, NA will be returned.
+the scale measure Qn, which is a real number.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1397,9 +1329,7 @@ F$qn(3L,1,1,1)
 \if{latex}{\out{\hypertarget{method-TrapezoidalFuzzyNumberList-rho1}{}}}
 \subsection{Method \code{rho1()}}{
 This method calculates the 1-norm distance between the 'TrapezoidalFuzzyNumbers'
-contained in two 'TrapezoidalFuzzyNumberLists', which should be given in the
-desired format. For this, the method first checks if the two 'TrapezoidalFuzzyNumberLists'
-are in the correct form (tested by the checking method).
+contained in two 'TrapezoidalFuzzyNumberLists'.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TrapezoidalFuzzyNumberList$rho1(s = NA)}\if{html}{\out{</div>}}
 }
@@ -1407,9 +1337,8 @@ are in the correct form (tested by the checking method).
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{s}}{TrapezoidalFuzzyNumberList containing TrapezoidalFuzzyNumbers
-characterized by their four values inf0, inf1, sup1, sup0. The method first
-calls checking to check if it has the correct format.}
+\item{\code{s}}{TrapezoidalFuzzyNumberList containing valid TrapezoidalFuzzyNumbers
+characterized by their four values inf0, inf1, sup1, sup0.}
 }
 \if{html}{\out{</div>}}
 }
@@ -1419,8 +1348,7 @@ See examples.
 
 \subsection{Returns}{
 a matrix containing the 1-norm distances between the two previous
-mentioned TrapezoidalFuzzyNumberLists. If the body's method inner conditions
-are not met, NA will be returned.
+mentioned TrapezoidalFuzzyNumberLists.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1448,9 +1376,7 @@ S$rho1(F)
 This method calculates scale measure Sn for a matrix of 'TrapezoidalFuzzyNumbers'
 contained in the current 'TrapezoidalFuzzyNumber'. The employed metric
 in the calculation can be the 1-norm distance, the mid/spr distance or the
-(\eqn{\phi},\eqn{\theta})-wabl/ldev/rdev distance. The method first checks
-if the 'TrapezoidalFuzzyNumberList' is given in the correct form (tested
-by the checking method).
+(\eqn{\phi},\eqn{\theta})-wabl/ldev/rdev distance.
 See De la Rosa de Saa et al. (2021) [3].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TrapezoidalFuzzyNumberList$sn(type = NA, a = 1, b = 1, theta = 1)}\if{html}{\out{</div>}}
@@ -1483,8 +1409,7 @@ See examples.
 }
 
 \subsection{Returns}{
-the scale measure Sn, which is a real number. If the body's
-method inner conditions are not met, NA will be returned.
+the scale measure Sn, which is a real number.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1519,9 +1444,7 @@ F$sn(2L,5,1,0.5)
 This method calculates scale measure Tn for a matrix of 'TrapezoidalFuzzyNumbers'
 contained in the current 'TrapezoidalFuzzyNumber'. The employed metric
 in the calculation can be the 1-norm distance, the mid/spr distance or the
-(\eqn{\phi},\eqn{\theta})-wabl/ldev/rdev distance. The method first checks
-if the 'TrapezoidalFuzzyNumberList' is given in the correct form (tested
-by the checking method).
+(\eqn{\phi},\eqn{\theta})-wabl/ldev/rdev distance.
 See De la Rosa de Saa et al. (2021) [3].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TrapezoidalFuzzyNumberList$tn(type = NA, a = 1, b = 1, theta = 1)}\if{html}{\out{</div>}}
@@ -1554,8 +1477,7 @@ See examples.
 }
 
 \subsection{Returns}{
-the scale measure Tn, which is a real number. If the body's
-method inner conditions are not met, NA will be returned.
+the scale measure Tn, which is a real number.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1587,13 +1509,11 @@ F$tn(1L)
 \if{html}{\out{<a id="method-TrapezoidalFuzzyNumberList-transfTra"></a>}}
 \if{latex}{\out{\hypertarget{method-TrapezoidalFuzzyNumberList-transfTra}{}}}
 \subsection{Method \code{transfTra()}}{
-This method transforms a 'TrapezoidalFuzzyNumberList' containing 'TrapezoidalFuzzyNumbers'
-characterized by their four values inf0, inf1, sup1, sup0 into a 'FuzzyNumberList'
-containing these same amount of fuzzy numbers, characterized by means of
-nl equidistant \eqn{\alpha}-levels each (by default nl=101). The method first
-checks if the 'TrapezoidalFuzzyNumberList' is given in the correct form (tested
-by its method checking). In case yes, the method returns a 'FuzzyNumberList'
-given in the format explained in its method checking.
+This method transforms a 'TrapezoidalFuzzyNumberList' containing valid
+'TrapezoidalFuzzyNumbers' characterized by their four values inf0, inf1,
+sup1, sup0 into a 'FuzzyNumberList' containing these same amount of fuzzy
+numbers, characterized by means of nl equidistant \eqn{\alpha}-levels each
+(by default nl=101).
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TrapezoidalFuzzyNumberList$transfTra(nl = 101L)}\if{html}{\out{</div>}}
 }
@@ -1601,8 +1521,9 @@ given in the format explained in its method checking.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{nl}}{positive integer, by default nl=101. It indicates the number of desired
-\eqn{\alpha}-levels for characterizing the trapezoidal fuzzy numbers.}
+\item{\code{nl}}{integer greater or equal to 2, by default nl=101. It indicates the
+number of desired \eqn{\alpha}-levels for characterizing the trapezoidal
+fuzzy numbers.}
 }
 \if{html}{\out{</div>}}
 }
@@ -1612,8 +1533,7 @@ See examples.
 
 \subsection{Returns}{
 a FuzzyNumberList containing the transformed TrapezoidalFuzzyNumbers
-into FuzzyNumbers. If the body's method inner conditions are not met, NA will
-be returned.
+into FuzzyNumbers.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1647,8 +1567,7 @@ F$transfTra(200L)
 \subsection{Method \code{var()}}{
 Given a sample of 'TrapezoidalFuzzyNumbers' contained in a 'TrapezoidalFuzzyNumberList',
 the method calculates the variance of these numbers with respect to the
-mid/spr distance. The method first checks if the 'TrapezoidalFuzzyNumberList'
-is given in the correct form (tested by the checking method).
+mid/spr distance.
 See De la Rosa de Saa et al. (2017) [2].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TrapezoidalFuzzyNumberList$var(a = 1, b = 1, theta = 1)}\if{html}{\out{</div>}}
@@ -1674,8 +1593,7 @@ See examples.
 
 \subsection{Returns}{
 the variance of the sample with respect to the mid/spr distance,
-which is a real number. If the body's method inner conditions are not met,
-NA will be returned.
+which is a real number.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1709,8 +1627,6 @@ F$var(1,1,1)
 \subsection{Method \code{wablphi()}}{
 Given a sample of 'TrapezoidalFuzzyNumbers' contained in a 'TrapezoidalFuzzyNumberList',
 the method calculates the \eqn{\phi}-wabl value for each of these numbers.
-The method first checks if the 'TrapezoidalFuzzyNumberList' is given in the
-correct form (tested by the checking method).
 See Sinova et al. (2014) [9].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TrapezoidalFuzzyNumberList$wablphi(a = 1, b = 1)}\if{html}{\out{</div>}}
@@ -1733,7 +1649,6 @@ See examples.
 
 \subsection{Returns}{
 a vector giving the \eqn{\phi}-wabl values of each TrapezoidalFuzzyNumber.
-If the body's method inner conditions are not met, NA will be returned.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1879,6 +1794,92 @@ TrapezoidalFuzzyNumber$new(2,3,4,4)))$getDimension(1L)
 # Example 2:
 TrapezoidalFuzzyNumberList$new(c(TrapezoidalFuzzyNumber$new(1,2,3,4),
 TrapezoidalFuzzyNumber$new(2,3,4,4)))$getDimension(2L)
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TrapezoidalFuzzyNumberList-plot"></a>}}
+\if{latex}{\out{\hypertarget{method-TrapezoidalFuzzyNumberList-plot}{}}}
+\subsection{Method \code{plot()}}{
+This method shows in a graph the values of the attribute numbers of the
+corresponding 'TrapezoidalFuzzyNumberList'.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TrapezoidalFuzzyNumberList$plot(color = "grey")}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{color}}{is the color of the lines representing the numbers to be shown
+in the graph. The default value is grey, other colors can be specified, the
+option palette() too.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Details}{
+See examples.
+}
+
+\subsection{Returns}{
+a graph with the values of the attribute numbers of the corresponding
+'TrapezoidalFuzzyNumberList'.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{# Example 1:
+TrapezoidalFuzzyNumberList$new(c(TrapezoidalFuzzyNumber$new(1,2,3,4),
+TrapezoidalFuzzyNumber$new(2,3,4,5)))$plot()
+
+# Example 2:
+TrapezoidalFuzzyNumberList$new(c(TrapezoidalFuzzyNumber$new(-4,-3,-2,-1),
+TrapezoidalFuzzyNumber$new(-6,0,1,4)))$plot()
+
+# Example 3:
+Simulation$new()$simulCase1(8L)$plot(palette())
+
+# Example 4:
+Simulation$new()$simulCase1(5L)$plot(palette()[2:6])
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TrapezoidalFuzzyNumberList-getLength"></a>}}
+\if{latex}{\out{\hypertarget{method-TrapezoidalFuzzyNumberList-getLength}{}}}
+\subsection{Method \code{getLength()}}{
+This method returns the number of dimensions that are equivalent to the number
+of 'TrapezoidalFuzzyNumbers' in the corresponding 'TrapezoidalFuzzyNumberList'.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TrapezoidalFuzzyNumberList$getLength()}\if{html}{\out{</div>}}
+}
+
+\subsection{Details}{
+See examples.
+}
+
+\subsection{Returns}{
+the number of dimensions that are equivalent to the number of
+'TrapezoidalFuzzyNumbers' in the corresponding 'TrapezoidalFuzzyNumberList'.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{# Example 1:
+TrapezoidalFuzzyNumberList$new(c(TrapezoidalFuzzyNumber$new(1,2,3,4))
+)$getLength()
+
+# Example 2:
+TrapezoidalFuzzyNumberList$new(c(TrapezoidalFuzzyNumber$new(-4,-3,-2,-1),
+TrapezoidalFuzzyNumber$new(-6,0,1,4)))$getLength()
+
+# Example 3:
+TrapezoidalFuzzyNumberList$new(c(TrapezoidalFuzzyNumber$new(-4,-3,-2,-1),
+TrapezoidalFuzzyNumber$new(-6,0,1,4),TrapezoidalFuzzyNumber$new(1,2,3,4))
+)$getLength()
 }
 \if{html}{\out{</div>}}
 

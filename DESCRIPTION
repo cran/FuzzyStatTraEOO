@@ -2,8 +2,8 @@ Package: FuzzyStatTraEOO
 Type: Package
 Title: Package 'FuzzyStatTra' in Encapsulated Object Oriented
         Programming
-Version: 0.1.0
-Date: 2022-09-23
+Version: 1.0
+Date: 2022-12-12
 Authors@R: c(
     person("Andrea",
            "García Cernuda",
@@ -12,7 +12,7 @@ Authors@R: c(
     person("Asun",
            "Lubiano",
            email = "lubiano@uniovi.es",
-           role = "ctb",
+           role = "aut",
            comment = c(ORCID = "0000-0002-9847-5164")),
     person("Sara",
            "de la Rosa de Sáa",
@@ -28,7 +28,8 @@ Description: The aim of the package is to contain the package 'FuzzyStatTra' in
     This object-based approach is an important step in making statistical computing more 
     accessible to users.
 Depends: R (>= 4.1)
-Imports: R6, testthat
+Imports: R6
+Suggests: testthat, vdiffr
 License: LGPL (>= 3)
 NeedsCompilation: no
 URL:
@@ -37,10 +38,10 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.0
 Config/testthat/edition: 3
-Packaged: 2022-10-14 09:02:11 UTC; Andrea
+Packaged: 2022-12-16 08:58:40 UTC; Andrea
 Author: Andrea García Cernuda [aut, cre],
-  Asun Lubiano [ctb] (<https://orcid.org/0000-0002-9847-5164>),
+  Asun Lubiano [aut] (<https://orcid.org/0000-0002-9847-5164>),
   Sara de la Rosa de Sáa [ctb]
 Maintainer: Andrea García Cernuda <uo270115@uniovi.es>
 Repository: CRAN
-Date/Publication: 2022-10-14 10:05:18 UTC
+Date/Publication: 2022-12-16 09:40:02 UTC

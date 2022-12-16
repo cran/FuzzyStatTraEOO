@@ -1,7 +1,7 @@
 #' @title R6 Class representing a 'FuzzyNumber'.
 #'
 #' @description
-#' A 'FuzzyNumber' is an array of dimension nl x 3 x 1. It can be valid or not.
+#' A 'FuzzyNumber' is an array of dimension nl x 3 x 1. It must be valid.
 #'
 #' @note In case you find (almost surely existing) bugs or have recommendations
 #' for improving the method, comments are welcome to the above mentioned mail addresses.
@@ -14,13 +14,14 @@
 FuzzyNumber <- R6::R6Class(
   classname = "FuzzyNumber",
   private = list(
-    fnAlphaLevels = NULL,
+    alphaLevels = NULL,
 
-    # TRUE when the fuzzy number fulfills the checkValidity method conditions.
-    isValid = NULL,
+    infimums = NULL,
+
+    supremums = NULL,
 
     # Checks whether the inner conditions are met.
-    # fnAlphaLevels array of dimension nl x 3 x 1.
+    # fnLevels array of dimension nl x 3 x 1.
     # R must fulfill the next conditions:
     # 1) The number of columns should be 3.
     # 2) All the fuzzy numbers have to have the same column of \eqn{\alpha}-levels.
@@ -33,13 +34,13 @@ FuzzyNumber <- R6::R6Class(
     # verbose specifies if the user wants to see in the console the messages that could be written
     #
     # return TRUE whether the inner conditions are met, otherwise FALSE.
-    checkValidity = function(verbose = TRUE)
+    checkValidity = function(fnLevels = NA, verbose = TRUE)
     {
       valid <- TRUE
 
-      nl <- dim(private$fnAlphaLevels)[1]
-      ncol <- dim(private$fnAlphaLevels)[2]
-      r   <-   dim(private$fnAlphaLevels)[3]
+      nl <- dim(fnLevels)[1]
+      ncol <- dim(fnLevels)[2]
+      r   <-   dim(fnLevels)[3]
 
       if (!is.na(r) && r != 1)
       {
@@ -63,8 +64,8 @@ FuzzyNumber <- R6::R6Class(
         }
 
       else
-        if (private$fnAlphaLevels[1, 1] != 0 |
-            private$fnAlphaLevels[nl, 1] != 1)
+        if (fnLevels[1, 1] != 0 |
+            fnLevels[nl, 1] != 1)
         {
           if (verbose) {
             print("the minimum alpha-level should be 0 and the maximum 1")
@@ -73,8 +74,8 @@ FuzzyNumber <- R6::R6Class(
         }
 
       else
-        if (length(unique(private$fnAlphaLevels[, 1])) != nl |
-            all(private$fnAlphaLevels[, 1] == sort(private$fnAlphaLevels[, 1])) == FALSE)
+        if (length(unique(fnLevels[, 1])) != nl |
+            all(fnLevels[, 1] == sort(fnLevels[, 1])) == FALSE)
         {
           if (verbose) {
             print("the alpha-levels have to increase from 0 to 1")
@@ -83,13 +84,11 @@ FuzzyNumber <- R6::R6Class(
         }
 
       else
-        if (all(abs(private$fnAlphaLevels[, 2] - apply(
-          as.matrix(private$fnAlphaLevels[, 2]),
-          2,
-          sort
-        )) <=
-        10 ^ (-10))
-        == FALSE)
+        if (all(abs(fnLevels[, 2] - apply(as.matrix(fnLevels[, 2]),
+                                          2,
+                                          sort)) <=
+                10 ^ (-10))
+            == FALSE)
         {
           if (verbose) {
             print("the infimum values have to be non-decreasing")
@@ -98,20 +97,20 @@ FuzzyNumber <- R6::R6Class(
         }
 
       else
-        if (all(abs(
-          private$fnAlphaLevels[, 3] - apply(as.matrix(private$fnAlphaLevels[, 3]), 2, sort, decreasing =
-                                             TRUE)
-        ) <= 10 ^ (-10))
+        if (all(abs(fnLevels[, 3] - apply(
+          as.matrix(fnLevels[, 3]), 2, sort, decreasing =
+          TRUE
+        )) <= 10 ^ (-10))
         == FALSE)
         {
           if (verbose) {
-            print("the supremum values have to be non-creasing")
+            print("the supremum values have to be non-increasing")
           }
           valid <- FALSE
         }
 
       else
-        if (all(private$fnAlphaLevels[nl, 3] - private$fnAlphaLevels[nl, 2] >= 0) == FALSE)
+        if (all(fnLevels[nl, 3] - fnLevels[nl, 2] >= 0) == FALSE)
         {
           if (verbose) {
             print(
@@ -121,16 +120,18 @@ FuzzyNumber <- R6::R6Class(
           valid <- FALSE
         }
 
-      private$isValid <- valid
+      if (!valid) {
+        stop("An invalid FuzzyNumber cannot be created")
+      }
 
       return (valid)
     }
   ),
   public = list(
     #' @description
-    #' This method creates a 'FuzzyNumber' object with all its attributes set.
+    #' This method creates a valid 'FuzzyNumber' object with all its attributes set.
     #'
-    #' @param fnAlphaLevels is an array of dimension nl x 3 x 1 (general fuzzy number).
+    #' @param fnLevels is an array of dimension nl x 3 x 1 (general fuzzy number).
     #' nl is the number of considered \eqn{\alpha}-levels and 3 is the number of
     #' columns of the array. The first column represents the number of considered
     #' \eqn{\alpha}-levels, the second one represents their infimum values and the
@@ -138,74 +139,128 @@ FuzzyNumber <- R6::R6Class(
     #'
     #' @details See examples.
     #'
-    #' @return The FuzzyNumber object created with all its attributes set.
+    #' @return The FuzzyNumber object created with all its attributes set if it is
+    #' valid.
     #'
     #' @examples
     #' # Example 1:
     #' FuzzyNumber$new(array(c(0.0,0.5,1.0,-1.5,-1.0,-1.0,2.0,1.5,1.0),dim=c(3,3)))
     #'
     #' # Example 2:
-    #' FuzzyNumber$new(array(c(1,2,3,4),dim=c(2,1,2)))
-    #'
-    #' # Example 3:
-    #' FuzzyNumber$new(array(c(0,0.1,0.5,1,2,3),dim=c(3,2)))
-    #'
-    #' # Example 4:
-    #' FuzzyNumber$new(array(c(1,2,3,4,5,6),dim=c(2,3)))
-    #'
-    #' # Example 5:
-    #' FuzzyNumber$new(array(c(0,0,1,2,3,4,5,0,1),dim=c(3,3)))
-    #'
-    #' # Example 6:
-    #' FuzzyNumber$new(array(c(0,0.5,1,2,3,2,5,6,7),dim=c(3,3)))
-    #'
-    #' # Example 7:
-    #' FuzzyNumber$new(array(c(0,0.5,1,2,3,4,5,0,1),dim=c(3,3)))
-    #'
-    #' # Example 8:
-    #' FuzzyNumber$new(array(c(0,0.5,1,2,3,4,6,5,3),dim=c(3,3)))
-    initialize = function(fnAlphaLevels = NA) {
-      stopifnot(is.array(fnAlphaLevels))
-      stopifnot(is.double(fnAlphaLevels))
-      if (anyNA(fnAlphaLevels) ||
-          any(is.infinite(fnAlphaLevels)) ||
-          any(is.nan(fnAlphaLevels))) {
+    #' FuzzyNumber$new(array(c(0.0,1.0,1,2,4,3),dim=c(2,3)))
+    initialize = function(fnLevels = NA) {
+      stopifnot(is.array(fnLevels))
+      stopifnot(is.double(fnLevels))
+      if (anyNA(fnLevels) ||
+          any(is.infinite(fnLevels)) ||
+          any(is.nan(fnLevels))) {
         stop("The FuzzyNumber cannot contain Inf, -Inf, Na, NaN.")
       }
 
-      private$fnAlphaLevels <- fnAlphaLevels
+      if (private$checkValidity(fnLevels)) {
+        l <- length(fnLevels[, 1])
+        private$alphaLevels <- array(fnLevels[, 1], dim = c(l, 1))
+        private$infimums <- array(fnLevels[, 2], dim = c(l, 1))
+        private$supremums <- array(fnLevels[, 3], dim = c(l, 1))
+      }
 
-      private$checkValidity()
     },
 
     #' @description
-    #' This method gives the 'fnAlphaLevels' array of the 'FuzzyNumber'.
+    #' This method gives the 'alphaLevels' array of the 'FuzzyNumber'.
     #'
     #' @details See examples.
     #'
-    #' @return The array fnAlphaLevels of the FuzzyNumber object.
+    #' @return The array alphaLevels of the FuzzyNumber object.
     #'
     #' @examples
     #' FuzzyNumber$new(array(c(0.0,0.5,1.0,-1.5,-1.0,-1.0,2.0,1.5,1.0),dim=c(3,3))
-    #' )$getFNAlphaLevels()
-    getFNAlphaLevels = function() {
-      return(private$fnAlphaLevels)
+    #' )$getAlphaLevels()
+    getAlphaLevels = function() {
+      return(private$alphaLevels)
     },
 
     #' @description
-    #' This method gives information whether the 'FuzzyNumber' is valid
-    #' regarding its \eqn{\alpha}-levels, its infimum and its supremum values.
+    #' This method gives the 'imfimums' array of the 'FuzzyNumber'.
     #'
     #' @details See examples.
     #'
-    #' @return TRUE whether the FuzzyNumber object has a valid array,
-    #' otherwise FALSE.
+    #' @return The array imfimums of the FuzzyNumber object.
     #'
     #' @examples
     #' FuzzyNumber$new(array(c(0.0,0.5,1.0,-1.5,-1.0,-1.0,2.0,1.5,1.0),dim=c(3,3))
-    #' )$is_valid()
-    is_valid = function() {
-      return(private$isValid)
+    #' )$getInfimums()
+    getInfimums = function() {
+      return(private$infimums)
+    },
+
+    #' @description
+    #' This method gives the 'supremums' array of the 'FuzzyNumber'.
+    #'
+    #' @details See examples.
+    #'
+    #' @return The array supremums of the FuzzyNumber object.
+    #'
+    #' @examples
+    #' FuzzyNumber$new(array(c(0.0,0.5,1.0,-1.5,-1.0,-1.0,2.0,1.5,1.0),dim=c(3,3))
+    #' )$getSupremums()
+    getSupremums = function() {
+      return(private$supremums)
+    },
+
+    #' @description
+    #' This method shows in a graph the values of the alphaLevels, infimums and
+    #' supremums attributes of the corresponding 'FuzzyNumber'.
+    #'
+    #' @param color is the color of the lines representing the number to be shown
+    #' in the graph. The default value is grey, other colors can be specified, the
+    #' option palette() too.
+    #'
+    #' @details See examples.
+    #'
+    #' @return a graph with the values of the alphaLevels, infimums and supremums
+    #' attributes of the corresponding 'FuzzyNumber'.
+    #'
+    #' @examples
+    #' # Example 1:
+    #' FuzzyNumber$new(array(c(0.0,0.5,1.0,-1.5,-1.0,-1.0,2.0,1.5,1.0),dim=c(3,3))
+    #' )$plot()
+    #'
+    #' # Example 2:
+    #' FuzzyNumber$new(array(c(0.0, 1.0, 1, 1.5, 2, 1.7),dim=c(2,3))
+    #' )$plot("blue")
+    #'
+    #' # Example 3:
+    #' Simulation$new()$simulCase1(1L)$transfTra()$getDimension(1L)$plot(palette())
+    #'
+    #' # Example 4:
+    #' Simulation$new()$simulCase1(1L)$transfTra()$getDimension(1L)$plot(palette()[7])
+    plot = function(color = "grey") {
+      plot(
+        c(),
+        c(),
+        lty = 1,
+        lwd = 3,
+        xlim = c(private$infimums[[1]] - 0.25, private$supremums[[1]] +
+                   0.25),
+        ylim = c(0, 1),
+        xlab = "",
+        ylab = "",
+        main = "FuzzyNumber"
+      )
+      x1 <- c()
+      x2 <- c()
+      y <- private$alphaLevels
+      n <- length(y)
+      for (i in seq(1, n, by = 2)) {
+        x1 <- append(x1, private$infimums[[i]])
+        x2 <- append(x2, private$supremums[[i]])
+        if (i < n) {
+          x1 <- append(x1, private$infimums[[i + 1]])
+          x2 <- append(x2, private$supremums[[i + 1]])
+        }
+      }
+      points(c(x1, rev(x2)), c(y, rev(y)), type = "l", col = color)
     }
   )
 )

@@ -2,8 +2,8 @@
 #'
 #' @description
 #' A 'TrapezoidalFuzzyNumber' is characterized by their four values inf0, inf1,
-#' sup1 and sup0. Depending on its' values the 'TrapezoidalFuzzyNumber' can be valid
-#' or not.
+#' sup1 and sup0. Its' values are checked in order to only provide a valid
+#' 'TrapezoidalFuzzyNumber'.
 #'
 #' @note In case you find (almost surely existing) bugs or have recommendations
 #' for improving the method, comments are welcome to the above mentioned mail addresses.
@@ -26,36 +26,12 @@ TrapezoidalFuzzyNumber <-
 
       sup0 = NULL,
 
-      # TRUE when the fuzzy number fulfills the checkValidity method conditions.
-      isValid = NULL,
-
       # TRUE if inf0, inf1, sup1 ans sup0 are positive real numbers.
-      isPositive = NULL,
-
-      # verbose specifies if the user wants to see in the console the messages that
-      # could be written
-      # return TRUE whether the inner conditions are met, otherwise FALSE.
-      checkValidity = function(verbose = TRUE)
-      {
-        private$isValid <-
-          (
-            private$inf0 <= private$inf1 &&
-              private$inf1 <= private$sup1 &&
-              private$sup1 <= private$sup0
-          )
-
-        if (!private$isValid && verbose) {
-          print(
-            "The TrapezoidalFuzzyNumber is not valid as inf0, inf1, sup1 and sup0 are not non-decreasing."
-          )
-        }
-
-        return (private$isValid)
-      }
+      isPositive = NULL
     ),
     public = list(
       #' @description
-      #' This method creates a 'TrapezoidalFuzzyNumber' object with all its attributes
+      #' This method creates a valid 'TrapezoidalFuzzyNumber' object with all its attributes
       #' set.
       #'
       #' @param inf0 is a real number that corresponds to the infimum of support
@@ -69,7 +45,8 @@ TrapezoidalFuzzyNumber <-
       #'
       #' @details See examples.
       #'
-      #' @return The TrapezoidalFuzzyNumber object created with all its attributes set.
+      #' @return The TrapezoidalFuzzyNumber object created with all its attributes
+      #' set if it is valid.
       #'
       #' @examples
       #' # Example 1:
@@ -83,15 +60,6 @@ TrapezoidalFuzzyNumber <-
       #'
       #' # Example 4:
       #' TrapezoidalFuzzyNumber$new(1,2,3,3)
-      #'
-      #' # Example 5:
-      #' TrapezoidalFuzzyNumber$new(1,0,2,3)
-      #'
-      #' # Example 6:
-      #' TrapezoidalFuzzyNumber$new(-1,0,-0.5,0)
-      #'
-      #' # Example 7:
-      #' TrapezoidalFuzzyNumber$new(-2,-4,-6,-8)
       initialize = function(inf0 = NA,
                             inf1 = NA,
                             sup1 = NA,
@@ -123,7 +91,19 @@ TrapezoidalFuzzyNumber <-
         private$sup1 <- sup1
         private$sup0 <- sup0
 
-        private$checkValidity()
+        isValid <-
+          (
+            private$inf0 <= private$inf1 &&
+              private$inf1 <= private$sup1 &&
+              private$sup1 <= private$sup0
+          )
+
+        if (!isValid) {
+          stop(
+            "The TrapezoidalFuzzyNumber is not valid as inf0, inf1, sup1 and sup0 are not non-decreasing."
+          )
+        }
+
         private$isPositive <-
           (inf0 > -1 && inf1 > -1 && sup1 > -1 && sup0 > -1)
       },
@@ -185,33 +165,6 @@ TrapezoidalFuzzyNumber <-
       },
 
       #' @description
-      #' This method gives information whether the 'TrapezoidalFuzzyNumber' is valid
-      #' regarding its attributes and checking conditions.
-      #'
-      #' @details See examples.
-      #'
-      #' @return TRUE whether the TrapezoidalFuzzyNumber object has non-decreasing
-      #' attributes, otherwise FALSE.
-      #'
-      #' @examples
-      #' # Example 1:
-      #' TrapezoidalFuzzyNumber$new(1,2,3,4)$is_valid()
-      #'
-      #' # Example 2:
-      #' TrapezoidalFuzzyNumber$new(-8,-6,-4,-2)$is_valid()
-      #'
-      #' # Example 3:
-      #' TrapezoidalFuzzyNumber$new(1,0,2,3)$is_valid()
-      #'
-      #' # Example 4:
-      #' TrapezoidalFuzzyNumber$new(-1,0,-0.5,0)$is_valid()
-      is_valid = function()
-      {
-        return(private$isValid)
-      },
-
-
-      #' @description
       #' This method gives information whether the 'TrapezoidalFuzzyNumber' is positive
       #' regarding its attributes.
       #'
@@ -226,15 +179,48 @@ TrapezoidalFuzzyNumber <-
       #'
       #' # Example 2:
       #' TrapezoidalFuzzyNumber$new(-8,-6,-4,-2)$is_positive()
-      #'
-      #' # Example 5:
-      #' TrapezoidalFuzzyNumber$new(1,0,2,3)$is_positive()
-      #'
-      #' # Example 6:
-      #' TrapezoidalFuzzyNumber$new(-1,0,-0.5,0)$is_positive()
       is_positive = function()
       {
         return(private$isPositive)
+      },
+
+      #' @description
+      #' This method shows in a graph the values of the corresponding 'TrapezoidalFuzzyNumber'.
+      #'
+      #' @param color is the color of the lines representing the number to be shown
+      #' in the graph. The default value is grey, other colors can be specified,
+      #' the option palette() too.
+      #'
+      #' @details See examples.
+      #'
+      #' @return a graph with the values of the corresponding 'TrapezoidalFuzzyNumber'.
+      #'
+      #' @examples
+      #' # Example 1:
+      #' TrapezoidalFuzzyNumber$new(1,2,3,4)$plot()
+      #'
+      #' # Example 2:
+      #' TrapezoidalFuzzyNumber$new(-8,-6,-4,-2)$plot("blue")
+      #'
+      #' # Example 3:
+      #' TrapezoidalFuzzyNumber$new(0,0,0.5,3)$plot(palette())
+      #'
+      #' # Example 4:
+      #' TrapezoidalFuzzyNumber$new(-8,-3.55,0,10)$plot(palette()[5])
+      plot = function(color = "grey") {
+        plot(
+          c(private$inf0, private$inf1, private$sup1, private$sup0),
+          c(0, 1, 1, 0),
+          "l",
+          col = color,
+          lty = 1,
+          lwd = 3,
+          xlim = c(private$inf0 - 0.25, private$sup0 + 0.25),
+          ylim = c(0, 1),
+          xlab = "",
+          ylab = "",
+          main = "TrapezoidalFuzzyNumber"
+        )
       }
     )
   )

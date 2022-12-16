@@ -4,9 +4,8 @@
 #' @description
 #' 'StatList' defines the common attributes and methods of 'FuzzyNumberList' and
 #' 'TrapezoidalFuzzyNumberList'.
-#' It only provides implementation for the 'getDimension' method, the rest of them
-#' are empty except for some attribute checking, the child classes are the ones
-#' that have to give the implementation for the empty methods.
+#' All methods are empty except for some attribute checking, the child classes are
+#' the ones that have to give the implementation for the empty methods.
 #'
 #' @note
 #' In order to have the documentation completed, we had had to write the documentation of
@@ -47,20 +46,8 @@ StatList <- R6::R6Class(
     },
 
     #' @description
-    #' The method checks if the 'StatList' in the correct form and if its numbers
-    #' are valid. Also, it has to fulfilled that all its numbers must have the same
-    #' column of \eqn{\alpha}-level.
-    #'
-    #' @return TRUE if the StatList fulfills all conditions, otherwise FALSE.
-    checking = function() {
-
-    },
-
-    #' @description
     #' This method calculates the mid/spr distance between the numbers contain in
-    #' two 'StatLists', which should be given in the desired format. For this, the
-    #' method first checks if both 'StatLists' are in the correct form (tested by
-    #' the checking method).
+    #' two 'StatLists'.
     #'
     #' @param s can be a FuzzyNumberList or a TrapezoidalFuzzyNumberList.
     #' @param a real number > 0, by default a=1. It is the first parameter of a
@@ -89,9 +76,7 @@ StatList <- R6::R6Class(
 
     #' @description
     #' This method calculates the (\eqn{\phi},\eqn{\theta})-wabl/ldev/rdev distance
-    #' between the numbers contained in two 'StatLists', which should be given in
-    #' the desired format. For this, the method first checks if the two 'StatLists'
-    #' are in the correct form (tested by the checking method).
+    #' between the numbers contained in two 'StatLists'.
     #'
     #' @param s can be a FuzzyNumberList or a TrapezoidalFuzzyNumberList.
     #' @param a real number > 0, by default a=1. It is the first parameter of a
@@ -120,15 +105,36 @@ StatList <- R6::R6Class(
 
     #' @description
     #' This method calculates the 1-norm distance between the numbers contained
-    #' in two 'StatLists', which should be given in the desired format.For this,
-    #' the method first checks if the two 'StatLists' are in the correct form
-    #' (tested by the checking method).
+    #' in two 'StatLists'.
     #'
     #' @param s can be a FuzzyNumberList or a TrapezoidalFuzzyNumberList.
     #'
     #' @return a StatList containing the 1-norm distances between the two previous
     #' mentioned StatLists.
     rho1 = function(s = NA) {
+
+    },
+
+    #' @description
+    #' This method shows in a graph the inner numbers of the corresponding 'StatList'.
+    #'
+    #' @param color is the color of the lines representing the numbers to be shown
+    #' in the graph. The default value is grey, other colors can be specified, the
+    #' option palette() too.
+    #'
+    #' @return a graph with the inner numbers of the corresponding 'StatList'
+    #' represented.
+    plot = function(color = "grey"){
+
+    },
+
+    #' @description
+    #' This method returns the number of dimensions that are equivalent to the number
+    #' of numbers in the corresponding 'StatList'.
+    #'
+    #' @return the number of dimensions that are equivalent to the number of numbers
+    #' in the corresponding 'StatList'.
+    getLength = function(){
 
     }
   )

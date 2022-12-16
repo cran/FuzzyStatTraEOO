@@ -7,9 +7,8 @@
 \description{
 'StatList' defines the common attributes and methods of 'FuzzyNumberList' and
 'TrapezoidalFuzzyNumberList'.
-It only provides implementation for the 'getDimension' method, the rest of them
-are empty except for some attribute checking, the child classes are the ones
-that have to give the implementation for the empty methods.
+All methods are empty except for some attribute checking, the child classes are
+the ones that have to give the implementation for the empty methods.
 }
 \note{
 In order to have the documentation completed, we had had to write the documentation of
@@ -30,10 +29,11 @@ Andrea Garcia Cernuda <uo270115@uniovi.es>
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-StatList-new}{\code{StatList$new()}}
-\item \href{#method-StatList-checking}{\code{StatList$checking()}}
 \item \href{#method-StatList-dthetaphi}{\code{StatList$dthetaphi()}}
 \item \href{#method-StatList-dwablphi}{\code{StatList$dwablphi()}}
 \item \href{#method-StatList-rho1}{\code{StatList$rho1()}}
+\item \href{#method-StatList-plot}{\code{StatList$plot()}}
+\item \href{#method-StatList-getLength}{\code{StatList$getLength()}}
 \item \href{#method-StatList-clone}{\code{StatList$clone()}}
 }
 }
@@ -51,28 +51,11 @@ shows a message telling that this class can not be initialized.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-StatList-checking"></a>}}
-\if{latex}{\out{\hypertarget{method-StatList-checking}{}}}
-\subsection{Method \code{checking()}}{
-The method checks if the 'StatList' in the correct form and if its numbers
-are valid. Also, it has to fulfilled that all its numbers must have the same
-column of \eqn{\alpha}-level.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{StatList$checking()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-TRUE if the StatList fulfills all conditions, otherwise FALSE.
-}
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-StatList-dthetaphi"></a>}}
 \if{latex}{\out{\hypertarget{method-StatList-dthetaphi}{}}}
 \subsection{Method \code{dthetaphi()}}{
 This method calculates the mid/spr distance between the numbers contain in
-two 'StatLists', which should be given in the desired format. For this, the
-method first checks if both 'StatLists' are in the correct form (tested by
-the checking method).
+two 'StatLists'.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{StatList$dthetaphi(s = NA, a = 1, b = 1, theta = 1)}\if{html}{\out{</div>}}
 }
@@ -103,9 +86,7 @@ mentioned StatLists.
 \if{latex}{\out{\hypertarget{method-StatList-dwablphi}{}}}
 \subsection{Method \code{dwablphi()}}{
 This method calculates the (\eqn{\phi},\eqn{\theta})-wabl/ldev/rdev distance
-between the numbers contained in two 'StatLists', which should be given in
-the desired format. For this, the method first checks if the two 'StatLists'
-are in the correct form (tested by the checking method).
+between the numbers contained in two 'StatLists'.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{StatList$dwablphi(s = NA, a = 1, b = 1, theta = 1)}\if{html}{\out{</div>}}
 }
@@ -136,9 +117,7 @@ between the two previous mentioned StatLists.
 \if{latex}{\out{\hypertarget{method-StatList-rho1}{}}}
 \subsection{Method \code{rho1()}}{
 This method calculates the 1-norm distance between the numbers contained
-in two 'StatLists', which should be given in the desired format.For this,
-the method first checks if the two 'StatLists' are in the correct form
-(tested by the checking method).
+in two 'StatLists'.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{StatList$rho1(s = NA)}\if{html}{\out{</div>}}
 }
@@ -153,6 +132,44 @@ the method first checks if the two 'StatLists' are in the correct form
 \subsection{Returns}{
 a StatList containing the 1-norm distances between the two previous
 mentioned StatLists.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-StatList-plot"></a>}}
+\if{latex}{\out{\hypertarget{method-StatList-plot}{}}}
+\subsection{Method \code{plot()}}{
+This method shows in a graph the inner numbers of the corresponding 'StatList'.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{StatList$plot(color = "grey")}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{color}}{is the color of the lines representing the numbers to be shown
+in the graph. The default value is grey, other colors can be specified, the
+option palette() too.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+a graph with the inner numbers of the corresponding 'StatList'
+represented.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-StatList-getLength"></a>}}
+\if{latex}{\out{\hypertarget{method-StatList-getLength}{}}}
+\subsection{Method \code{getLength()}}{
+This method returns the number of dimensions that are equivalent to the number
+of numbers in the corresponding 'StatList'.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{StatList$getLength()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+the number of dimensions that are equivalent to the number of numbers
+in the corresponding 'StatList'.
 }
 }
 \if{html}{\out{<hr>}}

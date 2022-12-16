@@ -49,40 +49,28 @@ test_that("Utils convertTra method", {
   expect_equal(class(list)[[2]], "StatList")
   expect_equal(class(list)[[3]], "R6")
 
-  expect_equal(length(list$numbers), 68)
-  for (i in 1:length(list$numbers)) {
-    expect_equal(list$numbers[[i]]$is_valid(), TRUE)
-  }
+  expect_equal(list$getLength(), 68)
 
   list <- u$convertTra(M2)
   expect_equal(class(list)[[1]], "TrapezoidalFuzzyNumberList")
   expect_equal(class(list)[[2]], "StatList")
   expect_equal(class(list)[[3]], "R6")
 
-  expect_equal(length(list$numbers), 68)
-  for (i in 1:length(list$numbers)) {
-    expect_equal(list$numbers[[i]]$is_valid(), TRUE)
-  }
+  expect_equal(list$getLength(), 68)
 
   list <- u$convertTra(M3)
   expect_equal(class(list)[[1]], "TrapezoidalFuzzyNumberList")
   expect_equal(class(list)[[2]], "StatList")
   expect_equal(class(list)[[3]], "R6")
 
-  expect_equal(length(list$numbers), 69)
-  for (i in 1:length(list$numbers)) {
-    expect_equal(list$numbers[[i]]$is_valid(), TRUE)
-  }
+  expect_equal(list$getLength(), 69)
 
   list <- u$convertTra(S1)
   expect_equal(class(list)[[1]], "TrapezoidalFuzzyNumberList")
   expect_equal(class(list)[[2]], "StatList")
   expect_equal(class(list)[[3]], "R6")
 
-  expect_equal(length(list$numbers), 67)
-  for (i in 1:length(list$numbers)) {
-    expect_equal(list$numbers[[i]]$is_valid(), TRUE)
-  }
+  expect_equal(list$getLength(), 67)
 
   list <-
     u$convertTra(as.data.frame(matrix(
@@ -92,12 +80,11 @@ test_that("Utils convertTra method", {
   expect_equal(class(list)[[2]], "StatList")
   expect_equal(class(list)[[3]], "R6")
 
-  expect_equal(length(list$numbers), 1)
-  expect_equal(list$numbers[[1]]$is_valid(), TRUE)
-  expect_equal(list$numbers[[1]]$getInf0(), 1)
-  expect_equal(list$numbers[[1]]$getInf1(), 2)
-  expect_equal(list$numbers[[1]]$getSup1(), 3)
-  expect_equal(list$numbers[[1]]$getSup0(), 4)
+  expect_equal(list$getLength(), 1)
+  expect_equal(list$getDimension(1L)$getInf0(), 1)
+  expect_equal(list$getDimension(1L)$getInf1(), 2)
+  expect_equal(list$getDimension(1L)$getSup1(), 3)
+  expect_equal(list$getDimension(1L)$getSup0(), 4)
 
   list <-
     u$convertTra(as.data.frame(matrix(c(
@@ -107,16 +94,14 @@ test_that("Utils convertTra method", {
   expect_equal(class(list)[[2]], "StatList")
   expect_equal(class(list)[[3]], "R6")
 
-  expect_equal(length(list$numbers), 2)
-  expect_equal(list$numbers[[1]]$is_valid(), TRUE)
-  expect_equal(list$numbers[[1]]$getInf0(), 1)
-  expect_equal(list$numbers[[1]]$getInf1(), 2)
-  expect_equal(list$numbers[[1]]$getSup1(), 2)
-  expect_equal(list$numbers[[1]]$getSup0(), 3)
-  expect_equal(list$numbers[[2]]$is_valid(), TRUE)
-  expect_equal(list$numbers[[2]]$getInf0(), 1)
-  expect_equal(list$numbers[[2]]$getInf1(), 2)
-  expect_equal(list$numbers[[2]]$getSup1(), 3)
-  expect_equal(list$numbers[[2]]$getSup0(), 3)
+  expect_equal(list$getLength(), 2)
+  expect_equal(list$getDimension(1L)$getInf0(), 1)
+  expect_equal(list$getDimension(1L)$getInf1(), 2)
+  expect_equal(list$getDimension(1L)$getSup1(), 2)
+  expect_equal(list$getDimension(1L)$getSup0(), 3)
+  expect_equal(list$getDimension(2L)$getInf0(), 1)
+  expect_equal(list$getDimension(2L)$getInf1(), 2)
+  expect_equal(list$getDimension(2L)$getSup1(), 3)
+  expect_equal(list$getDimension(2L)$getSup0(), 3)
 
 })

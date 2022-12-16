@@ -2,9 +2,9 @@
 % Please edit documentation in R/FuzzyNumberList.R
 \name{FuzzyNumberList}
 \alias{FuzzyNumberList}
-\title{'FuzzyNumberList' is a child class of 'StatList'. It contains 'FuzzyNumbers'.}
+\title{'FuzzyNumberList' is a child class of 'StatList'.}
 \description{
-'FuzzyNumberList' can contain valid and not valid 'FuzzyNumbers'.
+'FuzzyNumberList' must contain valid 'FuzzyNumbers'.
 This class implements a version of the empty 'StatList' methods.
 }
 \note{
@@ -26,29 +26,7 @@ c(3, 3))), FuzzyNumber$new(array(c(0.0, 0.5, 1.0,-1.5,-1.25,-1.0, 3.0, 2.0,
 # Example 2:
 FuzzyNumberList$new(c(
 FuzzyNumber$new(array(c(0.0, 1.0, -1.5, -1.0, 2, 1), dim = c(2, 3))),
-FuzzyNumber$new(array(c(0.0, 0.5, 1.0, -1.5, -1.0, -1.0, 2.0, 1.5, 1.0),
-dim = c(3, 3)))))
-
-## ------------------------------------------------
-## Method `FuzzyNumberList$checking`
-## ------------------------------------------------
-
-# Example 1:
-FuzzyNumberList$new(c(
-FuzzyNumber$new(array(c(0.0, 1.0, -1.5, -1.0, 2, 1), dim = c(2, 3))),
-FuzzyNumber$new(array(c(0.0, 0.5, 1.0, -1.5, -1.0, -1.0, 2.0, 1.5, 1.0),
-dim = c(3, 3)))))$checking()
-
-# Example 2:
-FuzzyNumberList$new(c(
-FuzzyNumber$new(array(c(1, 2, 3, 4), dim = c(2, 1))),
-FuzzyNumber$new(array(c(0, 0.1, 0.5, 1, 2, 3), dim = c(3, 2)))))$checking()
-
-# Example 3:
-FuzzyNumberList$new(c(
-FuzzyNumber$new(array(c(0.0, 0.5, 1.0,-1.5,-1.0,-1.0, 2.0, 1.5, 1.0), dim =
-c(3, 3))),FuzzyNumber$new(array(c(0.0, 0.5, 1.0,-1.5,-1.25,-1.0, 3.0, 2.0,
-1.0), dim = c(3, 3)))))$checking()
+FuzzyNumber$new(array(c(0.0, 1.0, -1.5, -1.0, 2.0, 1.5), dim = c(2, 3)))))
 
 ## ------------------------------------------------
 ## Method `FuzzyNumberList$dthetaphi`
@@ -76,28 +54,18 @@ FuzzyNumber$new(array(c(0.0, 0.5, 1.0,-1,-0.5,0, 1.5, 1.25, 1), dim = c(3, 3))))
 ), 1, 1, 1/3)
 
 # Example 3:
-FuzzyNumberList$new(c(
-FuzzyNumber$new(array(c(0.0, 1.0, -1.5, -1.0, 2, 1), dim = c(2, 3))),
-FuzzyNumber$new(array(c(0.0, 1.0, -1.0, -1.0, 1.5, 1.0), dim = c(2, 3)))
-))$dthetaphi(
-FuzzyNumberList$new(c(
-FuzzyNumber$new(array(c(0.0, 1.0, -0.5, 0, 1.5, 1), dim = c(2, 3))),
-FuzzyNumber$new(array(c(0.0, 1.0, 1, 1.5, 1.5, 1.0), dim = c(2, 3))))),
-2,1,1)
-
-# Example 4:
 F=Simulation$new()$simulCase1(10L)
 S=Simulation$new()$simulCase1(20L)
 F=F$transfTra()
 S=S$transfTra()
 F$dthetaphi(S,1,5,1)
 
-# Example 5:
+# Example 4:
 F=Simulation$new()$simulCase1(10L)
 S=Simulation$new()$simulCase1(10L)
 F$dthetaphi(S,2,1,1/3)
 
-# Example 6:
+# Example 5:
 F=Simulation$new()$simulCase1(10L)
 S=Simulation$new()$simulCase1(10L)
 F=F$transfTra()
@@ -130,28 +98,18 @@ FuzzyNumber$new(array(c(0.0, 0.5, 1.0,-1,-0.5,0, 1.5, 1.25, 1), dim = c(3, 3))))
 ), 1, 1, 1/3)
 
 # Example 3:
-FuzzyNumberList$new(c(
-FuzzyNumber$new(array(c(0.0, 1.0, -1.5, -1.0, 2, 1), dim = c(2, 3))),
-FuzzyNumber$new(array(c(0.0, 1.0, -1.0, -1.0, 1.5, 1.0), dim = c(2, 3)))
-))$dwablphi(
-FuzzyNumberList$new(c(
-FuzzyNumber$new(array(c(0.0, 1.0, -0.5, 0, 1.5, 1), dim = c(2, 3))),
-FuzzyNumber$new(array(c(0.0, 1.0, 1, 1.5, 1.5, 1.0), dim = c(2, 3))))),
-2,1,1)
-
-# Example 4:
 F=Simulation$new()$simulCase1(3L)
 S=Simulation$new()$simulCase1(4L)
 F=F$transfTra()
 S=S$transfTra()
 F$dwablphi(S,2,1,1)
 
-# Example 5:
+# Example 4:
 F=Simulation$new()$simulCase1(10L)
 S=Simulation$new()$simulCase1(10L)
 F$dwablphi(S)
 
-# Example 6:
+# Example 5:
 F=Simulation$new()$simulCase1(10L)
 S=Simulation$new()$simulCase1(10L)
 F=F$transfTra()
@@ -182,15 +140,6 @@ FuzzyNumber$new(array(c(0.0, 0.5, 1.0,1,1.25,1.5, 2, 1.75, 1.5), dim = c(3, 3)))
 FuzzyNumber$new(array(c(0.0, 0.5, 1.0,-1,-0.5,0, 1.5, 1.25, 1), dim = c(3, 3))))))
 
 # Example 3:
-FuzzyNumberList$new(c(
-FuzzyNumber$new(array(c(0.0, 1.0, -1.5, -1.0, 2, 1), dim = c(2, 3))),
-FuzzyNumber$new(array(c(0.0, 1.0, -1.0, -1.0, 1.5, 1.0), dim = c(2, 3)))
-))$rho1(
-FuzzyNumberList$new(c(
-FuzzyNumber$new(array(c(0.0, 1.0, -0.5, 0, 1.5, 1), dim = c(2, 3))),
-FuzzyNumber$new(array(c(0.0, 1.0, 1, 1.5, 1.5, 1.0), dim = c(2, 3))))))
-
-# Example 4:
 F=Simulation$new()$simulCase1(4L)
 S=Simulation$new()$simulCase1(5L)
 F=F$transfTra()
@@ -198,7 +147,7 @@ S=S$transfTra()
 F$rho1(S)
 S$rho1(F)
 
-# Example 6:
+# Example 4:
 F=Simulation$new()$simulCase1(4L)
 S=Simulation$new()$simulCase1(5L)
 F=F$transfTra()
@@ -228,7 +177,7 @@ FuzzyNumber$new(array(c(0.0, 0.5, 1.0, -1, -0.5, 0, 1.5, 1.25, 1), dim = c(3, 3)
 # Example 1:
 FuzzyNumberList$new(c(
 FuzzyNumber$new(array(c(0.0, 1.0, -1.5, -1.0, 2, 1), dim = c(2, 3))),
-FuzzyNumber$new(array(c(0.0, 0.5, 1.0, -1, -0.5, 0, 1.5, 1.25, 1), dim = c(3, 3)))
+FuzzyNumber$new(array(c(0.0, 1.0, -1, -0.5, 1.5, 1.25), dim = c(2, 3)))
 ))$removeFuzzyNumber(1L)
 
 # Example 2:
@@ -252,6 +201,48 @@ FuzzyNumberList$new(c(
 FuzzyNumber$new(array(c(0.0, 0.5, 1.0, -1, -0.5, 0, 1.5, 1.25, 1), dim = c(3, 3))),
 FuzzyNumber$new(array(c(0.0, 0.5, 1.0, 1, 1.25, 1.5, 2, 1.75, 1.5), dim = c(3, 3)))
 ))$getDimension(2L)
+
+## ------------------------------------------------
+## Method `FuzzyNumberList$plot`
+## ------------------------------------------------
+
+# Example 1:
+FuzzyNumberList$new(c(
+FuzzyNumber$new(array(c(0.0, 0.5, 1.0, -1, -0.5, 0, 1.5, 1.25, 1), dim = c(3, 3))),
+FuzzyNumber$new(array(c(0.0, 0.5, 1.0, 1, 1.25, 1.5, 2, 1.75, 1.5), dim = c(3, 3)))
+))$plot()
+
+# Example 2:
+FuzzyNumberList$new(c(
+FuzzyNumber$new(array(c(0.0, 1.0, -1.5, -1.0, 2, 1), dim = c(2, 3))),
+FuzzyNumber$new(array(c(0.0, 1.0, -1.0, -1.0, 1.5, 1.0), dim = c(2, 3))),
+FuzzyNumber$new(array(c(0.0, 1.0, -0.5, 0, 1.5, 1), dim = c(2, 3))),
+FuzzyNumber$new(array(c(0.0, 1.0, 1, 1.5, 1.85, 1.7), dim = c(2, 3))))
+)$plot("blue")
+
+# Example 3:
+Simulation$new()$simulCase1(8L)$transfTra()$plot(palette())
+
+# Example 4:
+Simulation$new()$simulCase1(5L)$transfTra()$plot(palette()[2:6])
+
+## ------------------------------------------------
+## Method `FuzzyNumberList$getLength`
+## ------------------------------------------------
+
+# Example 1:
+FuzzyNumberList$new(c(
+FuzzyNumber$new(array(c(0.0, 0.5, 1.0, -1, -0.5, 0, 1.5, 1.25, 1), dim = c(3, 3))),
+FuzzyNumber$new(array(c(0.0, 0.5, 1.0, 1, 1.25, 1.5, 2, 1.75, 1.5), dim = c(3, 3)))
+))$getLength()
+
+# Example 2:
+FuzzyNumberList$new(c(
+FuzzyNumber$new(array(c(0.0, 1.0, -1.5, -1.0, 2, 1), dim = c(2, 3))),
+FuzzyNumber$new(array(c(0.0, 1.0, -1.0, -1.0, 1.5, 1.0), dim = c(2, 3))),
+FuzzyNumber$new(array(c(0.0, 1.0, -0.5, 0, 1.5, 1), dim = c(2, 3))),
+FuzzyNumber$new(array(c(0.0, 1.0, 1, 1.5, 1.5, 1.5), dim = c(2, 3))))
+)$getLength()
 }
 \references{
 [1] Blanco-Fernandez, A.; Casals, R.M.; Colubi, A.; Corral, N.; Garcia-Barzana, M.; Gil, M.A.;
@@ -276,24 +267,18 @@ Sara de la Rosa de Saa
 \section{Super class}{
 \code{\link[FuzzyStatTraEOO:StatList]{FuzzyStatTraEOO::StatList}} -> \code{FuzzyNumberList}
 }
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{numbers}}{is a collection of fuzzy numbers.}
-}
-\if{html}{\out{</div>}}
-}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-FuzzyNumberList-new}{\code{FuzzyNumberList$new()}}
-\item \href{#method-FuzzyNumberList-checking}{\code{FuzzyNumberList$checking()}}
 \item \href{#method-FuzzyNumberList-dthetaphi}{\code{FuzzyNumberList$dthetaphi()}}
 \item \href{#method-FuzzyNumberList-dwablphi}{\code{FuzzyNumberList$dwablphi()}}
 \item \href{#method-FuzzyNumberList-rho1}{\code{FuzzyNumberList$rho1()}}
 \item \href{#method-FuzzyNumberList-addFuzzyNumber}{\code{FuzzyNumberList$addFuzzyNumber()}}
 \item \href{#method-FuzzyNumberList-removeFuzzyNumber}{\code{FuzzyNumberList$removeFuzzyNumber()}}
 \item \href{#method-FuzzyNumberList-getDimension}{\code{FuzzyNumberList$getDimension()}}
+\item \href{#method-FuzzyNumberList-plot}{\code{FuzzyNumberList$plot()}}
+\item \href{#method-FuzzyNumberList-getLength}{\code{FuzzyNumberList$getLength()}}
 \item \href{#method-FuzzyNumberList-clone}{\code{FuzzyNumberList$clone()}}
 }
 }
@@ -308,7 +293,7 @@ Sara de la Rosa de Saa
 \if{latex}{\out{\hypertarget{method-FuzzyNumberList-new}{}}}
 \subsection{Method \code{new()}}{
 This method creates a 'FuzzyNumberList' object with the columns and dimensions
-attributes set.
+attributes set where the 'FuzzyNumbers' must be valid.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{FuzzyNumberList$new(numbers = NA)}\if{html}{\out{</div>}}
 }
@@ -330,7 +315,7 @@ See examples.
 
 \subsection{Returns}{
 The FuzzyNumberList object created with the columns and dimensions
-attributes set.
+attributes set where the 'FuzzyNumbers' must be valid.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -343,60 +328,7 @@ c(3, 3))), FuzzyNumber$new(array(c(0.0, 0.5, 1.0,-1.5,-1.25,-1.0, 3.0, 2.0,
 # Example 2:
 FuzzyNumberList$new(c(
 FuzzyNumber$new(array(c(0.0, 1.0, -1.5, -1.0, 2, 1), dim = c(2, 3))),
-FuzzyNumber$new(array(c(0.0, 0.5, 1.0, -1.5, -1.0, -1.0, 2.0, 1.5, 1.0),
-dim = c(3, 3)))))
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-FuzzyNumberList-checking"></a>}}
-\if{latex}{\out{\hypertarget{method-FuzzyNumberList-checking}{}}}
-\subsection{Method \code{checking()}}{
-This method checks that the numbers that contain this class are given in the correct format.
-First, it checks that all individual 'FuzzyNumber' are valid according its conditions.
-Second and last, it checks that all the 'FuzzyNumbers' have the same column of \eqn{\alpha}-levels.
-It also set the rows attribute.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{FuzzyNumberList$checking(verbose = TRUE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{verbose}}{if TRUE the messages are written to the console unless the
-user actively decides to set verbose=FALSE.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Details}{
-See examples.
-}
-
-\subsection{Returns}{
-TRUE if all FuzzyNumbers are valid and have the same column of \eqn{\alpha}-levels.
-Otherwise, FALSE.
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{# Example 1:
-FuzzyNumberList$new(c(
-FuzzyNumber$new(array(c(0.0, 1.0, -1.5, -1.0, 2, 1), dim = c(2, 3))),
-FuzzyNumber$new(array(c(0.0, 0.5, 1.0, -1.5, -1.0, -1.0, 2.0, 1.5, 1.0),
-dim = c(3, 3)))))$checking()
-
-# Example 2:
-FuzzyNumberList$new(c(
-FuzzyNumber$new(array(c(1, 2, 3, 4), dim = c(2, 1))),
-FuzzyNumber$new(array(c(0, 0.1, 0.5, 1, 2, 3), dim = c(3, 2)))))$checking()
-
-# Example 3:
-FuzzyNumberList$new(c(
-FuzzyNumber$new(array(c(0.0, 0.5, 1.0,-1.5,-1.0,-1.0, 2.0, 1.5, 1.0), dim =
-c(3, 3))),FuzzyNumber$new(array(c(0.0, 0.5, 1.0,-1.5,-1.25,-1.0, 3.0, 2.0,
-1.0), dim = c(3, 3)))))$checking()
+FuzzyNumber$new(array(c(0.0, 1.0, -1.5, -1.0, 2.0, 1.5), dim = c(2, 3)))))
 }
 \if{html}{\out{</div>}}
 
@@ -408,10 +340,7 @@ c(3, 3))),FuzzyNumber$new(array(c(0.0, 0.5, 1.0,-1.5,-1.25,-1.0, 3.0, 2.0,
 \if{latex}{\out{\hypertarget{method-FuzzyNumberList-dthetaphi}{}}}
 \subsection{Method \code{dthetaphi()}}{
 This method calculates the mid/spr distance between the FuzzyNumbers contained
-in the current object and the one passed as parameter, which should be given
-in the desired format. For this, the method first checks if the input 'FuzzyNumberList'
-s is in the correct form (tested by the checking method) and if the \eqn{\alpha}-levels
-of all 'FuzzyNumbers' coincide.
+in the current object and the one passed as parameter.
 See Blanco-Fernandez et al. (2013) [1].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{FuzzyNumberList$dthetaphi(s = NA, a = 1, b = 1, theta = 1)}\if{html}{\out{</div>}}
@@ -421,10 +350,9 @@ See Blanco-Fernandez et al. (2013) [1].
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{s}}{FuzzyNumberList containing FuzzyNumbers characterized by means of
-nl \eqn{\alpha}-levels each. The method first calls checking to check if the
-FuzzyNumberList s has the correct format. Moreover, the \eqn{\alpha}-levels
-of the FuzzyNumberList s should coincide with the ones of the current
-FuzzyNumberList (the method checks this condition).}
+nl \eqn{\alpha}-levels each. The \eqn{\alpha}-levels of the FuzzyNumberList
+s should coincide with the ones of the current FuzzyNumberList (the method
+checks this condition).}
 
 \item{\code{a}}{real number > 0, by default a=1. It is the first parameter of a
 beta distribution which corresponds to a weighting measure on [0,1].}
@@ -470,28 +398,18 @@ FuzzyNumber$new(array(c(0.0, 0.5, 1.0,-1,-0.5,0, 1.5, 1.25, 1), dim = c(3, 3))))
 ), 1, 1, 1/3)
 
 # Example 3:
-FuzzyNumberList$new(c(
-FuzzyNumber$new(array(c(0.0, 1.0, -1.5, -1.0, 2, 1), dim = c(2, 3))),
-FuzzyNumber$new(array(c(0.0, 1.0, -1.0, -1.0, 1.5, 1.0), dim = c(2, 3)))
-))$dthetaphi(
-FuzzyNumberList$new(c(
-FuzzyNumber$new(array(c(0.0, 1.0, -0.5, 0, 1.5, 1), dim = c(2, 3))),
-FuzzyNumber$new(array(c(0.0, 1.0, 1, 1.5, 1.5, 1.0), dim = c(2, 3))))),
-2,1,1)
-
-# Example 4:
 F=Simulation$new()$simulCase1(10L)
 S=Simulation$new()$simulCase1(20L)
 F=F$transfTra()
 S=S$transfTra()
 F$dthetaphi(S,1,5,1)
 
-# Example 5:
+# Example 4:
 F=Simulation$new()$simulCase1(10L)
 S=Simulation$new()$simulCase1(10L)
 F$dthetaphi(S,2,1,1/3)
 
-# Example 6:
+# Example 5:
 F=Simulation$new()$simulCase1(10L)
 S=Simulation$new()$simulCase1(10L)
 F=F$transfTra()
@@ -508,10 +426,8 @@ F$dthetaphi(S,2,1,1)
 \if{latex}{\out{\hypertarget{method-FuzzyNumberList-dwablphi}{}}}
 \subsection{Method \code{dwablphi()}}{
 This method calculates the (\eqn{\phi},\eqn{\theta})-wabl/ldev/rdev distance between
-the 'FuzzyNumbers' contained in two 'FuzzyNumberLists', which should be given
-in the desired format. For this, the method first checks if the two 'FuzzyNumberLists'
-are in the correct form (tested by the checking method) and if the \eqn{\alpha}-levels
-of all 'FuzzyNumbers' coincide.
+the 'FuzzyNumbers' contained in two 'FuzzyNumberLists'. The method checks
+if the \eqn{\alpha}-levels of all 'FuzzyNumbers' coincide.
 See Sinova et al. (2013) [3] and Sinova et al. (2016) [4].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{FuzzyNumberList$dwablphi(s = NA, a = 1, b = 1, theta = 1)}\if{html}{\out{</div>}}
@@ -521,8 +437,7 @@ See Sinova et al. (2013) [3] and Sinova et al. (2016) [4].
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{s}}{FuzzyNumberList containing FuzzyNumbers characterized by means of nl
-\eqn{\alpha}-levels each. The method first calls checking to check if it is
-in the correct format. Moreover, the \eqn{\alpha}-levels should coincide with
+\eqn{\alpha}-levels each. The \eqn{\alpha}-levels should coincide with
 ones of the other FuzzyNumberList (the method checks this condition).}
 
 \item{\code{a}}{real number > 0, by default a=1. It is the first parameter of a
@@ -569,28 +484,18 @@ FuzzyNumber$new(array(c(0.0, 0.5, 1.0,-1,-0.5,0, 1.5, 1.25, 1), dim = c(3, 3))))
 ), 1, 1, 1/3)
 
 # Example 3:
-FuzzyNumberList$new(c(
-FuzzyNumber$new(array(c(0.0, 1.0, -1.5, -1.0, 2, 1), dim = c(2, 3))),
-FuzzyNumber$new(array(c(0.0, 1.0, -1.0, -1.0, 1.5, 1.0), dim = c(2, 3)))
-))$dwablphi(
-FuzzyNumberList$new(c(
-FuzzyNumber$new(array(c(0.0, 1.0, -0.5, 0, 1.5, 1), dim = c(2, 3))),
-FuzzyNumber$new(array(c(0.0, 1.0, 1, 1.5, 1.5, 1.0), dim = c(2, 3))))),
-2,1,1)
-
-# Example 4:
 F=Simulation$new()$simulCase1(3L)
 S=Simulation$new()$simulCase1(4L)
 F=F$transfTra()
 S=S$transfTra()
 F$dwablphi(S,2,1,1)
 
-# Example 5:
+# Example 4:
 F=Simulation$new()$simulCase1(10L)
 S=Simulation$new()$simulCase1(10L)
 F$dwablphi(S)
 
-# Example 6:
+# Example 5:
 F=Simulation$new()$simulCase1(10L)
 S=Simulation$new()$simulCase1(10L)
 F=F$transfTra()
@@ -607,10 +512,8 @@ F$dwablphi(S,2,1,1)
 \if{latex}{\out{\hypertarget{method-FuzzyNumberList-rho1}{}}}
 \subsection{Method \code{rho1()}}{
 This method calculates the 1-norm distance between the 'FuzzyNumbers' contained
-in two 'FuzzyNumberLists', which should be given in the desired format. For
-this, the method first checks if the two 'FuzzyNumberLists' are in the correct
-form (tested by the checking method) and if the \eqn{\alpha}-levels of all
-'FuzzyNumbers' coincide.
+in two 'FuzzyNumberLists'. The method checks if the \eqn{\alpha}-levels of
+all 'FuzzyNumbers' coincide.
 See Diamond and Kloeden. (1990) [2].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{FuzzyNumberList$rho1(s = NA)}\if{html}{\out{</div>}}
@@ -620,9 +523,8 @@ See Diamond and Kloeden. (1990) [2].
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{s}}{FuzzyNumberList containing FuzzyNumbers characterized by means of nl
-\eqn{\alpha}-levels each. The method first calls checking to check if it is
-in the correct format. Moreover, the \eqn{\alpha}-levels should coincide with
-ones of the other FuzzyNumberList (the method checks this condition).}
+\eqn{\alpha}-levels each. The method checks that the \eqn{\alpha}-levels
+should coincide with ones of the other FuzzyNumberList.}
 }
 \if{html}{\out{</div>}}
 }
@@ -657,15 +559,6 @@ FuzzyNumber$new(array(c(0.0, 0.5, 1.0,1,1.25,1.5, 2, 1.75, 1.5), dim = c(3, 3)))
 FuzzyNumber$new(array(c(0.0, 0.5, 1.0,-1,-0.5,0, 1.5, 1.25, 1), dim = c(3, 3))))))
 
 # Example 3:
-FuzzyNumberList$new(c(
-FuzzyNumber$new(array(c(0.0, 1.0, -1.5, -1.0, 2, 1), dim = c(2, 3))),
-FuzzyNumber$new(array(c(0.0, 1.0, -1.0, -1.0, 1.5, 1.0), dim = c(2, 3)))
-))$rho1(
-FuzzyNumberList$new(c(
-FuzzyNumber$new(array(c(0.0, 1.0, -0.5, 0, 1.5, 1), dim = c(2, 3))),
-FuzzyNumber$new(array(c(0.0, 1.0, 1, 1.5, 1.5, 1.0), dim = c(2, 3))))))
-
-# Example 4:
 F=Simulation$new()$simulCase1(4L)
 S=Simulation$new()$simulCase1(5L)
 F=F$transfTra()
@@ -673,7 +566,7 @@ S=S$transfTra()
 F$rho1(S)
 S$rho1(F)
 
-# Example 6:
+# Example 4:
 F=Simulation$new()$simulCase1(4L)
 S=Simulation$new()$simulCase1(5L)
 F=F$transfTra()
@@ -765,7 +658,7 @@ NULL.
 \preformatted{# Example 1:
 FuzzyNumberList$new(c(
 FuzzyNumber$new(array(c(0.0, 1.0, -1.5, -1.0, 2, 1), dim = c(2, 3))),
-FuzzyNumber$new(array(c(0.0, 0.5, 1.0, -1, -0.5, 0, 1.5, 1.25, 1), dim = c(3, 3)))
+FuzzyNumber$new(array(c(0.0, 1.0, -1, -0.5, 1.5, 1.25), dim = c(2, 3)))
 ))$removeFuzzyNumber(1L)
 
 # Example 2:
@@ -818,6 +711,99 @@ FuzzyNumberList$new(c(
 FuzzyNumber$new(array(c(0.0, 0.5, 1.0, -1, -0.5, 0, 1.5, 1.25, 1), dim = c(3, 3))),
 FuzzyNumber$new(array(c(0.0, 0.5, 1.0, 1, 1.25, 1.5, 2, 1.75, 1.5), dim = c(3, 3)))
 ))$getDimension(2L)
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-FuzzyNumberList-plot"></a>}}
+\if{latex}{\out{\hypertarget{method-FuzzyNumberList-plot}{}}}
+\subsection{Method \code{plot()}}{
+This method shows in a graph the values of the attribute numbers of the
+corresponding 'FuzzyNumberList'.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{FuzzyNumberList$plot(color = "grey")}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{color}}{is the color of the lines representing the numbers to be shown
+in the graph. The default value is grey, other colors can be specified, the
+option palette() too.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Details}{
+See examples.
+}
+
+\subsection{Returns}{
+a graph with the values of the attribute numbers of the corresponding
+'FuzzyNumberList'.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{# Example 1:
+FuzzyNumberList$new(c(
+FuzzyNumber$new(array(c(0.0, 0.5, 1.0, -1, -0.5, 0, 1.5, 1.25, 1), dim = c(3, 3))),
+FuzzyNumber$new(array(c(0.0, 0.5, 1.0, 1, 1.25, 1.5, 2, 1.75, 1.5), dim = c(3, 3)))
+))$plot()
+
+# Example 2:
+FuzzyNumberList$new(c(
+FuzzyNumber$new(array(c(0.0, 1.0, -1.5, -1.0, 2, 1), dim = c(2, 3))),
+FuzzyNumber$new(array(c(0.0, 1.0, -1.0, -1.0, 1.5, 1.0), dim = c(2, 3))),
+FuzzyNumber$new(array(c(0.0, 1.0, -0.5, 0, 1.5, 1), dim = c(2, 3))),
+FuzzyNumber$new(array(c(0.0, 1.0, 1, 1.5, 1.85, 1.7), dim = c(2, 3))))
+)$plot("blue")
+
+# Example 3:
+Simulation$new()$simulCase1(8L)$transfTra()$plot(palette())
+
+# Example 4:
+Simulation$new()$simulCase1(5L)$transfTra()$plot(palette()[2:6])
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-FuzzyNumberList-getLength"></a>}}
+\if{latex}{\out{\hypertarget{method-FuzzyNumberList-getLength}{}}}
+\subsection{Method \code{getLength()}}{
+This method returns the number of dimensions that are equivalent to the number
+of 'FuzzyNumbers' in the corresponding 'FuzzyNumberList'.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{FuzzyNumberList$getLength()}\if{html}{\out{</div>}}
+}
+
+\subsection{Details}{
+See examples.
+}
+
+\subsection{Returns}{
+the number of dimensions that are equivalent to the number of 'FuzzyNumbers'
+in the corresponding 'FuzzyNumberList'.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{# Example 1:
+FuzzyNumberList$new(c(
+FuzzyNumber$new(array(c(0.0, 0.5, 1.0, -1, -0.5, 0, 1.5, 1.25, 1), dim = c(3, 3))),
+FuzzyNumber$new(array(c(0.0, 0.5, 1.0, 1, 1.25, 1.5, 2, 1.75, 1.5), dim = c(3, 3)))
+))$getLength()
+
+# Example 2:
+FuzzyNumberList$new(c(
+FuzzyNumber$new(array(c(0.0, 1.0, -1.5, -1.0, 2, 1), dim = c(2, 3))),
+FuzzyNumber$new(array(c(0.0, 1.0, -1.0, -1.0, 1.5, 1.0), dim = c(2, 3))),
+FuzzyNumber$new(array(c(0.0, 1.0, -0.5, 0, 1.5, 1), dim = c(2, 3))),
+FuzzyNumber$new(array(c(0.0, 1.0, 1, 1.5, 1.5, 1.5), dim = c(2, 3))))
+)$getLength()
 }
 \if{html}{\out{</div>}}
 

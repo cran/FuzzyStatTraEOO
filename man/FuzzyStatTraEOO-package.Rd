@@ -21,8 +21,8 @@ more accessible to users.
 \details{
 Package: FuzzyStatTraEOO\cr
 Type: Package\cr
-Version: 0.1.0\cr
-Date: 2022-09-23\cr
+Version: 1.0\cr
+Date: 2022-12-12\cr
 License: LGPL (>= 3)\cr\cr
 For a complete list of classes and their methods call \code{help(package="FuzzyStatTraEOO")},
 call \code{??FuzzyStatTraEOO} or use the Index link below, at the end of this help window.

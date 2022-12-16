@@ -1,186 +1,147 @@
 
-test_that("FuzzyNumberList instance works (initialize)", {
-  ## CONSTRUCTOR ERRORS
-  ## invalid parameter: not a list
-  expect_error(FuzzyNumberList$new())
-  expect_error(FuzzyNumberList$new(3))
-  expect_error(FuzzyNumberList$new("a"))
-  expect_error(FuzzyNumberList$new(c(1, 2, 3)))
-  ## more parameters than needed
-  expect_error(FuzzyNumberList$new(c(1, 2, 3), 1))
-  ## invalid parameter: list that does not contain FuzzyNumbers
-  c <-
-    c(TrapezoidalFuzzyNumber$new(1, 2, 3, 4),
-      TrapezoidalFuzzyNumber$new(-1, 2, 3.3, 8.0))
-  expect_error(FuzzyNumberList$new(c))
-  ## invalid parameter: list does not only contain FuzzyNumbers
-  c <-
-    c(TrapezoidalFuzzyNumber$new(1, 2, 3, 4),
-      FuzzyNumber$new(array(
-        c(0.0, 0.5, 1.0,-1.5,-1.0,-1.0, 2.0, 1.5, 1.0), dim = c(3, 3)
-      )))
-  expect_error(FuzzyNumberList$new(c))
+test_that("FuzzyNumberList instance works (initialize and checking method)",
+          {
+            ## CONSTRUCTOR ERRORS
+            ## invalid parameter: not a list
+            expect_error(FuzzyNumberList$new())
+            expect_error(FuzzyNumberList$new(3))
+            expect_error(FuzzyNumberList$new("a"))
+            expect_error(FuzzyNumberList$new(c(1, 2, 3)))
+            ## more parameters than needed
+            expect_error(FuzzyNumberList$new(c(1, 2, 3), 1))
+            ## invalid parameter: list that does not contain FuzzyNumbers
+            c <-
+              c(TrapezoidalFuzzyNumber$new(1, 2, 3, 4),
+                TrapezoidalFuzzyNumber$new(-1, 2, 3.3, 8.0))
+            expect_error(FuzzyNumberList$new(c))
+            ## invalid parameter: list does not only contain FuzzyNumbers
+            c <-
+              c(TrapezoidalFuzzyNumber$new(1, 2, 3, 4),
+                FuzzyNumber$new(array(
+                  c(0.0, 0.5, 1.0, -1.5, -1.0, -1.0, 2.0, 1.5, 1.0), dim = c(3, 3)
+                )))
+            expect_error(FuzzyNumberList$new(c))
 
-  # valid parameter: list of valid FuzzyNumbers
-  # attributes dimensions, columns and numbers correctly saved
-  c <-
-    c(FuzzyNumber$new(array(c(
-      0.0, 1.0,-1.5,-1.0, 2, 1
-    ), dim = c(2, 3))), FuzzyNumber$new(array(
-      c(0.0, 0.5, 1.0,-1.5,-1.0,-1.0, 2.0, 1.5, 1.0), dim = c(3, 3)
-    )))
-  array <- FuzzyNumberList$new(c)
+            ## invalid numbers: valid FuzzyNumbers but all does not have the same alpha-levels
+            c <-
+              c(FuzzyNumber$new(array(c(
+                0.0, 1.0, -1.5, -1.0, 2, 1
+              ), dim = c(2, 3))), FuzzyNumber$new(array(
+                c(0.0, 0.5, 1.0, -1.5, -1.0, -1.0, 2.0, 1.5, 1.0), dim = c(3, 3)
+              )))
 
-  expect_equal(class(array$numbers), "list")
-  expect_equal(length(array$numbers), length(c))
-  expect_equal(c, array$numbers)
+            expect_error(FuzzyNumberList$new(c),
+                         "all fuzzy numbers must have the same alpha-levels")
 
-})
+            ## invalid numbers: valid FuzzyNumbers but all does not have the same alpha-levels
+            c <-
+              c(
+                FuzzyNumber$new(array(c(
+                  0.0, 1.0,-1.5,-1.0, 2, 1
+                ), dim = c(2, 3))),
+                FuzzyNumber$new(array(
+                  c(0.0, 0.5, 1.0,-1.5,-1.0,-1.0, 2.0, 1.5, 1.0), dim = c(3, 3)
+                )),
+                FuzzyNumber$new(array(
+                  c(
+                    0.0,
+                    0.25,
+                    0.5,
+                    0.75,
+                    1.0,
+                    -1.5,
+                    -1.4,
+                    -1.3,
+                    -1.2,
+                    -1.1,
+                    1.4,
+                    1.3,
+                    1.2,
+                    1.1,
+                    1.0
+                  ),
+                  dim = c(5, 3)
+                )),
+                FuzzyNumber$new(array(c(
+                  0.0, 1.0,-1.5,-1.0, 2, 1
+                ), dim = c(2, 3))),
+                FuzzyNumber$new(array(
+                  c(0.0, 0.6, 1.0,-1.5,-1.0,-1.0, 2.0, 1.5, 1.0), dim = c(3, 3)
+                ))
+              )
+            expect_error(FuzzyNumberList$new(c),
+                         "all fuzzy numbers must have the same alpha-levels")
 
-test_that("FuzzyNumberList checking method", {
-  ## invalid numbers: list that does not contain any valid FuzzyNumbers
-  c <- c(
-    FuzzyNumber$new(array(c(1, 2, 3, 4), dim = c(2, 1, 2))),
-    FuzzyNumber$new(array(c(0, 0.1, 0.5, 1, 2, 3), dim = c(3, 2))),
-    FuzzyNumber$new(array(c(1, 2, 3, 4, 5, 6), dim = c(2, 3))),
-    FuzzyNumber$new(array(c(
-      0, 0, 1, 2, 3, 4, 5, 0, 1
-    ), dim = c(3, 3))),
-    FuzzyNumber$new(array(c(
-      0, 0.5, 1, 2, 3, 2, 5, 6, 7
-    ), dim = c(3, 3))),
-    FuzzyNumber$new(array(c(
-      0, 0.5, 1, 2, 3, 4, 5, 0, 1
-    ), dim = c(3, 3))),
-    FuzzyNumber$new(array(c(
-      0, 0.5, 1, 2, 3, 4, 6, 5, 3
-    ), dim = c(3, 3)))
-  )
+            ## valid numbers
+            c <-
+              c(FuzzyNumber$new(array(
+                c(
+                  0.0,
+                  0.25,
+                  0.5,
+                  0.75,
+                  1.0,
+                  -1.5,
+                  -1.4,
+                  -1.3,
+                  -1.2,
+                  -1.1,
+                  1.4,
+                  1.3,
+                  1.2,
+                  1.1,
+                  1.0
+                ),
+                dim = c(5, 3)
+              )),
+              FuzzyNumber$new(array(
+                c(
+                  0.0,
+                  0.25,
+                  0.5,
+                  0.75,
+                  1.0,
+                  -1.5,
+                  -1.5,
+                  -1.5,
+                  -1.0,
+                  -1.0,
+                  2.0,
+                  1.5,
+                  1.5,
+                  1.0,
+                  1.0
+                ),
+                dim = c(5, 3)
+              )),
+              FuzzyNumber$new(array(
+                c(
+                  0.0,
+                  0.25,
+                  0.5,
+                  0.75,
+                  1.0,-1.5,-1.25,-1.15,-1.1,-1.0,
+                  2.0,
+                  1.75,
+                  1.5,
+                  1.25,
+                  1.0
+                ),
+                dim = c(5, 3)
+              )))
 
-  array <- FuzzyNumberList$new(c)
+            fuzzy <- FuzzyNumberList$new(c)
+            expect_equal(fuzzy$getLength(), 3)
+            expect_equal(nrow(fuzzy$getDimension(3L)$getAlphaLevels()), 5)
 
-  ## more parameters than needed
-  expect_error(array$checking(1, 1))
-
-  expect_output(array$checking(),
-                "Not all fuzzy numbers are valid")
-  expect_equal(array$checking(), FALSE)
-
-  ## invalid numbers: list that does not only contain valid FuzzyNumbers
-  c <- c(FuzzyNumber$new(array(
-    c(0.0, 0.5, 1.0, -1.5, -1.0, -1.0, 2.0, 1.5, 1.0), dim = c(3, 3)
-  )),
-  FuzzyNumber$new(array(c(
-    0, 0, 1, 2, 3, 4, 5, 0, 1
-  ), dim = c(3, 3))),
-  FuzzyNumber$new(array(c(
-    0, 0.5, 1, 2, 3, 4, 6, 5, 3
-  ), dim = c(3, 3))))
-
-  array <- FuzzyNumberList$new(c)
-  expect_output(array$checking(),
-                "Not all fuzzy numbers are valid")
-  expect_equal(array$checking(), FALSE)
-
-  ## invalid numbers: valid FuzzyNumbers but all does not have the same alpha-levels
-  c <-
-    c(
-      FuzzyNumber$new(array(c(
-        0.0, 1.0, -1.5, -1.0, 2, 1
-      ), dim = c(2, 3))),
-      FuzzyNumber$new(array(
-        c(0.0, 0.5, 1.0, -1.5, -1.0, -1.0, 2.0, 1.5, 1.0), dim = c(3, 3)
-      )),
-      FuzzyNumber$new(array(
-        c(
-          0.0,
-          0.25,
-          0.5,
-          0.75,
-          1.0,-1.5,-1.4,-1.3,-1.2,-1.1,
-          1.4,
-          1.3,
-          1.2,
-          1.1,
-          1.0
-        ),
-        dim = c(5, 3)
-      )),
-      FuzzyNumber$new(array(c(
-        0.0, 1.0, -1.5, -1.0, 2, 1
-      ), dim = c(2, 3))),
-      FuzzyNumber$new(array(
-        c(0.0, 0.6, 1.0, -1.5, -1.0, -1.0, 2.0, 1.5, 1.0), dim = c(3, 3)
-      ))
-    )
-  array <- FuzzyNumberList$new(c)
-  expect_output(array$checking(),
-                "all fuzzy numbers must have the same alpha-levels")
-  expect_equal(array$checking(), FALSE)
-
-  ## valid numbers
-  c <-
-    c(FuzzyNumber$new(array(
-      c(
-        0.0,
-        0.25,
-        0.5,
-        0.75,
-        1.0,-1.5,-1.4,-1.3,-1.2,-1.1,
-        1.4,
-        1.3,
-        1.2,
-        1.1,
-        1.0
-      ),
-      dim = c(5, 3)
-    )),
-    FuzzyNumber$new(array(
-      c(
-        0.0,
-        0.25,
-        0.5,
-        0.75,
-        1.0,-1.5,-1.5,-1.5,-1.0,-1.0,
-        2.0,
-        1.5,
-        1.5,
-        1.0,
-        1.0
-      ),
-      dim = c(5, 3)
-    )),
-    FuzzyNumber$new(array(
-      c(
-        0.0,
-        0.25,
-        0.5,
-        0.75,
-        1.0,
-        -1.5,
-        -1.25,
-        -1.15,
-        -1.1,
-        -1.0,
-        2.0,
-        1.75,
-        1.5,
-        1.25,
-        1.0
-      ),
-      dim = c(5, 3)
-    )))
-  array <- FuzzyNumberList$new(c)
-  expect_equal(array$checking(), TRUE)
-
-})
+          })
 
 test_that("FuzzyNumberList dthetaphi method", {
   array <- FuzzyNumberList$new(c(FuzzyNumber$new(array(
     c(0, 1, 0.6623698, 0.9403180, 1.564024, 1.185641), dim = c(2, 3)
   )),
   FuzzyNumber$new(array(
-    c(0, 1,-0.30671609,-0.09722635, 4.49222404, 0.02745836),
+    c(0, 1, -0.30671609, -0.09722635, 4.49222404, 0.02745836),
     dim = c(2, 3)
   ))))
 
@@ -198,53 +159,19 @@ test_that("FuzzyNumberList dthetaphi method", {
   expect_error(array$dthetaphi(c(1, 2, 3, 4), 1, 1, 1))
 
   s <- FuzzyNumberList$new(c(FuzzyNumber$new(array(
-    c(0, 1,-0.9202838,-0.6402973,-0.03652915,-0.42350253),
+    c(0, 1, -0.9202838, -0.6402973, -0.03652915, -0.42350253),
     dim = c(2, 3)
   )),
   FuzzyNumber$new(array(
-    c(0, 1,-1.0307571,-0.9230092, 3.413532, 1.627589), dim = c(2, 3)
+    c(0, 1, -1.0307571, -0.9230092, 3.413532, 1.627589), dim = c(2, 3)
   ))))
 
   ## invalid parameter a, b or theta
   expect_error(array$dthetaphi(s, 0, 0, 0))
-  expect_error(array$dthetaphi(s, "a", 0L, -1.5))
+  expect_error(array$dthetaphi(s, "a", 0L,-1.5))
   expect_error(array$dthetaphi(s, 1, list(), 1))
   expect_error(array$dthetaphi(s, 1, 2, c(1, 2, 3, 4)))
-  expect_error(array$dthetaphi(s, 1, Inf, -Inf))
-
-  ## INVALID FuzzyNumberLists
-  ## array$checking() == FALSE
-  array <- FuzzyNumberList$new(c(FuzzyNumber$new(array(
-    c(0, 1, 0.6623698, 0.9403180, 1.564024, 0.185641), dim = c(2, 3)
-  )),
-  FuzzyNumber$new(array(
-    c(0, 1,-0.30671609,-0.09722635, 4.49222404, 0.02745836),
-    dim = c(2, 3)
-  ))))
-
-  expect_output(array$dthetaphi(s, 1, 1, 1), "Not all fuzzy numbers are valid")
-
-  ## also s$checking() == FALSE
-  s <- FuzzyNumberList$new(c(FuzzyNumber$new(array(
-    c(0, 1, 0.9202838,-0.6402973,-0.03652915,-0.42350253),
-    dim = c(2, 3)
-  )),
-  FuzzyNumber$new(array(
-    c(0, 1,-1.0307571,-0.9230092, 3.413532, 1.627589), dim = c(2, 3)
-  ))))
-
-  expect_output(array$dthetaphi(s, 1, 1, 1), "Not all fuzzy numbers are valid")
-
-  ## only s$checking() == FALSE
-  array <- FuzzyNumberList$new(c(FuzzyNumber$new(array(
-    c(0, 1, 0.6623698, 0.9403180, 1.564024, 1.185641), dim = c(2, 3)
-  )),
-  FuzzyNumber$new(array(
-    c(0, 1,-0.30671609,-0.09722635, 4.49222404, 0.02745836),
-    dim = c(2, 3)
-  ))))
-
-  expect_output(array$dthetaphi(s, 1, 1, 1), "Not all fuzzy numbers are valid")
+  expect_error(array$dthetaphi(s, 1, Inf,-Inf))
 
   ## not the same alpha-levels
   array <- FuzzyNumberList$new(c(FuzzyNumber$new(array(
@@ -255,10 +182,7 @@ test_that("FuzzyNumberList dthetaphi method", {
     c(
       0,
       0.75,
-      1,
-      -0.4,
-      -0.30671609,
-      -0.09722635,
+      1,-0.4,-0.30671609,-0.09722635,
       5,
       4.49222404,
       0.02745836
@@ -270,18 +194,12 @@ test_that("FuzzyNumberList dthetaphi method", {
     c(
       0,
       0.5,
-      1.0,
-      -1,
-      -0.9202838,
-      -0.6402973,
-      -0.01,
-      -0.03652915,
-      -0.42350253
+      1.0,-1,-0.9202838,-0.6402973,-0.01,-0.03652915,-0.42350253
     ),
     dim = c(3, 3)
   )),
   FuzzyNumber$new(array(
-    c(0, 0.5, 1.0,-1.5,-1.0307571,-0.9230092, 4, 3.413532, 1.627589),
+    c(0, 0.5, 1.0, -1.5, -1.0307571, -0.9230092, 4, 3.413532, 1.627589),
     dim = c(3, 3)
   ))))
 
@@ -295,16 +213,16 @@ test_that("FuzzyNumberList dthetaphi method", {
     c(0, 1, 0.6623698, 0.9403180, 1.564024, 1.185641), dim = c(2, 3)
   )),
   FuzzyNumber$new(array(
-    c(0, 1,-0.30671609,-0.09722635, 4.49222404, 0.02745836),
+    c(0, 1, -0.30671609, -0.09722635, 4.49222404, 0.02745836),
     dim = c(2, 3)
   ))))
 
   s <- FuzzyNumberList$new(c(FuzzyNumber$new(array(
-    c(0, 1,-0.9202838,-0.6402973,-0.03652915,-0.42350253),
+    c(0, 1, -0.9202838, -0.6402973, -0.03652915, -0.42350253),
     dim = c(2, 3)
   )),
   FuzzyNumber$new(array(
-    c(0, 1,-1.0307571,-0.9230092, 3.413532, 1.627589), dim = c(2, 3)
+    c(0, 1, -1.0307571, -0.9230092, 3.413532, 1.627589), dim = c(2, 3)
   ))))
 
   expect_equal(array$dthetaphi(s, 1, 5, 1), matrix(
@@ -370,7 +288,7 @@ test_that("FuzzyNumberList dwablphi method", {
     c(0, 1, 0.6623698, 0.9403180, 1.564024, 1.185641), dim = c(2, 3)
   )),
   FuzzyNumber$new(array(
-    c(0, 1,-0.30671609,-0.09722635, 4.49222404, 0.02745836),
+    c(0, 1, -0.30671609, -0.09722635, 4.49222404, 0.02745836),
     dim = c(2, 3)
   ))))
 
@@ -388,53 +306,19 @@ test_that("FuzzyNumberList dwablphi method", {
   expect_error(array$dwablphi(c(1, 2, 3, 4), 1, 1, 1))
 
   s <- FuzzyNumberList$new(c(FuzzyNumber$new(array(
-    c(0, 1,-0.9202838,-0.6402973,-0.03652915,-0.42350253),
+    c(0, 1, -0.9202838, -0.6402973, -0.03652915, -0.42350253),
     dim = c(2, 3)
   )),
   FuzzyNumber$new(array(
-    c(0, 1,-1.0307571,-0.9230092, 3.413532, 1.627589), dim = c(2, 3)
+    c(0, 1, -1.0307571, -0.9230092, 3.413532, 1.627589), dim = c(2, 3)
   ))))
 
   ## invalid parameter a, b or theta
   expect_error(array$dwablphi(s, 0, 0, 0))
-  expect_error(array$dwablphi(s, "a", 0L, -1.5))
+  expect_error(array$dwablphi(s, "a", 0L,-1.5))
   expect_error(array$dwablphi(s, 1, list(), 1))
   expect_error(array$dwablphi(s, 1, 2, c(1, 2, 3, 4)))
   expect_error(array$dwablphi(s, 1, Inf, Inf))
-
-  ## INVALID FuzzyNumberLists
-  ## array$checking() == FALSE
-  array <- FuzzyNumberList$new(c(FuzzyNumber$new(array(
-    c(0, 1, 0.6623698, 0.9403180, 1.564024, 0.185641), dim = c(2, 3)
-  )),
-  FuzzyNumber$new(array(
-    c(0, 1,-0.30671609,-0.09722635, 4.49222404, 0.02745836),
-    dim = c(2, 3)
-  ))))
-
-  expect_output(array$dwablphi(s, 1, 1, 1), "Not all fuzzy numbers are valid")
-
-  ## also s$checking() == FALSE
-  s <- FuzzyNumberList$new(c(FuzzyNumber$new(array(
-    c(0, 1, 0.9202838,-0.6402973,-0.03652915,-0.42350253),
-    dim = c(2, 3)
-  )),
-  FuzzyNumber$new(array(
-    c(0, 1,-1.0307571,-0.9230092, 3.413532, 1.627589), dim = c(2, 3)
-  ))))
-
-  expect_output(array$dwablphi(s, 1, 1, 1), "Not all fuzzy numbers are valid")
-
-  ## only s$checking() == FALSE
-  array <- FuzzyNumberList$new(c(FuzzyNumber$new(array(
-    c(0, 1, 0.6623698, 0.9403180, 1.564024, 1.185641), dim = c(2, 3)
-  )),
-  FuzzyNumber$new(array(
-    c(0, 1,-0.30671609,-0.09722635, 4.49222404, 0.02745836),
-    dim = c(2, 3)
-  ))))
-
-  expect_output(array$dwablphi(s, 1, 1, 1), "Not all fuzzy numbers are valid")
 
   ## not the same alpha-levels
   array <- FuzzyNumberList$new(c(FuzzyNumber$new(array(
@@ -445,10 +329,7 @@ test_that("FuzzyNumberList dwablphi method", {
     c(
       0,
       0.75,
-      1,
-      -0.4,
-      -0.30671609,
-      -0.09722635,
+      1,-0.4,-0.30671609,-0.09722635,
       5,
       4.49222404,
       0.02745836
@@ -460,18 +341,12 @@ test_that("FuzzyNumberList dwablphi method", {
     c(
       0,
       0.5,
-      1.0,
-      -1,
-      -0.9202838,
-      -0.6402973,
-      -0.01,
-      -0.03652915,
-      -0.42350253
+      1.0,-1,-0.9202838,-0.6402973,-0.01,-0.03652915,-0.42350253
     ),
     dim = c(3, 3)
   )),
   FuzzyNumber$new(array(
-    c(0, 0.5, 1.0,-1.5,-1.0307571,-0.9230092, 4, 3.413532, 1.627589),
+    c(0, 0.5, 1.0, -1.5, -1.0307571, -0.9230092, 4, 3.413532, 1.627589),
     dim = c(3, 3)
   ))))
 
@@ -485,16 +360,16 @@ test_that("FuzzyNumberList dwablphi method", {
     c(0, 1, 0.6623698, 0.9403180, 1.564024, 1.185641), dim = c(2, 3)
   )),
   FuzzyNumber$new(array(
-    c(0, 1,-0.30671609,-0.09722635, 4.49222404, 0.02745836),
+    c(0, 1, -0.30671609, -0.09722635, 4.49222404, 0.02745836),
     dim = c(2, 3)
   ))))
 
   s <- FuzzyNumberList$new(c(FuzzyNumber$new(array(
-    c(0, 1,-0.9202838,-0.6402973,-0.03652915,-0.42350253),
+    c(0, 1, -0.9202838, -0.6402973, -0.03652915, -0.42350253),
     dim = c(2, 3)
   )),
   FuzzyNumber$new(array(
-    c(0, 1,-1.0307571,-0.9230092, 3.413532, 1.627589), dim = c(2, 3)
+    c(0, 1, -1.0307571, -0.9230092, 3.413532, 1.627589), dim = c(2, 3)
   ))))
 
   expect_equal(array$dwablphi(s, 2, 1, 1), matrix(
@@ -560,7 +435,7 @@ test_that("FuzzyNumberList rho1 method", {
     c(0, 1, 0.6623698, 0.9403180, 1.564024, 1.185641), dim = c(2, 3)
   )),
   FuzzyNumber$new(array(
-    c(0, 1,-0.30671609,-0.09722635, 4.49222404, 0.02745836),
+    c(0, 1, -0.30671609, -0.09722635, 4.49222404, 0.02745836),
     dim = c(2, 3)
   ))))
 
@@ -578,46 +453,12 @@ test_that("FuzzyNumberList rho1 method", {
   expect_error(array$rho1(c(1, 2, 3, 4)))
 
   s <- FuzzyNumberList$new(c(FuzzyNumber$new(array(
-    c(0, 1,-0.9202838,-0.6402973,-0.03652915,-0.42350253),
+    c(0, 1, -0.9202838, -0.6402973, -0.03652915, -0.42350253),
     dim = c(2, 3)
   )),
   FuzzyNumber$new(array(
-    c(0, 1,-1.0307571,-0.9230092, 3.413532, 1.627589), dim = c(2, 3)
+    c(0, 1, -1.0307571, -0.9230092, 3.413532, 1.627589), dim = c(2, 3)
   ))))
-
-  ## INVALID FuzzyNumberLists
-  ## array$checking() == FALSE
-  array <- FuzzyNumberList$new(c(FuzzyNumber$new(array(
-    c(0, 1, 0.6623698, 0.9403180, 1.564024, 0.185641), dim = c(2, 3)
-  )),
-  FuzzyNumber$new(array(
-    c(0, 1,-0.30671609,-0.09722635, 4.49222404, 0.02745836),
-    dim = c(2, 3)
-  ))))
-
-  expect_output(array$rho1(s), "Not all fuzzy numbers are valid")
-
-  ## also s$checking() == FALSE
-  s <- FuzzyNumberList$new(c(FuzzyNumber$new(array(
-    c(0, 1, 0.9202838,-0.6402973,-0.03652915,-0.42350253),
-    dim = c(2, 3)
-  )),
-  FuzzyNumber$new(array(
-    c(0, 1,-1.0307571,-0.9230092, 3.413532, 1.627589), dim = c(2, 3)
-  ))))
-
-  expect_output(array$rho1(s), "Not all fuzzy numbers are valid")
-
-  ## only s$checking() == FALSE
-  array <- FuzzyNumberList$new(c(FuzzyNumber$new(array(
-    c(0, 1, 0.6623698, 0.9403180, 1.564024, 1.185641), dim = c(2, 3)
-  )),
-  FuzzyNumber$new(array(
-    c(0, 1,-0.30671609,-0.09722635, 4.49222404, 0.02745836),
-    dim = c(2, 3)
-  ))))
-
-  expect_output(array$rho1(s), "Not all fuzzy numbers are valid")
 
   ## not the same alpha-levels
   array <- FuzzyNumberList$new(c(FuzzyNumber$new(array(
@@ -628,10 +469,7 @@ test_that("FuzzyNumberList rho1 method", {
     c(
       0,
       0.75,
-      1,
-      -0.4,
-      -0.30671609,
-      -0.09722635,
+      1,-0.4,-0.30671609,-0.09722635,
       5,
       4.49222404,
       0.02745836
@@ -643,18 +481,12 @@ test_that("FuzzyNumberList rho1 method", {
     c(
       0,
       0.5,
-      1.0,
-      -1,
-      -0.9202838,
-      -0.6402973,
-      -0.01,
-      -0.03652915,
-      -0.42350253
+      1.0,-1,-0.9202838,-0.6402973,-0.01,-0.03652915,-0.42350253
     ),
     dim = c(3, 3)
   )),
   FuzzyNumber$new(array(
-    c(0, 0.5, 1.0,-1.5,-1.0307571,-0.9230092, 4, 3.413532, 1.627589),
+    c(0, 0.5, 1.0, -1.5, -1.0307571, -0.9230092, 4, 3.413532, 1.627589),
     dim = c(3, 3)
   ))))
 
@@ -668,16 +500,16 @@ test_that("FuzzyNumberList rho1 method", {
     c(0, 1, 0.6623698, 0.9403180, 1.564024, 1.185641), dim = c(2, 3)
   )),
   FuzzyNumber$new(array(
-    c(0, 1,-0.30671609,-0.09722635, 4.49222404, 0.02745836),
+    c(0, 1, -0.30671609, -0.09722635, 4.49222404, 0.02745836),
     dim = c(2, 3)
   ))))
 
   s <- FuzzyNumberList$new(c(FuzzyNumber$new(array(
-    c(0, 1,-0.9202838,-0.6402973,-0.03652915,-0.42350253),
+    c(0, 1, -0.9202838, -0.6402973, -0.03652915, -0.42350253),
     dim = c(2, 3)
   )),
   FuzzyNumber$new(array(
-    c(0, 1,-1.0307571,-0.9230092, 3.413532, 1.627589), dim = c(2, 3)
+    c(0, 1, -1.0307571, -0.9230092, 3.413532, 1.627589), dim = c(2, 3)
   ))))
 
   expect_equal(array$rho1(s), matrix(
@@ -726,7 +558,7 @@ test_that("FuzzyNumberList getDimension method", {
   ), dim = c(2, 3)))
 
   f2 <- FuzzyNumber$new(array(
-    c(0, 1,-0.30671609,-0.09722635, 4.49222404, 0.02745836),
+    c(0, 1, -0.30671609, -0.09722635, 4.49222404, 0.02745836),
     dim = c(2, 3)
   ))
 
@@ -754,13 +586,13 @@ test_that("FuzzyNumberList getDimension method", {
 
 })
 
-test_that("FuzzyNumberList addFuzzyNumber and removeFuzzyNumber methods",
+test_that("FuzzyNumberList addFuzzyNumber, removeFuzzyNumber and getLength methods",
           {
             array <- FuzzyNumberList$new(c(FuzzyNumber$new(array(
               c(0, 1, 0.6623698, 0.9403180, 1.564024, 1.185641), dim = c(2, 3)
             )),
             FuzzyNumber$new(array(
-              c(0, 1,-0.30671609,-0.09722635, 4.49222404, 0.02745836),
+              c(0, 1, -0.30671609, -0.09722635, 4.49222404, 0.02745836),
               dim = c(2, 3)
             ))))
 
@@ -789,12 +621,7 @@ test_that("FuzzyNumberList addFuzzyNumber and removeFuzzyNumber methods",
                   0.25,
                   0.5,
                   0.75,
-                  1,
-                  -5.7835504819939967,
-                  -5.100726176047438,
-                  -4.4179018701008808,
-                  -3.7350775641543232,
-                  -3.0522532582077657,
+                  1,-5.7835504819939967,-5.100726176047438,-4.4179018701008808,-3.7350775641543232,-3.0522532582077657,
                   2.57316107511803693,
                   2.05738398915402954,
                   1.54160690319002169,
@@ -804,7 +631,7 @@ test_that("FuzzyNumberList addFuzzyNumber and removeFuzzyNumber methods",
                 dim = c(5, 3)
               ))
             array$addFuzzyNumber(f)
-            expect_equal(length(array$numbers), 3)
+            expect_equal(array$getLength(), 3)
             expect_equal(array$getDimension(3L), f)
 
             ## REMOVEFUZZYNUMBER
@@ -818,11 +645,35 @@ test_that("FuzzyNumberList addFuzzyNumber and removeFuzzyNumber methods",
 
             ## valid parameter
             array$removeFuzzyNumber(2L)
-            expect_equal(length(array$numbers), 2)
+            expect_equal(array$getLength(), 2)
             expect_equal(array$getDimension(2L), f)
 
             array$removeFuzzyNumber(1L)
-            expect_equal(length(array$numbers), 1)
+            expect_equal(array$getLength(), 1)
             expect_equal(array$getDimension(1L), f)
+
+          })
+
+test_that("FuzzyNumberList plot method with a list of fuzzy numbers and the default color",
+          {
+            p1 <- FuzzyNumberList$new(c(FuzzyNumber$new(array(
+              c(0.0, 0.5, 1.0, -1, -0.5, 0, 1.5, 1.25, 1), dim = c(3, 3)
+            )),
+            FuzzyNumber$new(array(
+              c(0.0, 0.5, 1.0, 1, 1.25, 1.5, 2, 1.75, 1.5), dim = c(3, 3)
+            ))))$plot()
+            vdiffr::expect_doppelganger("FuzzyNumberList", p1)
+
+          })
+
+test_that("FuzzyNumberList plot method with a list of fuzzy numbers and palette colors",
+          {
+            p1 <- FuzzyNumberList$new(c(FuzzyNumber$new(array(
+              c(0.0, 0.5, 1.0, -1, -0.5, 0, 1.5, 1.25, 1), dim = c(3, 3)
+            )),
+            FuzzyNumber$new(array(
+              c(0.0, 0.5, 1.0, 1, 1.25, 1.5, 2, 1.75, 1.5), dim = c(3, 3)
+            ))))$plot(palette())
+            vdiffr::expect_doppelganger("FuzzyNumberList", p1)
 
           })

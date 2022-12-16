@@ -5,8 +5,8 @@
 \title{R6 Class representing a 'TrapezoidalFuzzyNumber'.}
 \description{
 A 'TrapezoidalFuzzyNumber' is characterized by their four values inf0, inf1,
-sup1 and sup0. Depending on its' values the 'TrapezoidalFuzzyNumber' can be valid
-or not.
+sup1 and sup0. Its' values are checked in order to only provide a valid
+'TrapezoidalFuzzyNumber'.
 }
 \note{
 In case you find (almost surely existing) bugs or have recommendations
@@ -29,15 +29,6 @@ TrapezoidalFuzzyNumber$new(-1,-1,2,3)
 
 # Example 4:
 TrapezoidalFuzzyNumber$new(1,2,3,3)
-
-# Example 5:
-TrapezoidalFuzzyNumber$new(1,0,2,3)
-
-# Example 6:
-TrapezoidalFuzzyNumber$new(-1,0,-0.5,0)
-
-# Example 7:
-TrapezoidalFuzzyNumber$new(-2,-4,-6,-8)
 
 ## ------------------------------------------------
 ## Method `TrapezoidalFuzzyNumber$getInf0`
@@ -64,22 +55,6 @@ TrapezoidalFuzzyNumber$new(1,2,3,4)$getSup1()
 TrapezoidalFuzzyNumber$new(1,2,3,4)$getSup0()
 
 ## ------------------------------------------------
-## Method `TrapezoidalFuzzyNumber$is_valid`
-## ------------------------------------------------
-
-# Example 1:
-TrapezoidalFuzzyNumber$new(1,2,3,4)$is_valid()
-
-# Example 2:
-TrapezoidalFuzzyNumber$new(-8,-6,-4,-2)$is_valid()
-
-# Example 3:
-TrapezoidalFuzzyNumber$new(1,0,2,3)$is_valid()
-
-# Example 4:
-TrapezoidalFuzzyNumber$new(-1,0,-0.5,0)$is_valid()
-
-## ------------------------------------------------
 ## Method `TrapezoidalFuzzyNumber$is_positive`
 ## ------------------------------------------------
 
@@ -89,11 +64,21 @@ TrapezoidalFuzzyNumber$new(1,2,3,4)$is_positive()
 # Example 2:
 TrapezoidalFuzzyNumber$new(-8,-6,-4,-2)$is_positive()
 
-# Example 5:
-TrapezoidalFuzzyNumber$new(1,0,2,3)$is_positive()
+## ------------------------------------------------
+## Method `TrapezoidalFuzzyNumber$plot`
+## ------------------------------------------------
 
-# Example 6:
-TrapezoidalFuzzyNumber$new(-1,0,-0.5,0)$is_positive()
+# Example 1:
+TrapezoidalFuzzyNumber$new(1,2,3,4)$plot()
+
+# Example 2:
+TrapezoidalFuzzyNumber$new(-8,-6,-4,-2)$plot("blue")
+
+# Example 3:
+TrapezoidalFuzzyNumber$new(0,0,0.5,3)$plot(palette())
+
+# Example 4:
+TrapezoidalFuzzyNumber$new(-8,-3.55,0,10)$plot(palette()[5])
 }
 \author{
 Andrea Garcia Cernuda <uo270115@uniovi.es>
@@ -106,8 +91,8 @@ Andrea Garcia Cernuda <uo270115@uniovi.es>
 \item \href{#method-TrapezoidalFuzzyNumber-getInf1}{\code{TrapezoidalFuzzyNumber$getInf1()}}
 \item \href{#method-TrapezoidalFuzzyNumber-getSup1}{\code{TrapezoidalFuzzyNumber$getSup1()}}
 \item \href{#method-TrapezoidalFuzzyNumber-getSup0}{\code{TrapezoidalFuzzyNumber$getSup0()}}
-\item \href{#method-TrapezoidalFuzzyNumber-is_valid}{\code{TrapezoidalFuzzyNumber$is_valid()}}
 \item \href{#method-TrapezoidalFuzzyNumber-is_positive}{\code{TrapezoidalFuzzyNumber$is_positive()}}
+\item \href{#method-TrapezoidalFuzzyNumber-plot}{\code{TrapezoidalFuzzyNumber$plot()}}
 \item \href{#method-TrapezoidalFuzzyNumber-clone}{\code{TrapezoidalFuzzyNumber$clone()}}
 }
 }
@@ -115,7 +100,7 @@ Andrea Garcia Cernuda <uo270115@uniovi.es>
 \if{html}{\out{<a id="method-TrapezoidalFuzzyNumber-new"></a>}}
 \if{latex}{\out{\hypertarget{method-TrapezoidalFuzzyNumber-new}{}}}
 \subsection{Method \code{new()}}{
-This method creates a 'TrapezoidalFuzzyNumber' object with all its attributes
+This method creates a valid 'TrapezoidalFuzzyNumber' object with all its attributes
 set.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TrapezoidalFuzzyNumber$new(inf0 = NA, inf1 = NA, sup1 = NA, sup0 = NA)}\if{html}{\out{</div>}}
@@ -143,7 +128,8 @@ See examples.
 }
 
 \subsection{Returns}{
-The TrapezoidalFuzzyNumber object created with all its attributes set.
+The TrapezoidalFuzzyNumber object created with all its attributes
+set if it is valid.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -158,15 +144,6 @@ TrapezoidalFuzzyNumber$new(-1,-1,2,3)
 
 # Example 4:
 TrapezoidalFuzzyNumber$new(1,2,3,3)
-
-# Example 5:
-TrapezoidalFuzzyNumber$new(1,0,2,3)
-
-# Example 6:
-TrapezoidalFuzzyNumber$new(-1,0,-0.5,0)
-
-# Example 7:
-TrapezoidalFuzzyNumber$new(-2,-4,-6,-8)
 }
 \if{html}{\out{</div>}}
 
@@ -274,43 +251,6 @@ The sup0 attribute of the TrapezoidalFuzzyNumber object.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TrapezoidalFuzzyNumber-is_valid"></a>}}
-\if{latex}{\out{\hypertarget{method-TrapezoidalFuzzyNumber-is_valid}{}}}
-\subsection{Method \code{is_valid()}}{
-This method gives information whether the 'TrapezoidalFuzzyNumber' is valid
-regarding its attributes and checking conditions.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TrapezoidalFuzzyNumber$is_valid()}\if{html}{\out{</div>}}
-}
-
-\subsection{Details}{
-See examples.
-}
-
-\subsection{Returns}{
-TRUE whether the TrapezoidalFuzzyNumber object has non-decreasing
-attributes, otherwise FALSE.
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{# Example 1:
-TrapezoidalFuzzyNumber$new(1,2,3,4)$is_valid()
-
-# Example 2:
-TrapezoidalFuzzyNumber$new(-8,-6,-4,-2)$is_valid()
-
-# Example 3:
-TrapezoidalFuzzyNumber$new(1,0,2,3)$is_valid()
-
-# Example 4:
-TrapezoidalFuzzyNumber$new(-1,0,-0.5,0)$is_valid()
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TrapezoidalFuzzyNumber-is_positive"></a>}}
 \if{latex}{\out{\hypertarget{method-TrapezoidalFuzzyNumber-is_positive}{}}}
 \subsection{Method \code{is_positive()}}{
@@ -335,12 +275,50 @@ TrapezoidalFuzzyNumber$new(1,2,3,4)$is_positive()
 
 # Example 2:
 TrapezoidalFuzzyNumber$new(-8,-6,-4,-2)$is_positive()
+}
+\if{html}{\out{</div>}}
 
-# Example 5:
-TrapezoidalFuzzyNumber$new(1,0,2,3)$is_positive()
+}
 
-# Example 6:
-TrapezoidalFuzzyNumber$new(-1,0,-0.5,0)$is_positive()
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TrapezoidalFuzzyNumber-plot"></a>}}
+\if{latex}{\out{\hypertarget{method-TrapezoidalFuzzyNumber-plot}{}}}
+\subsection{Method \code{plot()}}{
+This method shows in a graph the values of the corresponding 'TrapezoidalFuzzyNumber'.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TrapezoidalFuzzyNumber$plot(color = "grey")}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{color}}{is the color of the lines representing the number to be shown
+in the graph. The default value is grey, other colors can be specified,
+the option palette() too.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Details}{
+See examples.
+}
+
+\subsection{Returns}{
+a graph with the values of the corresponding 'TrapezoidalFuzzyNumber'.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{# Example 1:
+TrapezoidalFuzzyNumber$new(1,2,3,4)$plot()
+
+# Example 2:
+TrapezoidalFuzzyNumber$new(-8,-6,-4,-2)$plot("blue")
+
+# Example 3:
+TrapezoidalFuzzyNumber$new(0,0,0.5,3)$plot(palette())
+
+# Example 4:
+TrapezoidalFuzzyNumber$new(-8,-3.55,0,10)$plot(palette()[5])
 }
 \if{html}{\out{</div>}}
 

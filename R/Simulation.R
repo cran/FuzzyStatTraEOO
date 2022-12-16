@@ -27,7 +27,6 @@
 #' @import R6
 #'
 #' @export Simulation
-#'
 Simulation <- R6::R6Class(
   classname = "Simulation",
   private = list(
@@ -335,7 +334,8 @@ Simulation <- R6::R6Class(
       # size of the random part
       n2 <- round(w2 * n, 0)
       # size of the simetric part
-      n3 <- n - n1 - n2#size of the variable FRS
+      n3 <- n - n1 - n2
+      #size of the variable FRS
 
       ############ FIRST PROCEDURE ############
 

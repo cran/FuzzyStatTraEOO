@@ -4,7 +4,7 @@
 \alias{FuzzyNumber}
 \title{R6 Class representing a 'FuzzyNumber'.}
 \description{
-A 'FuzzyNumber' is an array of dimension nl x 3 x 1. It can be valid or not.
+A 'FuzzyNumber' is an array of dimension nl x 3 x 1. It must be valid.
 }
 \note{
 In case you find (almost surely existing) bugs or have recommendations
@@ -20,39 +20,46 @@ for improving the method, comments are welcome to the above mentioned mail addre
 FuzzyNumber$new(array(c(0.0,0.5,1.0,-1.5,-1.0,-1.0,2.0,1.5,1.0),dim=c(3,3)))
 
 # Example 2:
-FuzzyNumber$new(array(c(1,2,3,4),dim=c(2,1,2)))
+FuzzyNumber$new(array(c(0.0,1.0,1,2,4,3),dim=c(2,3)))
+
+## ------------------------------------------------
+## Method `FuzzyNumber$getAlphaLevels`
+## ------------------------------------------------
+
+FuzzyNumber$new(array(c(0.0,0.5,1.0,-1.5,-1.0,-1.0,2.0,1.5,1.0),dim=c(3,3))
+)$getAlphaLevels()
+
+## ------------------------------------------------
+## Method `FuzzyNumber$getInfimums`
+## ------------------------------------------------
+
+FuzzyNumber$new(array(c(0.0,0.5,1.0,-1.5,-1.0,-1.0,2.0,1.5,1.0),dim=c(3,3))
+)$getInfimums()
+
+## ------------------------------------------------
+## Method `FuzzyNumber$getSupremums`
+## ------------------------------------------------
+
+FuzzyNumber$new(array(c(0.0,0.5,1.0,-1.5,-1.0,-1.0,2.0,1.5,1.0),dim=c(3,3))
+)$getSupremums()
+
+## ------------------------------------------------
+## Method `FuzzyNumber$plot`
+## ------------------------------------------------
+
+# Example 1:
+FuzzyNumber$new(array(c(0.0,0.5,1.0,-1.5,-1.0,-1.0,2.0,1.5,1.0),dim=c(3,3))
+)$plot()
+
+# Example 2:
+FuzzyNumber$new(array(c(0.0, 1.0, 1, 1.5, 2, 1.7),dim=c(2,3))
+)$plot("blue")
 
 # Example 3:
-FuzzyNumber$new(array(c(0,0.1,0.5,1,2,3),dim=c(3,2)))
+Simulation$new()$simulCase1(1L)$transfTra()$getDimension(1L)$plot(palette())
 
 # Example 4:
-FuzzyNumber$new(array(c(1,2,3,4,5,6),dim=c(2,3)))
-
-# Example 5:
-FuzzyNumber$new(array(c(0,0,1,2,3,4,5,0,1),dim=c(3,3)))
-
-# Example 6:
-FuzzyNumber$new(array(c(0,0.5,1,2,3,2,5,6,7),dim=c(3,3)))
-
-# Example 7:
-FuzzyNumber$new(array(c(0,0.5,1,2,3,4,5,0,1),dim=c(3,3)))
-
-# Example 8:
-FuzzyNumber$new(array(c(0,0.5,1,2,3,4,6,5,3),dim=c(3,3)))
-
-## ------------------------------------------------
-## Method `FuzzyNumber$getFNAlphaLevels`
-## ------------------------------------------------
-
-FuzzyNumber$new(array(c(0.0,0.5,1.0,-1.5,-1.0,-1.0,2.0,1.5,1.0),dim=c(3,3))
-)$getFNAlphaLevels()
-
-## ------------------------------------------------
-## Method `FuzzyNumber$is_valid`
-## ------------------------------------------------
-
-FuzzyNumber$new(array(c(0.0,0.5,1.0,-1.5,-1.0,-1.0,2.0,1.5,1.0),dim=c(3,3))
-)$is_valid()
+Simulation$new()$simulCase1(1L)$transfTra()$getDimension(1L)$plot(palette()[7])
 }
 \author{
 Andrea Garcia Cernuda <uo270115@uniovi.es>
@@ -61,8 +68,10 @@ Andrea Garcia Cernuda <uo270115@uniovi.es>
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-FuzzyNumber-new}{\code{FuzzyNumber$new()}}
-\item \href{#method-FuzzyNumber-getFNAlphaLevels}{\code{FuzzyNumber$getFNAlphaLevels()}}
-\item \href{#method-FuzzyNumber-is_valid}{\code{FuzzyNumber$is_valid()}}
+\item \href{#method-FuzzyNumber-getAlphaLevels}{\code{FuzzyNumber$getAlphaLevels()}}
+\item \href{#method-FuzzyNumber-getInfimums}{\code{FuzzyNumber$getInfimums()}}
+\item \href{#method-FuzzyNumber-getSupremums}{\code{FuzzyNumber$getSupremums()}}
+\item \href{#method-FuzzyNumber-plot}{\code{FuzzyNumber$plot()}}
 \item \href{#method-FuzzyNumber-clone}{\code{FuzzyNumber$clone()}}
 }
 }
@@ -70,15 +79,15 @@ Andrea Garcia Cernuda <uo270115@uniovi.es>
 \if{html}{\out{<a id="method-FuzzyNumber-new"></a>}}
 \if{latex}{\out{\hypertarget{method-FuzzyNumber-new}{}}}
 \subsection{Method \code{new()}}{
-This method creates a 'FuzzyNumber' object with all its attributes set.
+This method creates a valid 'FuzzyNumber' object with all its attributes set.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{FuzzyNumber$new(fnAlphaLevels = NA)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{FuzzyNumber$new(fnLevels = NA)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{fnAlphaLevels}}{is an array of dimension nl x 3 x 1 (general fuzzy number).
+\item{\code{fnLevels}}{is an array of dimension nl x 3 x 1 (general fuzzy number).
 nl is the number of considered \eqn{\alpha}-levels and 3 is the number of
 columns of the array. The first column represents the number of considered
 \eqn{\alpha}-levels, the second one represents their infimum values and the
@@ -91,7 +100,8 @@ See examples.
 }
 
 \subsection{Returns}{
-The FuzzyNumber object created with all its attributes set.
+The FuzzyNumber object created with all its attributes set if it is
+valid.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -99,79 +109,133 @@ The FuzzyNumber object created with all its attributes set.
 FuzzyNumber$new(array(c(0.0,0.5,1.0,-1.5,-1.0,-1.0,2.0,1.5,1.0),dim=c(3,3)))
 
 # Example 2:
-FuzzyNumber$new(array(c(1,2,3,4),dim=c(2,1,2)))
+FuzzyNumber$new(array(c(0.0,1.0,1,2,4,3),dim=c(2,3)))
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-FuzzyNumber-getAlphaLevels"></a>}}
+\if{latex}{\out{\hypertarget{method-FuzzyNumber-getAlphaLevels}{}}}
+\subsection{Method \code{getAlphaLevels()}}{
+This method gives the 'alphaLevels' array of the 'FuzzyNumber'.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{FuzzyNumber$getAlphaLevels()}\if{html}{\out{</div>}}
+}
+
+\subsection{Details}{
+See examples.
+}
+
+\subsection{Returns}{
+The array alphaLevels of the FuzzyNumber object.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{FuzzyNumber$new(array(c(0.0,0.5,1.0,-1.5,-1.0,-1.0,2.0,1.5,1.0),dim=c(3,3))
+)$getAlphaLevels()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-FuzzyNumber-getInfimums"></a>}}
+\if{latex}{\out{\hypertarget{method-FuzzyNumber-getInfimums}{}}}
+\subsection{Method \code{getInfimums()}}{
+This method gives the 'imfimums' array of the 'FuzzyNumber'.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{FuzzyNumber$getInfimums()}\if{html}{\out{</div>}}
+}
+
+\subsection{Details}{
+See examples.
+}
+
+\subsection{Returns}{
+The array imfimums of the FuzzyNumber object.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{FuzzyNumber$new(array(c(0.0,0.5,1.0,-1.5,-1.0,-1.0,2.0,1.5,1.0),dim=c(3,3))
+)$getInfimums()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-FuzzyNumber-getSupremums"></a>}}
+\if{latex}{\out{\hypertarget{method-FuzzyNumber-getSupremums}{}}}
+\subsection{Method \code{getSupremums()}}{
+This method gives the 'supremums' array of the 'FuzzyNumber'.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{FuzzyNumber$getSupremums()}\if{html}{\out{</div>}}
+}
+
+\subsection{Details}{
+See examples.
+}
+
+\subsection{Returns}{
+The array supremums of the FuzzyNumber object.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{FuzzyNumber$new(array(c(0.0,0.5,1.0,-1.5,-1.0,-1.0,2.0,1.5,1.0),dim=c(3,3))
+)$getSupremums()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-FuzzyNumber-plot"></a>}}
+\if{latex}{\out{\hypertarget{method-FuzzyNumber-plot}{}}}
+\subsection{Method \code{plot()}}{
+This method shows in a graph the values of the alphaLevels, infimums and
+supremums attributes of the corresponding 'FuzzyNumber'.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{FuzzyNumber$plot(color = "grey")}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{color}}{is the color of the lines representing the number to be shown
+in the graph. The default value is grey, other colors can be specified, the
+option palette() too.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Details}{
+See examples.
+}
+
+\subsection{Returns}{
+a graph with the values of the alphaLevels, infimums and supremums
+attributes of the corresponding 'FuzzyNumber'.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{# Example 1:
+FuzzyNumber$new(array(c(0.0,0.5,1.0,-1.5,-1.0,-1.0,2.0,1.5,1.0),dim=c(3,3))
+)$plot()
+
+# Example 2:
+FuzzyNumber$new(array(c(0.0, 1.0, 1, 1.5, 2, 1.7),dim=c(2,3))
+)$plot("blue")
 
 # Example 3:
-FuzzyNumber$new(array(c(0,0.1,0.5,1,2,3),dim=c(3,2)))
+Simulation$new()$simulCase1(1L)$transfTra()$getDimension(1L)$plot(palette())
 
 # Example 4:
-FuzzyNumber$new(array(c(1,2,3,4,5,6),dim=c(2,3)))
-
-# Example 5:
-FuzzyNumber$new(array(c(0,0,1,2,3,4,5,0,1),dim=c(3,3)))
-
-# Example 6:
-FuzzyNumber$new(array(c(0,0.5,1,2,3,2,5,6,7),dim=c(3,3)))
-
-# Example 7:
-FuzzyNumber$new(array(c(0,0.5,1,2,3,4,5,0,1),dim=c(3,3)))
-
-# Example 8:
-FuzzyNumber$new(array(c(0,0.5,1,2,3,4,6,5,3),dim=c(3,3)))
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-FuzzyNumber-getFNAlphaLevels"></a>}}
-\if{latex}{\out{\hypertarget{method-FuzzyNumber-getFNAlphaLevels}{}}}
-\subsection{Method \code{getFNAlphaLevels()}}{
-This method gives the 'fnAlphaLevels' array of the 'FuzzyNumber'.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{FuzzyNumber$getFNAlphaLevels()}\if{html}{\out{</div>}}
-}
-
-\subsection{Details}{
-See examples.
-}
-
-\subsection{Returns}{
-The array fnAlphaLevels of the FuzzyNumber object.
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{FuzzyNumber$new(array(c(0.0,0.5,1.0,-1.5,-1.0,-1.0,2.0,1.5,1.0),dim=c(3,3))
-)$getFNAlphaLevels()
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-FuzzyNumber-is_valid"></a>}}
-\if{latex}{\out{\hypertarget{method-FuzzyNumber-is_valid}{}}}
-\subsection{Method \code{is_valid()}}{
-This method gives information whether the 'FuzzyNumber' is valid
-regarding its \eqn{\alpha}-levels, its infimum and its supremum values.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{FuzzyNumber$is_valid()}\if{html}{\out{</div>}}
-}
-
-\subsection{Details}{
-See examples.
-}
-
-\subsection{Returns}{
-TRUE whether the FuzzyNumber object has a valid array,
-otherwise FALSE.
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{FuzzyNumber$new(array(c(0.0,0.5,1.0,-1.5,-1.0,-1.0,2.0,1.5,1.0),dim=c(3,3))
-)$is_valid()
+Simulation$new()$simulCase1(1L)$transfTra()$getDimension(1L)$plot(palette()[7])
 }
 \if{html}{\out{</div>}}
 
